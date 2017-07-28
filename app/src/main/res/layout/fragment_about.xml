@@ -45,7 +45,7 @@
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/CfAFRICALogo"
+            android:src="@drawable/cfafrica_logo"
             android:visibility="visible" />
         </LinearLayout>
 </RelativeLayout>
