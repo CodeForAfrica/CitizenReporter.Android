@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_login);
         loginButton = (LoginButton) findViewById(R.id.login_button);
 
+
         startLoginProcess();
 
 
@@ -82,7 +83,9 @@ public class LoginActivity extends AppCompatActivity  {
 
     }
 
-    private void startLoginProcess(){
+
+
+    public void startLoginProcess(){
         final Intent intent = new Intent(this, MainActivity.class);
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
