@@ -1,7 +1,9 @@
 package org.codeforafrica.citizenreporterandroid;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -11,25 +13,22 @@ import org.codeforafrica.citizenreporterandroid.auth.LoginActivity;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                initialCheck();
-            }
-        }, 2000);
-
+        initialCheck();
     }
 
-    private void initialCheck(){
-        AccessToken token = AccessToken.getCurrentAccessToken();
-        if (token == null){
-            startActivity(new Intent(this, LoginActivity.class));
+    private void initialCheck() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!preferences.getBoolean("OnboardingActivity.ONBOARDING_COMPLETE", false)) {
+            startActivity(new Intent(this, OnboardingActivity.class));
+            finish();
         } else {
             startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
     }
 

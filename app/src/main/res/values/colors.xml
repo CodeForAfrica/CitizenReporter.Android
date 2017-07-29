@@ -10,4 +10,6 @@
     <color name="primary_dark_material_white">#ffffff</color>
     <color name="primary_material_white">#ffffff</color>
     <color name="accent_material_white">#ffffff</color>
+    <color name="cfAfrica_blue">#0d68a8</color>
+    <color name="cfAfrica_red">#ed1c24</color>
 </resources>

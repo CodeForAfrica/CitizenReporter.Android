@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -24,9 +25,13 @@ import com.facebook.login.widget.LoginButton;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 
+import butterknife.BindView;
+
 
 public class LoginActivity extends AppCompatActivity  {
-    private LoginButton loginButton;
+
+    @BindView(R.id.login_button) LoginButton loginButton;
+
     private CallbackManager callbackManager;
     private AccessTokenTracker mTokenTracker;
     private ProfileTracker mProfileTracker;
@@ -90,6 +95,7 @@ public class LoginActivity extends AppCompatActivity  {
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                loginButton.setVisibility(View.GONE);
                 Log.d("Facebook Login", "AccessToken: " + loginResult.getAccessToken().toString());
                 profile = Profile.getCurrentProfile();
                 first_name = profile.getFirstName();
