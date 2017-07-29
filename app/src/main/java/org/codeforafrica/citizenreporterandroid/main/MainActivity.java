@@ -37,6 +37,8 @@ public class MainActivity extends BaseActivity {
     /**
      * The {@link ViewPager} that will host the section contents.
      */
+
+    // TODO add cog instead of menu buttons to go directly to the settings page
     private ViewPager mViewPager;
 
     @Override
