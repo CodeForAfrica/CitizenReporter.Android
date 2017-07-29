@@ -1,5 +1,7 @@
 package org.codeforafrica.citizenreporterandroid.main;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +18,8 @@ import org.codeforafrica.citizenreporterandroid.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentsFragment;
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
+
+import org.codeforafrica.citizenreporterandroid.SettingsActivity;
 
 
 public class MainActivity extends BaseActivity {
@@ -72,12 +76,13 @@ public class MainActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent menuIntent = new Intent(this, SettingsActivity.class);
+            startActivity(menuIntent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -104,8 +109,8 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override

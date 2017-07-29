@@ -12,4 +12,5 @@
     <color name="accent_material_white">#ffffff</color>
     <color name="cfAfrica_blue">#0d68a8</color>
     <color name="cfAfrica_red">#ed1c24</color>
+    <color name="separator_gray">#d4d2d2</color>
 </resources>
