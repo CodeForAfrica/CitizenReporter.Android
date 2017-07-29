@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">CitizenReporter</string>
+    <string name="app_name">Citizen Reporter</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about_test">Citizen Reporter is a CodeforAfrica project that provides a simple easy-to-use experience for users, minimising barriers to securely submitting media rich strories to newsrooms.</string>
 </resources>
