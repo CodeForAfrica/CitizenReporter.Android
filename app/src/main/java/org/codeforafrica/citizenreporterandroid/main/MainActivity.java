@@ -1,21 +1,22 @@
 package org.codeforafrica.citizenreporterandroid.main;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
 
 import org.codeforafrica.citizenreporterandroid.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentsFragment;
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
+
 
 public class MainActivity extends BaseActivity {
 
@@ -103,8 +104,8 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
-            return 2;
+            // Show 3 total pages.
+            return 3;
         }
 
         @Override

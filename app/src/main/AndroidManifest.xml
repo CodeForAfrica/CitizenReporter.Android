@@ -39,7 +39,8 @@
         <activity
             android:name=".OnboardingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BaseActivity"></activity>
+        <activity android:name=".BaseActivity" />
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>
