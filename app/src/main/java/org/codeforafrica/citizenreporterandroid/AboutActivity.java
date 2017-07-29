@@ -11,3 +11,4 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
     }
 }
+
