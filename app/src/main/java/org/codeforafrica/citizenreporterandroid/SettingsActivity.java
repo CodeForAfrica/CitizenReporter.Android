@@ -14,62 +14,47 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.facebook.login.LoginManager;
+
+import org.codeforafrica.citizenreporterandroid.auth.LoginActivity;
+
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_list);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        setContentView(R.layout.activity_settings);
+        ButterKnife.bind(this);
 
-        ArrayList<String> menuItems = new ArrayList<>();
-        menuItems.add("About");
-        menuItems.add("Support Channel");
-        menuItems.add("Feedback");
-
-        ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuItems);
-        ListView listView = (ListView) findViewById(R.id.list);
-        listView.setAdapter(menuAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    Intent aboutIntent = new Intent(getBaseContext(), AboutActivity.class);
-                    startActivity(aboutIntent);
-                } else if (i == 1) {
-                    Intent supportIntent = new Intent(getBaseContext(), SupportChannelActivity.class);
-                    startActivity(supportIntent);
-                } else {
-                    Intent feedbackIntent = new Intent(getBaseContext(), FeedbackActivity.class);
-                    startActivity(feedbackIntent);
-                }
-            }
-        });
     }
 
-    public void openAbout(View view) {
-        Intent about = new Intent(this, AboutActivity.class);
-        startActivity(about);
+
+    @OnClick(R.id.support_menu_item)
+    public void startSupportChannelActivity(){
+        startActivity(new Intent(this, SupportChannelActivity.class));
     }
 
-    public void openSupportChannel(View view) {
-        Intent support = new Intent(this, SupportChannelActivity.class);
-        startActivity(support);
+    @OnClick(R.id.about_menu_item)
+    public void startAboutActivity(){
+        startActivity(new Intent(this, AboutActivity.class));
     }
 
-    public void openFeedback(View view) {
-        Intent about = new Intent(this, FeedbackActivity.class);
-        startActivity(about);
+    @OnClick(R.id.feedback_menu_item)
+    public void startFeedbackActivity(){
+        startActivity(new Intent(this, FeedbackActivity.class));
+    }
+
+    @OnClick(R.id.facebook_button_logout)
+    public void facebookLogout(){
+        LoginManager.getInstance().logOut();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
 
