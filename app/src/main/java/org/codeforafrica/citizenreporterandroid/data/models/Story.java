@@ -1,6 +1,5 @@
 package org.codeforafrica.citizenreporterandroid.data.models;
 
-import com.orm.SugarRecord;
 
 import java.util.Date;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
  * Created by Ahereza on 7/30/17.
  */
 
-public class Story extends SugarRecord<Story> {
+public class Story {
     private int assignmentId;
     private String title;
     private String why;
@@ -18,6 +17,7 @@ public class Story extends SugarRecord<Story> {
     private String authorId;
     private Date when;
     private List<String> media;
+    private boolean uploaded;
 
     public Story() {
     }
@@ -84,5 +84,13 @@ public class Story extends SugarRecord<Story> {
 
     public void setMedia(List<String> media) {
         this.media = media;
+    }
+
+    public boolean isUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(boolean uploaded) {
+        this.uploaded = uploaded;
     }
 }

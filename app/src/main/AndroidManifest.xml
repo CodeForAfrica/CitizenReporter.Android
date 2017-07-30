@@ -21,9 +21,6 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <meta-data android:name="DATABASE" android:value="citizen_reporter.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="org.codeforafrica.citizenreporterandroid" />

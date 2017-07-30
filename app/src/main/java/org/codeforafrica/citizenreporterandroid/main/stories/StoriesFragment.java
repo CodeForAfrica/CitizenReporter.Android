@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
+import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +26,7 @@ public class StoriesFragment extends Fragment {
     RecyclerView storiesRecyclerView;
     private List<Story> stories;
     private StoriesRecyclerViewAdapter adapter;
+    private LocalDataHelper dataHelper;
 
     public StoriesFragment() {
         // Required empty public constructor
@@ -57,19 +59,26 @@ public class StoriesFragment extends Fragment {
         storiesRecyclerView.setHasFixedSize(true);
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        stories = new ArrayList<>();
 
-        Story story = new Story();
-        story.setTitle("Chaos in Naivasha");
-        story.setWhen(new Date());
+//        stories = new ArrayList<>();
+//
+//        Story story = new Story();
+//        story.setTitle("Chaos in Naivasha");
+//        story.setWhen(new Date());
+//
+//        story.save();
+//
+//        stories.add(story);
+//
+//        Story story1 = new Story();
+//        story1.setTitle("Cholera is Kibera");
+//        story1.setWhen(new Date());
+//
+//        story1.save();
+//
+//        stories.add(story1);
 
-        stories.add(story);
 
-        Story story1 = new Story();
-        story1.setTitle("Cholera is Kibera");
-        story1.setWhen(new Date());
-
-        stories.add(story1);
 
         adapter = new StoriesRecyclerViewAdapter(stories, getContext());
 
