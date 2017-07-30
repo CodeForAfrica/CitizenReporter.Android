@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid.models;
+package org.codeforafrica.citizenreporterandroid.data.models;
 
 import com.orm.SugarRecord;
 
