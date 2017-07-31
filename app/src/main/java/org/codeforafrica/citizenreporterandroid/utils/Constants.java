@@ -21,7 +21,7 @@ public class Constants {
     public static final String KEY_WHO = "who";
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_AUTHOR_ID = "author_id";
-    public static final String KEY_WHEN = "when";
+    public static final String KEY_WHEN = "q_when";
     public static final String KEY_MEDIA = "media";
     public static final String KEY_UPLOADED = "uploaded";
     public static final String KEY_UPDATED = "updated";

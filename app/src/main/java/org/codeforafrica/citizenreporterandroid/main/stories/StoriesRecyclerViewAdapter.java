@@ -50,7 +50,7 @@ public class StoriesRecyclerViewAdapter extends
     public void onBindViewHolder(StoryHolder holder, int position) {
         Story story = storyList.get(position);
         holder.story_title.setText(story.getTitle());
-        holder.story_date_saved.setText(story.getWhen().toString());
+        holder.story_date_saved.setText(story.getUpdated());
 
     }
 

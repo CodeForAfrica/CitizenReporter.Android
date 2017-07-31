@@ -60,24 +60,21 @@ public class StoriesFragment extends Fragment {
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-//        stories = new ArrayList<>();
-//
+        dataHelper = new LocalDataHelper(getActivity());
+
 //        Story story = new Story();
 //        story.setTitle("Chaos in Naivasha");
-//        story.setWhen(new Date());
-//
-//        story.save();
-//
-//        stories.add(story);
+//        story.setWhen(new Date().toString());
 //
 //        Story story1 = new Story();
 //        story1.setTitle("Cholera is Kibera");
-//        story1.setWhen(new Date());
+//        story1.setWhen(new Date().toString());
 //
-//        story1.save();
-//
-//        stories.add(story1);
+//        dataHelper.saveStory(story);
+//        dataHelper.saveStory(story1);
 
+
+        stories = dataHelper.getAllStories();
 
 
         adapter = new StoriesRecyclerViewAdapter(stories, getContext());

@@ -111,12 +111,17 @@ public class Story {
          * read a comma separated string from the database and convert it to a list
          * First remove the trailing comma if it's there
          */
-        char last_char = media_csv.charAt(media_csv.length() - 1);
-        if (last_char == ','){
-            media_csv = media_csv.substring(0, media_csv.length() - 2);
+        if(media_csv.length() > 0){
+            char last_char = media_csv.charAt(media_csv.length() - 1);
+            if (last_char == ','){
+                media_csv = media_csv.substring(0, media_csv.length() - 2);
+            }
+            List<String> items = Arrays.asList(media_csv.split("\\s*,\\s*"));
+            return items;
+        } else {
+            return Collections.EMPTY_LIST;
         }
-        List<String> items = Arrays.asList(media_csv.split("\\s*,\\s*"));
-        return items;
+
     }
 
 

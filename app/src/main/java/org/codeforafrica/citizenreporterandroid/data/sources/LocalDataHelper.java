@@ -35,7 +35,6 @@ public class LocalDataHelper extends SQLiteOpenHelper{
                 + Constants.KEY_ID + " INTEGER PRIMARY KEY,"
                 + Constants.KEY_TITLE + " TEXT,"
                 + Constants.KEY_ASSIGNMENT_ID + " TEXT,"
-                + Constants.KEY_WHY + " TEXT,"
                 + Constants.KEY_WHO + " TEXT,"
                 + Constants.KEY_AUTHOR + " TEXT,"
                 + Constants.KEY_AUTHOR_ID + " TEXT,"
@@ -43,7 +42,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
                 + Constants.KEY_UPDATED + " LONG,"
                 + Constants.KEY_MEDIA + " TEXT,"
                 + Constants.KEY_UPLOADED + " TEXT,"
-                + Constants.KEY_WHY + " TEXT)";
+                + Constants.KEY_WHY + " TEXT);";
 
         db.execSQL(CREATE_STORIES_TABLE);
 
