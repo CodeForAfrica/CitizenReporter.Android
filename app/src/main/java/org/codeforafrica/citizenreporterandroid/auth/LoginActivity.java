@@ -2,10 +2,11 @@ package org.codeforafrica.citizenreporterandroid.auth;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +24,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-import org.codeforafrica.citizenreporterandroid.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
@@ -35,14 +35,14 @@ import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.isNetworkAvailable;
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.registerUserDetails;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    @BindView(R.id.login_button) LoginButton loginButton;
+    @BindView(R.id.login_button)
+    LoginButton loginButton;
 
 
     private CallbackManager callbackManager;
@@ -51,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     private Profile profile;
     private String first_name, last_name, fb_id;
     private Uri profile_pic;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
 
     @Override
@@ -59,6 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         initFb();
         setContentView(R.layout.activity_login);
         loginButton = (LoginButton) findViewById(R.id.login_button);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
 
         new PermissionWrapper.Builder(this)
                 .addPermissions(new String[]{Manifest.permission.INTERNET,
@@ -86,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
                 }).build().request();
-
 
 
     }
@@ -121,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void initFb(){
+    private void initFb() {
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         setupTokenTracker();
@@ -133,8 +136,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
-    public void startLoginProcess(){
+    public void startLoginProcess() {
         final Intent intent = new Intent(this, MainActivity.class);
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -146,6 +148,9 @@ public class LoginActivity extends AppCompatActivity {
                 last_name = profile.getLastName();
                 profile_pic = profile.getProfilePictureUri(400, 400);
                 fb_id = profile.getId();
+
+                editor.putString("fb_id", fb_id);
+                editor.commit();
 
                 String name = first_name + " " + last_name;
 

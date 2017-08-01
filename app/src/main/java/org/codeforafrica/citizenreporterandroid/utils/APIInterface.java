@@ -21,7 +21,7 @@ import retrofit2.http.Path;
  */
 
 public interface APIInterface {
-    @GET()
+    @GET("stories/user/{fb_id}/")
     Call<List<Story>> getUserStories(@Path("fb_id") String fb_id);
 
     @POST("users/register")

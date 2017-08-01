@@ -1,10 +1,13 @@
 package org.codeforafrica.citizenreporterandroid.main.stories;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +15,15 @@ import android.view.ViewGroup;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
+import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
+import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class StoriesFragment extends Fragment {
@@ -27,6 +32,7 @@ public class StoriesFragment extends Fragment {
     private List<Story> stories;
     private StoriesRecyclerViewAdapter adapter;
     private LocalDataHelper dataHelper;
+    private SharedPreferences preferences;
 
     public StoriesFragment() {
         // Required empty public constructor
@@ -56,23 +62,25 @@ public class StoriesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         storiesRecyclerView.setHasFixedSize(true);
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
         dataHelper = new LocalDataHelper(getActivity());
 
-//        Story story = new Story();
-//        story.setTitle("Chaos in Naivasha");
-//        story.setWhen(new Date().toString());
-//
-//        Story story1 = new Story();
-//        story1.setTitle("Cholera is Kibera");
-//        story1.setWhen(new Date().toString());
-//
-//        dataHelper.saveStory(story);
-//        dataHelper.saveStory(story1);
-
+        if (dataHelper.getStoriesCount() == 0) {
+            Retrofit.Builder builder = new Retrofit.Builder()
+                    .baseUrl("http://c6ae9618.ngrok.io/api/")
+                    .addConverterFactory(GsonConverterFactory.create());
+            Retrofit retrofit = builder.build();
+            APIInterface apiClient = retrofit.create(APIInterface.class);
+            String fb_id = preferences.getString("fb_id", "");
+            if (fb_id != "") {
+                Log.d("API", "making network call get stories");
+                NetworkHelper.getUserStories(getActivity(), apiClient, fb_id);
+            }
+        }
 
         stories = dataHelper.getAllStories();
 
@@ -80,6 +88,7 @@ public class StoriesFragment extends Fragment {
         adapter = new StoriesRecyclerViewAdapter(stories, getContext());
 
         storiesRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
 

@@ -1,28 +1,20 @@
 package org.codeforafrica.citizenreporterandroid.utils;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.codeforafrica.citizenreporterandroid.auth.LoginActivity;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
+import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Ahereza on 8/1/17.
@@ -30,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkHelper {
     private List<Story> stories;
+
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm =
@@ -70,7 +63,7 @@ public class NetworkHelper {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                // TODO fail gracefully
             }
         });
     }
@@ -88,6 +81,7 @@ public class NetworkHelper {
                                     Toast.LENGTH_SHORT).show();
                             break;
                         case 202:
+                            // server returns a 202 if the user already exists
                             break;
                         default:
                             Toast.makeText(context, "Server Error",
@@ -98,7 +92,7 @@ public class NetworkHelper {
 
             @Override
             public void onFailure(Call<Story> call, Throwable t) {
-
+                // TODO fail gracefully
             }
         });
 
@@ -111,13 +105,22 @@ public class NetworkHelper {
             @Override
             public void onResponse(Call<List<Story>> call, Response<List<Story>> response) {
                 if (response.isSuccessful()) {
-                    // TODO save this data to the DB
+                    Toast.makeText(context, "Successful",
+                            Toast.LENGTH_SHORT).show();
+                    List<Story> stories = response.body();
+                    Log.d("API", String.valueOf(stories.size()));
+
+                    LocalDataHelper dataHelper = new LocalDataHelper(context);
+                    if (stories.size() > 0){
+                        // only save to the database if the API call returned any stories
+                        dataHelper.bulkSaveStories(stories);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<List<Story>> call, Throwable t) {
-
+                // TODO fail gracefully
             }
         });
     }

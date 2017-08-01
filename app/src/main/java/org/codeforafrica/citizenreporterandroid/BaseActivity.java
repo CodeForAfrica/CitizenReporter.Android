@@ -14,16 +14,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BaseActivity extends AppCompatActivity {
-//    public Retrofit.Builder builder;
-//    public Retrofit retrofit;
-//    public APIInterface apiClient;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkUserLoggedIn();
-//        initRetrofit();
 
     }
 
@@ -39,10 +34,4 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-//    public void initRetrofit() {
-//        builder = new Retrofit.Builder().baseUrl("http://c6ae9618.ngrok.io/api/")
-//                .addConverterFactory(GsonConverterFactory.create());
-//        retrofit = builder.build();
-//        apiClient = retrofit.create(APIInterface.class);
-//    }
 }

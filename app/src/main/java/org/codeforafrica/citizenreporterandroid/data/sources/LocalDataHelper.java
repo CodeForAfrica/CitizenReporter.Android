@@ -11,7 +11,6 @@ import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -71,6 +70,13 @@ public class LocalDataHelper extends SQLiteOpenHelper{
         // insert row
         db.insert(Constants.STORIES_TABLE_NAME, null, values);
         Log.d("SAVED", "Saved to DB");
+    }
+
+    public void bulkSaveStories(List<Story> stories) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        for (Story story : stories) {
+            saveStory(story);
+        }
 
     }
 
