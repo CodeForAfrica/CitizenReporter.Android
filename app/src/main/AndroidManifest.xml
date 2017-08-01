@@ -75,6 +75,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.codeforafrica.citizenreporterandroid.SettingsActivity" />
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c99a6a9a2e47604595017b4d8c8e7db46db93b9e" />
     </application>
 
 </manifest>

@@ -19,7 +19,7 @@ public class Story {
     private String author;
     private String authorId;
     private String when;
-    private List<String> media = Collections.<String>emptyList();;
+    private List<String> media = Collections.<String>emptyList();
     private boolean uploaded;
     private String updated;
 

@@ -17,12 +17,15 @@ import retrofit2.http.Path;
 
 public interface APIInterface {
     @GET()
-    Call<List<Story>> getUserStories(String user_fb_id);
+    Call<List<Story>> getUserStories(@Path("fb_id") String fb_id);
 
     @POST("users/register")
     Call<User> createUser(User user);
 
     @PATCH("users/update/{fb_id}")
     Call<User> registerFCM(@Path("fb_id") String fb_id);
+
+    @POST()
+    Call<Story> uploadStory(Story story);
 
 }
