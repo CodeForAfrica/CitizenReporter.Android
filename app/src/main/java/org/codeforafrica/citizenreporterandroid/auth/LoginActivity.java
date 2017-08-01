@@ -22,13 +22,21 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.codeforafrica.citizenreporterandroid.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 
 import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.isNetworkAvailable;
+import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.registerUserDetails;
 
 
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.login_button) LoginButton loginButton;
 
@@ -48,7 +56,13 @@ public class LoginActivity extends AppCompatActivity  {
         loginButton = (LoginButton) findViewById(R.id.login_button);
 
 
-        startLoginProcess();
+        if (isNetworkAvailable(LoginActivity.this)) {
+            startLoginProcess();
+        } else {
+            Toast.makeText(
+                    this, "You currently do not have internet access", Toast.LENGTH_LONG).show();
+        }
+
 
 
     }
@@ -103,6 +117,12 @@ public class LoginActivity extends AppCompatActivity  {
                 profile_pic = profile.getProfilePictureUri(400, 400);
                 fb_id = profile.getId();
 
+                String name = first_name + " " + last_name;
+
+                User newUser = new User(name, fb_id, profile_pic.toString());
+
+                registerUserDetails(LoginActivity.this, apiClient, newUser);
+
                 Log.d("First name", first_name);
                 Log.d("Last name", last_name);
                 Log.d("FB_ID", fb_id);
@@ -129,5 +149,6 @@ public class LoginActivity extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
     }
+
 }
 
