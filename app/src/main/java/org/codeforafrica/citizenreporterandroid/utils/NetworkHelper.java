@@ -1,8 +1,10 @@
 package org.codeforafrica.citizenreporterandroid.utils;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,9 +14,15 @@ import org.codeforafrica.citizenreporterandroid.data.models.User;
 
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Ahereza on 8/1/17.
@@ -34,6 +42,7 @@ public class NetworkHelper {
 
     }
 
+
     public static boolean checkNetworkPermission(Context context){
         // TODO check network permission
         return true;
@@ -41,6 +50,7 @@ public class NetworkHelper {
 
     public static void registerUserDetails(
             final Context context, APIInterface apiClient, User user){
+        Log.d("Username", user.getName());
         Call<User> userCall = apiClient.createUser(user);
         userCall.enqueue(new Callback<User>() {
             @Override
@@ -73,9 +83,11 @@ public class NetworkHelper {
             public void onResponse(Call<Story> call, Response<Story> response) {
                 if (response.isSuccessful()) {
                     switch (response.code()) {
-                        case 200:
+                        case 201:
                             Toast.makeText(context, "Story Successfully Uploaded",
                                     Toast.LENGTH_SHORT).show();
+                            break;
+                        case 202:
                             break;
                         default:
                             Toast.makeText(context, "Server Error",
@@ -110,7 +122,14 @@ public class NetworkHelper {
         });
     }
 
-    private final void parseStories(List<Story> rawStories) {
-        stories = rawStories;
-    }
+//    public static void uploadMediaFiles(
+//            final Context context, APIInterface apiClient, String remoteStoryId, Uri fileUri) {
+//        ResponseBody id = ResponseBody.create(MultipartBody.FORM, remoteStoryId);
+//
+//        RequestBody filePart = RequestBody.create(MediaType.parse());
+//        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+//        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
+//
+//    }
+
 }

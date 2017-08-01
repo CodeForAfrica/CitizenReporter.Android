@@ -1,11 +1,12 @@
 package org.codeforafrica.citizenreporterandroid.auth;
 
+import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -26,19 +27,23 @@ import org.codeforafrica.citizenreporterandroid.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
 
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
+import lolodev.permissionswrapper.wrapper.PermissionWrapper;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.isNetworkAvailable;
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.registerUserDetails;
 
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.login_button) LoginButton loginButton;
+
 
     private CallbackManager callbackManager;
     private AccessTokenTracker mTokenTracker;
@@ -55,16 +60,41 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         loginButton = (LoginButton) findViewById(R.id.login_button);
 
+        new PermissionWrapper.Builder(this)
+                .addPermissions(new String[]{Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_NETWORK_STATE})
+                //enable rationale message with a custom message
+                .addPermissionRationale("You need internet to log in and also query ")
+                //show settings dialog,in this case with default message base on requested permission/s
+                .addPermissionsGoSettings(true)
+                //enable callback to know what option was choose
+                .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
+                    @Override
+                    public void onGrant() {
+                        if (isNetworkAvailable(LoginActivity.this)) {
+                            startLoginProcess();
+                        } else {
+                            Toast.makeText(
+                                    LoginActivity.this,
+                                    "You currently do not have internet access",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
 
-        if (isNetworkAvailable(LoginActivity.this)) {
-            startLoginProcess();
-        } else {
-            Toast.makeText(
-                    this, "You currently do not have internet access", Toast.LENGTH_LONG).show();
-        }
+                    @Override
+                    public void onDenied(String permission) {
+
+                    }
+                }).build().request();
 
 
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void setupTokenTracker() {
@@ -121,6 +151,12 @@ public class LoginActivity extends BaseActivity {
 
                 User newUser = new User(name, fb_id, profile_pic.toString());
 
+                Retrofit.Builder builder = new Retrofit.Builder()
+                        .baseUrl("http://c6ae9618.ngrok.io/api/")
+                        .addConverterFactory(GsonConverterFactory.create());
+                Retrofit retrofit = builder.build();
+                APIInterface apiClient = retrofit.create(APIInterface.class);
+
                 registerUserDetails(LoginActivity.this, apiClient, newUser);
 
                 Log.d("First name", first_name);
@@ -149,6 +185,7 @@ public class LoginActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
     }
+
 
 }
 

@@ -8,12 +8,13 @@ public class User {
     private String name;
     private String fb_id;
     private String fcm_token;
-    private String profile_pic_url;
+    private String profile_pic;
 
     public User(String name, String fb_id, String profile_pic_url) {
         this.name = name;
         this.fb_id = fb_id;
-        this.profile_pic_url = profile_pic_url;
+        this.profile_pic = profile_pic_url;
+        this.fcm_token = "";
     }
 
     public String getName() {
@@ -41,10 +42,10 @@ public class User {
     }
 
     public String getProfile_pic_url() {
-        return profile_pic_url;
+        return profile_pic;
     }
 
     public void setProfile_pic_url(String profile_pic_url) {
-        this.profile_pic_url = profile_pic_url;
+        this.profile_pic = profile_pic_url;
     }
 }
