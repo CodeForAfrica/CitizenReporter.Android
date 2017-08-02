@@ -99,6 +99,15 @@ public class NetworkHelper {
 
     }
 
+    /**
+     * method gets stories associated to this current user from the server, saves them to the
+     * database and then updates the data in the adapter
+     * @param context the Activity or Fragment
+     * @param apiClient
+     * @param fb_id user facebook ID
+     * @param adapter the adapter responsible for updating the recyclerview
+     */
+
     public static void getUserStories(final Context context, APIInterface apiClient, String fb_id,
                                       final StoriesRecyclerViewAdapter adapter){
 
@@ -107,16 +116,14 @@ public class NetworkHelper {
             @Override
             public void onResponse(Call<List<Story>> call, Response<List<Story>> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(context, "Successful",
-                            Toast.LENGTH_SHORT).show();
                     List<Story> stories = response.body();
-                    Log.d("API", "Stories count before api call " + String.valueOf(stories.size()));
-
                     LocalDataHelper dataHelper = new LocalDataHelper(context);
                     if (stories.size() > 0){
                         // only save to the database if the API call returned any stories
                         dataHelper.bulkSaveStories(stories);
-                        Log.d("API", "Stories count after api call " + String.valueOf(stories.size()));
+                        Log.d("API", "Stories count after api call "
+                                + String.valueOf(stories.size()));
+                        // update the adapter to display the new stories
                         adapter.setStoryList(dataHelper.getAllStories());
                         adapter.notifyDataSetChanged();
                     }
