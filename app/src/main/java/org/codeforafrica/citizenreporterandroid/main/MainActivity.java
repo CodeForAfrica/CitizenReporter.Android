@@ -7,18 +7,32 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ScrollView;
+import android.view.View;
+
 
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
+import org.codeforafrica.citizenreporterandroid.main.api.ApiClient;
+import org.codeforafrica.citizenreporterandroid.main.api.ApiInterface;
+import org.codeforafrica.citizenreporterandroid.main.models.Assignments;
+import org.codeforafrica.citizenreporterandroid.main.models.AssignmentsResponse;
 
+import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-
+    private AssignmentsAdapter adapter;
+    private List<Assignments> assignmentsList;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -54,7 +68,46 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        initData();
     }
+
+    private void initView() {
+
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.assignment_recycler);
+        adapter = new AssignmentsAdapter(this, assignmentsList);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    }
+
+    private void initData(){
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call call = apiService.getAssignments();
+
+        call.enqueue(new Callback(){
+            @Override
+            public void onResponse(Call call, Response response){
+                int ResponseCode = response.code();
+
+                initView();
+
+            }
+            @Override
+            public void onFailure(Call call, Throwable t){
+
+                Log.e("Something's Wrong", t.toString());
+
+            }
+
+
+
+        });
+    }
+
 
 
     @Override

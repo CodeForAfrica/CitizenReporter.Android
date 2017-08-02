@@ -2,7 +2,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp">
-
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/assignment_recycler">
     <!-- Assignment image -->
     <ImageView
         android:id="@+id/assignment_thumbnail"
@@ -34,5 +37,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp" />
 
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

@@ -1,30 +1,17 @@
 package org.codeforafrica.citizenreporterandroid.main;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.res.Configuration;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+
 
 import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
 import org.codeforafrica.citizenreporterandroid.main.models.Assignments;
-import org.codeforafrica.citizenreporterandroid.main.models.AssignmentsResponse;
-import org.codeforafrica.citizenreporterandroid.main.api.*;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import org.codeforafrica.citizenreporterandroid.R;
 
@@ -68,47 +55,18 @@ public class AssignmentsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Log.d("Assignment Fragment", "onCreate: ");
 
-        //initViews();
     }
 
+/*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_assignments, container, true);
     }
-
-/*
-    private void initViews() {
-
-        recyclerView = (RecyclerView) recyclerView.findViewById(R.id.main_content);
-        adapter = new AssignmentsAdapter(getContext(), assignmentsList);
-
-        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        } else{
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
-        }
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-
-    *//*    swipeContainer = (SwipeRefreshLayout) recyclerView.findViewById(R.id.main_content);
-        //swipeContainer.setColorSchemeResources(R.color.holo_orange_dark);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
-
-            @Override
-            public void onRefresh() {
-                initViews();
-                Toast.makeText(getActivity(), "Assignments Refreshed", Toast.LENGTH_SHORT).show();
-            }
-        });
-*//*
-
-    }*/
-
-
+*/
 
 }
+
+
+
