@@ -24,6 +24,10 @@ public class StoriesRecyclerViewAdapter extends
     private List<Story> storyList;
     private Context context;
 
+    public void setStoryList(List<Story> storyList) {
+        this.storyList = storyList;
+    }
+
     public StoriesRecyclerViewAdapter(List<Story> storyList, Context context) {
         this.storyList = storyList;
         this.context = context;

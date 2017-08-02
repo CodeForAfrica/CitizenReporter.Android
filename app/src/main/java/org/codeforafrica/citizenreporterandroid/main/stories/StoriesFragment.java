@@ -69,6 +69,12 @@ public class StoriesFragment extends Fragment {
 
         dataHelper = new LocalDataHelper(getActivity());
 
+        stories = dataHelper.getAllStories();
+
+        adapter = new StoriesRecyclerViewAdapter(stories, getContext());
+
+        storiesRecyclerView.setAdapter(adapter);
+
         if (dataHelper.getStoriesCount() == 0) {
             Retrofit.Builder builder = new Retrofit.Builder()
                     .baseUrl("http://c6ae9618.ngrok.io/api/")
@@ -78,18 +84,13 @@ public class StoriesFragment extends Fragment {
             String fb_id = preferences.getString("fb_id", "");
             if (fb_id != "") {
                 Log.d("API", "making network call get stories");
-                NetworkHelper.getUserStories(getActivity(), apiClient, fb_id);
+                NetworkHelper.getUserStories(getActivity(), apiClient, fb_id, adapter);
             }
         }
 
-        stories = dataHelper.getAllStories();
 
-
-        adapter = new StoriesRecyclerViewAdapter(stories, getContext());
-
-        storiesRecyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        adapter.setStoryList(dataHelper.getAllStories());
+//        adapter.notifyDataSetChanged();
     }
-
 
 }

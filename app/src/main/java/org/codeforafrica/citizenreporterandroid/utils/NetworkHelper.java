@@ -9,6 +9,7 @@ import android.widget.Toast;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
+import org.codeforafrica.citizenreporterandroid.main.stories.StoriesRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -98,7 +99,8 @@ public class NetworkHelper {
 
     }
 
-    public static void getUserStories(final Context context, APIInterface apiClient, String fb_id){
+    public static void getUserStories(final Context context, APIInterface apiClient, String fb_id,
+                                      final StoriesRecyclerViewAdapter adapter){
 
         Call<List<Story>> storiesCall = apiClient.getUserStories(fb_id);
         storiesCall.enqueue(new Callback<List<Story>>() {
@@ -108,12 +110,15 @@ public class NetworkHelper {
                     Toast.makeText(context, "Successful",
                             Toast.LENGTH_SHORT).show();
                     List<Story> stories = response.body();
-                    Log.d("API", String.valueOf(stories.size()));
+                    Log.d("API", "Stories count before api call " + String.valueOf(stories.size()));
 
                     LocalDataHelper dataHelper = new LocalDataHelper(context);
                     if (stories.size() > 0){
                         // only save to the database if the API call returned any stories
                         dataHelper.bulkSaveStories(stories);
+                        Log.d("API", "Stories count after api call " + String.valueOf(stories.size()));
+                        adapter.setStoryList(dataHelper.getAllStories());
+                        adapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -123,6 +128,7 @@ public class NetworkHelper {
                 // TODO fail gracefully
             }
         });
+
     }
 
 //    public static void uploadMediaFiles(
