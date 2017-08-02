@@ -1,22 +1,38 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.codeforafrica.citizenreporterandroid.main.AssignmentsFragment">
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Assignment image -->
     <ImageView
+        android:id="@+id/assignment_thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="8dp" />
+
+    <!-- Assignment title -->
+    <TextView
+        android:id="@+id/assignment_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/assignment_thumbnail"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-    <TextView
-        android:id= "@+id/assignment_description"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/assignment_thumbnail"
+        android:layout_toRightOf="@+id/assignment_thumbnail"
+        android:lines="1"
+        android:paddingRight="2dp"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
-</FrameLayout>
+    <!-- Assignment desription -->
+    <TextView
+        android:id="@+id/assignment_description"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp" />
+
+
+</RelativeLayout>
