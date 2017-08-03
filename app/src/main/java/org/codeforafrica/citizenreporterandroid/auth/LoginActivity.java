@@ -27,6 +27,7 @@ import com.facebook.login.widget.LoginButton;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
 
 import butterknife.BindView;
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     private Uri profile_pic;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+    private APIInterface apiClient;
 
 
     @Override
@@ -156,11 +158,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 User newUser = new User(name, fb_id, profile_pic.toString());
 
-                Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("http://c6ae9618.ngrok.io/api/")
-                        .addConverterFactory(GsonConverterFactory.create());
-                Retrofit retrofit = builder.build();
-                APIInterface apiClient = retrofit.create(APIInterface.class);
+                apiClient = APIClient.getApiClient();
 
                 registerUserDetails(LoginActivity.this, apiClient, newUser);
 

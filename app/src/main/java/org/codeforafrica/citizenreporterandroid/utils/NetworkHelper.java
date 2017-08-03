@@ -10,9 +10,11 @@ import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesRecyclerViewAdapter;
+import org.json.JSONObject;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,12 +24,13 @@ import retrofit2.Response;
  */
 
 public class NetworkHelper {
+    private static final String TAG = "NETWORK HELPER CLASS";
     private List<Story> stories;
 
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
@@ -37,13 +40,13 @@ public class NetworkHelper {
     }
 
 
-    public static boolean checkNetworkPermission(Context context){
+    public static boolean checkNetworkPermission(Context context) {
         // TODO check network permission
         return true;
     }
 
     public static void registerUserDetails(
-            final Context context, APIInterface apiClient, User user){
+            final Context context, APIInterface apiClient, User user) {
         Log.d("Username", user.getName());
         Call<User> userCall = apiClient.createUser(user);
         userCall.enqueue(new Callback<User>() {
@@ -102,14 +105,15 @@ public class NetworkHelper {
     /**
      * method gets stories associated to this current user from the server, saves them to the
      * database and then updates the data in the adapter
-     * @param context the Activity or Fragment
+     *
+     * @param context   the Activity or Fragment
      * @param apiClient
-     * @param fb_id user facebook ID
-     * @param adapter the adapter responsible for updating the recyclerview
+     * @param fb_id     user facebook ID
+     * @param adapter   the adapter responsible for updating the recyclerview
      */
 
     public static void getUserStories(final Context context, APIInterface apiClient, String fb_id,
-                                      final StoriesRecyclerViewAdapter adapter){
+                                      final StoriesRecyclerViewAdapter adapter) {
 
         Call<List<Story>> storiesCall = apiClient.getUserStories(fb_id);
         storiesCall.enqueue(new Callback<List<Story>>() {
@@ -118,7 +122,7 @@ public class NetworkHelper {
                 if (response.isSuccessful()) {
                     List<Story> stories = response.body();
                     LocalDataHelper dataHelper = new LocalDataHelper(context);
-                    if (stories.size() > 0){
+                    if (stories.size() > 0) {
                         // only save to the database if the API call returned any stories
                         dataHelper.bulkSaveStories(stories);
                         Log.d("API", "Stories count after api call "
@@ -137,6 +141,50 @@ public class NetworkHelper {
         });
 
     }
+
+    public static void updateLocation(
+            final Context context, APIInterface apiClient, String location, String fb_id) {
+        Call<ResponseBody> updateLocationCall = apiClient.updateLocation(fb_id, location);
+        updateLocationCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(context,
+                        "Location not successfully updated",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+    public static void updateFCM(
+            final Context context, APIInterface apiClient, String fcm_token, String fb_id) {
+        Call<ResponseBody> updateFCMCall = apiClient.updateFCM(fb_id, fcm_token);
+        updateFCMCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(context,
+                        "FCM update failed",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 
 //    public static void uploadMediaFiles(
 //            final Context context, APIInterface apiClient, String remoteStoryId, Uri fileUri) {

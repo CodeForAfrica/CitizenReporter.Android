@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
+import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
@@ -33,6 +34,7 @@ public class StoriesFragment extends Fragment {
     private StoriesRecyclerViewAdapter adapter;
     private LocalDataHelper dataHelper;
     private SharedPreferences preferences;
+    private APIInterface apiClient;
 
     public StoriesFragment() {
         // Required empty public constructor
@@ -76,11 +78,7 @@ public class StoriesFragment extends Fragment {
         storiesRecyclerView.setAdapter(adapter);
 
         if (dataHelper.getStoriesCount() == 0) {
-            Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl("http://c6ae9618.ngrok.io/api/")
-                    .addConverterFactory(GsonConverterFactory.create());
-            Retrofit retrofit = builder.build();
-            APIInterface apiClient = retrofit.create(APIInterface.class);
+            apiClient = APIClient.getApiClient();
             String fb_id = preferences.getString("fb_id", "");
             if (fb_id != "") {
                 Log.d("API", "making network call get stories");

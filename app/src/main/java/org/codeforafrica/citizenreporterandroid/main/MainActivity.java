@@ -1,17 +1,30 @@
 package org.codeforafrica.citizenreporterandroid.main;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.codeforafrica.citizenreporterandroid.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
@@ -20,6 +33,9 @@ import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentsFrag
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
 
 import org.codeforafrica.citizenreporterandroid.SettingsActivity;
+import org.codeforafrica.citizenreporterandroid.utils.APIClient;
+import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
+import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
 
 public class MainActivity extends BaseActivity {
@@ -33,6 +49,11 @@ public class MainActivity extends BaseActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private static final int REQUEST_FINE_LOCATION = 12;
+    private static final String TAG = "MainActivity";
+    private APIInterface apiClient;
+    private String fb_id;
+    private SharedPreferences preferences;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -58,6 +79,56 @@ public class MainActivity extends BaseActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        apiClient = APIClient.getApiClient();
+        preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        fb_id = preferences.getString("fb_id", "");
+
+
+        getUserLocation();
+
+    }
+
+    private void getUserLocation() {
+        FusedLocationProviderClient mFusedLocationClient
+                = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(this,
+                    new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location == null) {
+                        // do nothing
+
+                    } else {
+                        String co_ord = String.valueOf(location.getLatitude())
+                                + ", "
+                                + String.valueOf(location.getLongitude());
+
+                        if (NetworkHelper.isNetworkAvailable(MainActivity.this) && fb_id != "") {
+                            // TODO send location to the server
+                            NetworkHelper.updateLocation(MainActivity.this, apiClient, co_ord, fb_id);
+                        }
+                        Log.d(TAG, "onSuccess: Long: "
+                                + String.valueOf(location.getLongitude())
+                                + " Lat: " + String.valueOf(location.getLatitude()));
+                    }
+
+                }
+            });
+
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)){
+
+            }
+
+            ActivityCompat.requestPermissions(
+                    this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_FINE_LOCATION);
+        }
+
 
     }
 
@@ -124,6 +195,22 @@ public class MainActivity extends BaseActivity {
                     return "Stories";
             }
             return null;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_FINE_LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getUserLocation();
+            } else {
+                Toast.makeText(this,
+                        "Permission to access your location was denied",
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }
