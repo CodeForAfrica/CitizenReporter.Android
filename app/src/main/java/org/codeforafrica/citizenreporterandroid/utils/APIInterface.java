@@ -9,6 +9,8 @@ import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
@@ -27,8 +29,13 @@ public interface APIInterface {
     @POST("users/register")
     Call<User> createUser(@Body User user);
 
-    @PATCH("users/update/{fb_id}")
-    Call<User> registerFCM(@Path("fb_id") String fb_id);
+    @FormUrlEncoded
+    @PATCH("users/update/{fb_id}/")
+    Call<ResponseBody> updateFCM(@Path("fb_id") String fb_id, @Field("location") String fcm_token);
+
+    @FormUrlEncoded
+    @PATCH("users/update/{fb_id}/")
+    Call<ResponseBody> updateLocation(@Path("fb_id") String fb_id, @Field("location") String locationString);
 
     @POST()
     Call<Story> uploadStory(@Body Story story);

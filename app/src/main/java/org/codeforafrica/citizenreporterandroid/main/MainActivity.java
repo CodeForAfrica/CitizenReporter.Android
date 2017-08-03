@@ -1,11 +1,12 @@
 package org.codeforafrica.citizenreporterandroid.main;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -32,6 +33,9 @@ import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentsFrag
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
 
 import org.codeforafrica.citizenreporterandroid.SettingsActivity;
+import org.codeforafrica.citizenreporterandroid.utils.APIClient;
+import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
+import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
 
 public class MainActivity extends BaseActivity {
@@ -47,6 +51,9 @@ public class MainActivity extends BaseActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private static final int REQUEST_FINE_LOCATION = 12;
     private static final String TAG = "MainActivity";
+    private APIInterface apiClient;
+    private String fb_id;
+    private SharedPreferences preferences;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -72,6 +79,10 @@ public class MainActivity extends BaseActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        apiClient = APIClient.getApiClient();
+        preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        fb_id = preferences.getString("fb_id", "");
+
 
         getUserLocation();
 
@@ -91,7 +102,14 @@ public class MainActivity extends BaseActivity {
                         // do nothing
 
                     } else {
-                        // TODO send location to the server
+                        String co_ord = String.valueOf(location.getLatitude())
+                                + ", "
+                                + String.valueOf(location.getLongitude());
+
+                        if (NetworkHelper.isNetworkAvailable(MainActivity.this) && fb_id != "") {
+                            // TODO send location to the server
+                            NetworkHelper.updateLocation(MainActivity.this, apiClient, co_ord, fb_id);
+                        }
                         Log.d(TAG, "onSuccess: Long: "
                                 + String.valueOf(location.getLongitude())
                                 + " Lat: " + String.valueOf(location.getLatitude()));
