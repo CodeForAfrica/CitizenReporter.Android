@@ -28,4 +28,14 @@ dependencies {
     compile 'com.android.support:design:26.+'
     compile 'com.android.support:support-v4:26.+'
     testCompile 'junit:junit:4.12'
+
+    //Dependencies for ImageSlider
+    compile "com.android.support:support-v4:+"
+    compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.slider:library:1.1.5@aar'
+
+    //Dependency for RecylcerView
+    compile 'com.android.support:recyclerview-v7:26.+'
+
 }
