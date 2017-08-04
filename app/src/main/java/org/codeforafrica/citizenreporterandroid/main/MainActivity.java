@@ -24,6 +24,7 @@ import org.codeforafrica.citizenreporterandroid.main.api.ApiInterface;
 import org.codeforafrica.citizenreporterandroid.main.models.Assignments;
 import org.codeforafrica.citizenreporterandroid.main.models.AssignmentsResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,7 +33,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private AssignmentsAdapter adapter;
-    private List<Assignments> assignmentsList;
+    private ArrayList<Assignments> assignmentsList;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -68,42 +69,38 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+
         initData();
-    }
-
-    private void initView() {
-
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.assignment_recycler);
-        adapter = new AssignmentsAdapter(this, assignmentsList);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
 
     private void initData(){
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call call = apiService.getAssignments();
+        Call<List<Assignments>> call = apiService.getAssignments();
 
-        call.enqueue(new Callback(){
+        call.enqueue(new Callback<List<Assignments>>(){
             @Override
-            public void onResponse(Call call, Response response){
+            public void onResponse(Call<List<Assignments>> call, Response<List<Assignments>> response){
                 int ResponseCode = response.code();
+                List<Assignments> responseBody =  response.body();
+                System.out.println(response.code());
+                System.out.println(response.body());
+                assignmentsList = new ArrayList<Assignments>();
 
-                initView();
+                if (!responseBody.isEmpty()){
+                    for (Assignments res: responseBody){
+                           assignmentsList.add(res);
+                }  };
 
             }
             @Override
-            public void onFailure(Call call, Throwable t){
+            public void onFailure(Call call, Throwable t) {
 
                 Log.e("Something's Wrong", t.toString());
 
             }
-
-
 
         });
     }
@@ -148,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position){
                 case 0:
-                    return AssignmentsFragment.newInstance();
+                    return AssignmentsFragment.newInstance(assignmentsList);
                 case 1:
                     return StoriesFragment.newInstance();
                 case 2:
