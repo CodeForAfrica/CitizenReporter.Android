@@ -12,6 +12,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -27,10 +28,12 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.squareup.picasso.Picasso;
 
 import org.codeforafrica.citizenreporterandroid.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
 
+import org.codeforafrica.citizenreporterandroid.SettingsFragment;
 import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentsFragment;
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
 
@@ -51,10 +54,14 @@ public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     private APIInterface apiClient;
     private String fb_id;
+    private String profile_url;
     private SharedPreferences preferences;
 
     @BindView(R.id.navigation)
     BottomNavigationView bottomNavigationView;
+
+    @BindView(R.id.profile_pic)
+    AppCompatImageView profile_pic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,9 @@ public class MainActivity extends BaseActivity {
         apiClient = APIClient.getApiClient();
         preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         fb_id = preferences.getString("fb_id", "");
+        profile_url = preferences.getString("profile_url",
+                "http://www.freeiconspng.com/uploads/account-icon-21.png");
+        Picasso.with(this).load(profile_url).fit().into(profile_pic);
         getUserLocation();
 
 
@@ -80,7 +90,7 @@ public class MainActivity extends BaseActivity {
                                 selectedFragment = StoriesFragment.newInstance();
                                 break;
                             case R.id.settings_item:
-                                selectedFragment = null;
+                                selectedFragment = SettingsFragment.newInstance();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
