@@ -33,6 +33,7 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         @Override
         public AssignmentsAdapter.AssignmentsViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
             Context context = parent.getContext();
+
             LayoutInflater inflater = LayoutInflater.from(context);
 
             View mRootView = inflater.inflate(R.layout.fragment_assignments, parent, false);
@@ -42,14 +43,12 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
         }
 
         @Override
-        public void onBindViewHolder(AssignmentsAdapter.AssignmentsViewHolder viewHolder, int position){
+        public void onBindViewHolder(AssignmentsViewHolder viewHolder, int position){
             Assignments assignment = assignmentsList.get(position);
 
-            TextView assignmentTitleTextView = viewHolder.assignmentTitle;
-            assignmentTitleTextView.setText(assignment.getTitle());
+            viewHolder.assignmentTitleTextView.setText(assignment.getTitle());
 
-            TextView assignmentDescriptionTitleView = viewHolder.assignmentDescription;
-            assignmentDescriptionTitleView.setText(assignment.getDescription());
+            viewHolder.assignmentDescriptionTextView.setText(assignment.getDescription());
 
             /*Picasso.with(getContext()).load((Uri) assignment.getFeaturedImage())
                     .fit().into(viewHolder.assignmentImage);*/
@@ -64,14 +63,15 @@ public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.
 
 
     public class AssignmentsViewHolder extends RecyclerView.ViewHolder {
-        private TextView assignmentTitle;
-        private TextView assignmentDescription;
         private ImageView assignmentImage;
+        private TextView assignmentTitleTextView;
+        private TextView assignmentDescriptionTextView;
+
 
         public AssignmentsViewHolder(View view) {
             super(view);
-            assignmentTitle = (TextView) view.findViewById(R.id.title);
-            assignmentDescription = (TextView) view.findViewById(R.id.assignment_description);
+            assignmentTitleTextView = (TextView) view.findViewById(R.id.title);
+            assignmentDescriptionTextView = (TextView) view.findViewById(R.id.assignment_description);
             assignmentImage = (ImageView) view.findViewById(R.id.assignment_thumbnail);
 
         }
