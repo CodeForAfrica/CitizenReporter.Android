@@ -84,4 +84,9 @@
         <activity android:name=".Storyboard"></activity>
     </application>
 
+    //Add permission to load images from internet
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    //Add permission to load images from a file/internet
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>

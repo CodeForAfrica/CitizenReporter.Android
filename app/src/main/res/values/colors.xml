@@ -14,4 +14,6 @@
     <color name="cfAfrica_red">#ed1c24</color>
     <color name="separator_gray">#d4d2d2</color>
     <color name="story_title">#585656</color>
+    <color name="colorWhite">#FFF</color>
+
 </resources>
