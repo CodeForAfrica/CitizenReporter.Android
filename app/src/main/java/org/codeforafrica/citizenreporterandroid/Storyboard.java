@@ -10,18 +10,20 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import static java.security.AccessController.getContext;
 
 public class Storyboard extends AppCompatActivity {
+    @BindView(R.id.slider) SliderLayout storiesSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storyboard);
-
-
-        //Create SliderLayout instance
-        SliderLayout storiesSlider = (SliderLayout) findViewById(R.id.slider);
+        ButterKnife.bind(this);
 
         //Create HashMap for SliderLayout
         HashMap<String, String> imageUrlMaps = new HashMap<>();
@@ -45,4 +47,16 @@ public class Storyboard extends AppCompatActivity {
 
         }
     }
+
+    @OnClick(R.id.summary_view)
+    private void openSummaryDialog() {}
+
+    @OnClick(R.id.when_view)
+    private void openCalendar() {}
+
+    @OnClick(R.id.who_view)
+    private void openWhoIsInvolvedDialog() {}
+
+    @OnClick(R.id.caused_view)
+    private void openWhatCausedThis() {}
 }
