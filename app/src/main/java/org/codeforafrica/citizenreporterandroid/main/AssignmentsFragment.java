@@ -8,6 +8,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 
 import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
@@ -29,7 +32,7 @@ public class AssignmentsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private AssignmentsAdapter adapter;
-    private List<Assignments> assignmentsList;
+    private ArrayList<Assignments> assignmentsList;
     private SwipeRefreshLayout swipeContainer;
 
     public AssignmentsFragment() {
@@ -54,17 +57,36 @@ public class AssignmentsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("Assignment Fragment", "onCreate: ");
+        if (savedInstanceState != null){
+            assignmentsList = getArguments().getParcelableArrayList("LIST");
+        }
 
     }
 
-/*
-    @Override
+
+/*    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_assignments_recycler, container, true);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_assignments, container, true);
+        RecyclerView recyclerView =  view.findViewById(R.id.assignment_recycler);
+        adapter = new AssignmentsAdapter(getContext(), assignmentsList);
+
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        return view;
+    }*/
+
+    public static AssignmentsFragment newInstance(ArrayList assignmentsList) {
+
+        AssignmentsFragment assignmentsFragment = new AssignmentsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("LIST", assignmentsList);
+        return assignmentsFragment;
     }
-*/
 
 }
 
