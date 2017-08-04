@@ -3,10 +3,9 @@ package org.codeforafrica.citizenreporterandroid.main.api;
 import org.codeforafrica.citizenreporterandroid.main.models.Assignments;
 import org.codeforafrica.citizenreporterandroid.main.models.AssignmentsResponse;
 
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * Created by Mugiwara_Munyi on 30/07/2017.
@@ -14,6 +13,6 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
     @GET("/assignments")
-    Call<AssignmentsResponse> getAssignments();
+    Call<List<Assignments>> getAssignments();
 
 }
