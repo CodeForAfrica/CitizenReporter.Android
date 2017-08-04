@@ -1,9 +1,12 @@
 package org.codeforafrica.citizenreporterandroid.main.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Assignments {
+public class Assignments  implements Parcelable{
 
     @SerializedName("id")
     @Expose
@@ -32,6 +35,46 @@ public class Assignments {
     @SerializedName("assignment_location")
     @Expose
     private String assignmentLocation;
+
+    protected Assignments(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        description = in.readString();
+        requiredMedia = in.readString();
+        numberOfResponses = in.readInt();
+        deadline = in.readString();
+        author = in.readString();
+        assignmentLocation = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(requiredMedia);
+        dest.writeInt(numberOfResponses);
+        dest.writeString(deadline);
+        dest.writeString(author);
+        dest.writeString(assignmentLocation);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Assignments> CREATOR = new Creator<Assignments>() {
+        @Override
+        public Assignments createFromParcel(Parcel in) {
+            return new Assignments(in);
+        }
+
+        @Override
+        public Assignments[] newArray(int size) {
+            return new Assignments[size];
+        }
+    };
 
     public int getId() {
         return id;
