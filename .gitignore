@@ -171,3 +171,8 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.gitignore.io/api/android,androidstudio
+/app/google-services.json
+.idea/codeStyleSettings.xml
+.idea/codealike.xml
+.idea/copyright/
+app/libs/
