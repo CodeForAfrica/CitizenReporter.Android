@@ -8,8 +8,10 @@ import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -37,56 +39,68 @@ import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
+import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends BaseActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     private static final int REQUEST_FINE_LOCATION = 12;
     private static final String TAG = "MainActivity";
     private APIInterface apiClient;
     private String fb_id;
     private SharedPreferences preferences;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-
-    // TODO add cog instead of menu buttons to go directly to the settings page
-    private ViewPager mViewPager;
+    @BindView(R.id.navigation)
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
+        ButterKnife.bind(this);
         apiClient = APIClient.getApiClient();
         preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         fb_id = preferences.getString("fb_id", "");
-
-
         getUserLocation();
 
+
+        bottomNavigationView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Fragment selectedFragment = null;
+                        switch (item.getItemId()) {
+                            case R.id.assignments_item:
+                                selectedFragment = AssignmentsFragment.newInstance();
+                                break;
+                            case R.id.stories_item:
+                                selectedFragment = StoriesFragment.newInstance();
+                                break;
+                            case R.id.settings_item:
+                                selectedFragment = null;
+                                break;
+                        }
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_layout, selectedFragment);
+                        transaction.commit();
+                        return true;
+                    }
+                });
+
+        //Manually displaying the first fragment - one time only
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, AssignmentsFragment.newInstance());
+        transaction.commit();
+
+        //Used to select an item programmatically
+        //bottomNavigationView.getMenu().getItem(2).setChecked(true);
     }
+
+
+
 
     private void getUserLocation() {
         FusedLocationProviderClient mFusedLocationClient
@@ -106,7 +120,7 @@ public class MainActivity extends BaseActivity {
                                 + ", "
                                 + String.valueOf(location.getLongitude());
 
-                        if (NetworkHelper.isNetworkAvailable(MainActivity.this) && fb_id != "") {
+                        if (NetworkHelper.isNetworkAvailable(MainActivity.this) && !Objects.equals(fb_id, "")) {
                             // TODO send location to the server
                             NetworkHelper.updateLocation(MainActivity.this, apiClient, co_ord, fb_id);
                         }
@@ -132,71 +146,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent menuIntent = new Intent(this, SettingsActivity.class);
-            startActivity(menuIntent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position){
-                case 0:
-                    return AssignmentsFragment.newInstance();
-                case 1:
-                    return StoriesFragment.newInstance();
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            // Show 2 total pages.
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Assignments";
-                case 1:
-                    return "Stories";
-            }
-            return null;
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

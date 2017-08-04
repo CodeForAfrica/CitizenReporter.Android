@@ -5,28 +5,21 @@
     tools:context="org.codeforafrica.citizenreporterandroid.main.MainActivity">
 
     <item
-        android:id="@+id/mic"
+        android:id="@+id/assignments_item"
         android:enabled="true"
         android:icon="@drawable/ic_mic_none_black_24dp"
-        android:title="Microphone" />
+        android:title="Assignments" />
 
     <item
-        android:id="@+id/camera"
+        android:id="@+id/stories_item"
         android:enabled="true"
         android:icon="@drawable/ic_camera_alt_black_24dp"
-        android:title="Camera" />
+        android:title="Stories" />
 
     <item
-        android:id="@+id/videocam"
+        android:id="@+id/settings_item"
         android:enabled="true"
-        android:icon="@drawable/ic_videocam_black_24dp"
-        android:title="Video" />
-
-    <item
-        android:id="@+id/imagepic"
-        android:enabled="true"
-        android:icon="@drawable/ic_image_black_24dp"
-        android:title="Image" />
-
+        android:icon="@drawable/com_facebook_button_icon_blue"
+        android:title="Settings" />
 
 </menu>

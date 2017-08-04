@@ -48,15 +48,15 @@ public class Storyboard extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.summary_view)
-    private void openSummaryDialog() {}
-
-    @OnClick(R.id.when_view)
-    private void openCalendar() {}
-
-    @OnClick(R.id.who_view)
-    private void openWhoIsInvolvedDialog() {}
-
-    @OnClick(R.id.caused_view)
-    private void openWhatCausedThis() {}
+//    @OnClick(R.id.summary_view)
+//    private static void openSummaryDialog() {}
+//
+//    @OnClick(R.id.when_view)
+//    private static void openCalendar() {}
+//
+//    @OnClick(R.id.who_view)
+//    private static void openWhoIsInvolvedDialog() {}
+//
+//    @OnClick(R.id.caused_view)
+//    private static void openWhatCausedThis() {}
 }
