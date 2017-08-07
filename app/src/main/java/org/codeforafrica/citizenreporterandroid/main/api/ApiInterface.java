@@ -1,7 +1,6 @@
 package org.codeforafrica.citizenreporterandroid.main.api;
 
 import org.codeforafrica.citizenreporterandroid.main.models.Assignments;
-import org.codeforafrica.citizenreporterandroid.main.models.AssignmentsResponse;
 
 import java.util.List;
 import retrofit2.Call;
