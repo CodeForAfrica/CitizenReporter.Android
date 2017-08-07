@@ -1,8 +1,11 @@
 package org.codeforafrica.citizenreporterandroid.main;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,12 +17,17 @@ import android.view.ViewGroup;
 
 
 import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
+import org.codeforafrica.citizenreporterandroid.main.api.ApiInterface;
 import org.codeforafrica.citizenreporterandroid.main.models.Assignments;
 
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.main.sources.LocalDataHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
@@ -29,11 +37,13 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class AssignmentsFragment extends Fragment {
-
-    private RecyclerView recyclerView;
+    @BindView(R.id.assignment_recycler)
+    RecyclerView recyclerView;
+    private List<Assignments> assignmentsList;
+    private LocalDataHelper dataHelper;
     private AssignmentsAdapter adapter;
-    private ArrayList<Assignments> assignmentsList;
-    private SwipeRefreshLayout swipeContainer;
+    private SharedPreferences preferences;
+    private ApiInterface apiClient;
 
     public AssignmentsFragment() {
         // Required empty public constructor
@@ -56,36 +66,34 @@ public class AssignmentsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Assignment Fragment", "onCreate: ");
-        if (savedInstanceState != null){
-            assignmentsList = getArguments().getParcelableArrayList("LIST");
-        }
 
     }
 
 
-/*    @Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_assignments_recycler, container, true);
+        ButterKnife.bind(this, view);
+
         // Inflate the layout for this fragment
-        RecyclerView recyclerView =  view.findViewById(R.id.assignment_recycler);
-        adapter = new AssignmentsAdapter(getContext(), assignmentsList);
-
-
-        recyclerView.setAdapter(adapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return view;
-    }*/
 
-    public static AssignmentsFragment newInstance(ArrayList assignmentsList) {
+    }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        AssignmentsFragment assignmentsFragment = new AssignmentsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("LIST", assignmentsList);
-        return assignmentsFragment;
+        dataHelper = new LocalDataHelper(getActivity());
+        assignmentsList = dataHelper.getAssignments();
+        adapter = new AssignmentsAdapter(getContext(), assignmentsList);
+        recyclerView.setAdapter(adapter);
+
+
     }
 
 }
