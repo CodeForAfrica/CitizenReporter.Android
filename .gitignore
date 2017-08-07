@@ -12,6 +12,9 @@
 # Java class files
 *.class
 
+#idea files
+.idea*
+
 # Generated files
 bin/
 gen/

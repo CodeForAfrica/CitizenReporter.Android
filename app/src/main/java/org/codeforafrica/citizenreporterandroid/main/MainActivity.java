@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private ApiInterface apiClient;
 
-    @BindView(R.id.navigation)
-    BottomNavigationView bottomNavigationView;
+
 
 
 
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         apiClient = ApiClient.getApiClient();
         preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
-
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener(){
