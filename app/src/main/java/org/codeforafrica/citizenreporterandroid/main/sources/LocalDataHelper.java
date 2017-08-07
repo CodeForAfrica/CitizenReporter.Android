@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Mugiwara_Munyi on 30/07/2017.
  */
 
-public class LocalDataHelper     extends SQLiteOpenHelper {
+public class LocalDataHelper extends SQLiteOpenHelper {
     private Context context;
 
     public LocalDataHelper(Context context){
@@ -105,7 +105,6 @@ public class LocalDataHelper     extends SQLiteOpenHelper {
             return assignmentsList;
     }
 
-    public 
 
 
 }
