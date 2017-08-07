@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         apiClient = ApiClient.getApiClient();
         preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
+        
+
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener(){
                     @Override
