@@ -25,4 +25,8 @@ public class Constants {
     public static final String KEY_MEDIA = "media";
     public static final String KEY_UPLOADED = "uploaded";
     public static final String KEY_UPDATED = "updated";
+
+    // intents
+
+    public static final String ACTION_EDIT_VIEW_STORY = "EDIT_VIEW_STORY";
 }

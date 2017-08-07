@@ -34,5 +34,6 @@
     <string name="what_caused_this">What caused this?</string>
     <string name="who_is_involved">Who is involved?</string>
     <string name="when_did_this_happen">When did this happen?</string>
+    <string name="title_activity_storyboard">Storyboard</string>
 
 </resources>

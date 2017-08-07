@@ -14,7 +14,7 @@ public class Story {
     private int local_id;
     private int assignmentId;
     private String title;
-    private String why;
+    private String cause;
     private String who;
     private String author;
     private String authorId;
@@ -42,12 +42,12 @@ public class Story {
         this.title = title;
     }
 
-    public String getWhy() {
-        return why;
+    public String getCause() {
+        return cause;
     }
 
-    public void setWhy(String why) {
-        this.why = why;
+    public void setCause(String cause) {
+        this.cause = cause;
     }
 
     public String getWho() {

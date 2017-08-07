@@ -81,7 +81,16 @@
             android:name="io.fabric.ApiKey"
             android:value="c99a6a9a2e47604595017b4d8c8e7db46db93b9e" />
 
-        <activity android:name=".Storyboard"></activity>
+        <activity
+            android:name=".Storyboard"
+            android:label="@string/title_activity_storyboard"
+            android:parentActivityName=".main.MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity" />
+
+        </activity>
     </application>
 
     //Add permission to load images from internet

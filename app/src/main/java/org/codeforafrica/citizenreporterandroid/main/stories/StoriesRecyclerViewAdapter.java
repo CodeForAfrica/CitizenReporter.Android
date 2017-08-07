@@ -1,14 +1,19 @@
 package org.codeforafrica.citizenreporterandroid.main.stories;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.Storyboard;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
+import org.codeforafrica.citizenreporterandroid.utils.Constants;
 
 import java.util.List;
 
@@ -33,13 +38,29 @@ public class StoriesRecyclerViewAdapter extends
         this.context = context;
     }
 
-    public class StoryHolder extends RecyclerView.ViewHolder {
+    public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.story_title) TextView story_title;
         @BindView(R.id.story_date_saved) TextView story_date_saved;
 
         public StoryHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            // get the position of thr row clicked
+            int position = getAdapterPosition();
+            Story currentStory = storyList.get(position);
+            Toast.makeText(context, currentStory.getTitle(), Toast.LENGTH_SHORT).show();
+
+            // TODO send story id then the story will be retrieved from the database
+            Intent openStoryIntent = new Intent(context, Storyboard.class);
+            openStoryIntent.setAction(Constants.ACTION_EDIT_VIEW_STORY);
+            openStoryIntent.putExtra("STORY_ID", currentStory.getLocal_id());
+            context.startActivity(openStoryIntent);
+
         }
     }
 

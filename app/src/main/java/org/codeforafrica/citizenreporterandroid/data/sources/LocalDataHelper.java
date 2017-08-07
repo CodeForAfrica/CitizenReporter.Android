@@ -57,7 +57,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Constants.KEY_TITLE, story.getTitle());
-        values.put(Constants.KEY_WHY, story.getWhy());
+        values.put(Constants.KEY_WHY, story.getCause());
         values.put(Constants.KEY_WHEN, story.getWhen().toString());
         values.put(Constants.KEY_WHO, story.getWho());
         values.put(Constants.KEY_AUTHOR, story.getAuthor());
@@ -105,7 +105,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
                 cursor.getColumnIndex(Constants.KEY_ID))));
         story.setTitle(cursor.getString(cursor.getColumnIndex(Constants.KEY_TITLE)));
         story.setWho(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHO)));
-        story.setWhy(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHY)));
+        story.setCause(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHY)));
         story.setWhen(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHEN)));
         story.setAuthor(cursor.getString(cursor.getColumnIndex(Constants.KEY_AUTHOR)));
         story.setAuthorId(cursor.getString(cursor.getColumnIndex(Constants.KEY_AUTHOR_ID)));
@@ -147,7 +147,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
                         cursor.getColumnIndex(Constants.KEY_ID))));
                 story.setTitle(cursor.getString(cursor.getColumnIndex(Constants.KEY_TITLE)));
                 story.setWho(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHO)));
-                story.setWhy(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHY)));
+                story.setCause(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHY)));
                 story.setWhen(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHEN)));
                 story.setAuthor(cursor.getString(cursor.getColumnIndex(Constants.KEY_AUTHOR)));
                 story.setAuthorId(cursor.getString(cursor.getColumnIndex(Constants.KEY_AUTHOR_ID)));
@@ -172,7 +172,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Constants.KEY_TITLE, story.getTitle());
-        values.put(Constants.KEY_WHY, story.getWhy());
+        values.put(Constants.KEY_WHY, story.getCause());
         values.put(Constants.KEY_WHEN, story.getWhen().toString());
         values.put(Constants.KEY_WHO, story.getWho());
         values.put(Constants.KEY_AUTHOR, story.getAuthor());
