@@ -3,4 +3,17 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="primary_material_light">#ffffff</color>
+    <color name="primary_dark_material_light">#000000</color>
+    <color name="accent_material_light">#00ff40</color>
+    <color name="background_material_white">#ffffff</color>
+    <color name="primary_dark_material_white">#ffffff</color>
+    <color name="primary_material_white">#ffffff</color>
+    <color name="accent_material_white">#ffffff</color>
+    <color name="cfAfrica_blue">#0d68a8</color>
+    <color name="cfAfrica_red">#ed1c24</color>
+    <color name="separator_gray">#d4d2d2</color>
+    <color name="story_title">#585656</color>
+    <color name="colorWhite">#FFF</color>
+    <color name="white_trans">#99FFFFFF</color>
 </resources>
