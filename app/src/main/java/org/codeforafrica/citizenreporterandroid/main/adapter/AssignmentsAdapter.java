@@ -17,62 +17,58 @@ import org.codeforafrica.citizenreporterandroid.R;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Mugiwara_Munyi on 30/07/2017.
  */
 
-public class AssignmentsAdapter extends RecyclerView.Adapter<AssignmentsAdapter.AssignmentsViewHolder>{
-        private Context mContext;
-        private List<Assignments> assignmentsList;
-
-        public AssignmentsAdapter(Context mContext, List<Assignments> assignmentsList){
-            this.mContext = mContext;
-            this.assignmentsList = assignmentsList;
-        }
-
-        @Override
-        public AssignmentsAdapter.AssignmentsViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-            Context context = parent.getContext();
-
-            LayoutInflater inflater = LayoutInflater.from(context);
-
-            View mRootView = inflater.inflate(R.layout.fragment_assignments, parent, false);
-            
-            return new AssignmentsViewHolder(mRootView);
-
-        }
-
-        @Override
-        public void onBindViewHolder(AssignmentsViewHolder viewHolder, int position){
-            Assignments assignment = assignmentsList.get(position);
-
-            viewHolder.assignmentTitleTextView.setText(assignment.getTitle());
-
-            viewHolder.assignmentDescriptionTextView.setText(assignment.getDescription());
-
-            /*Picasso.with(getContext()).load((Uri) assignment.getFeaturedImage())
-                    .fit().into(viewHolder.assignmentImage);*/
-
-        }
-
-        @Override
-        public int getItemCount(){
-            return assignmentsList.size();
-        }
+public class AssignmentsAdapter extends
+        RecyclerView.Adapter<AssignmentsAdapter.AssignmentsViewHolder> {
+    private Context context;
+    private List<Assignments> assignmentsList;
 
 
+    public AssignmentsAdapter(Context mContext, List<Assignments> assignmentsList) {
+        this.context = context;
+        this.assignmentsList = assignmentsList;
+
+    }
+
+    @Override
+    public AssignmentsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_assignments, parent, false);
+        AssignmentsViewHolder viewHolder = new AssignmentsViewHolder(view);
+
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(AssignmentsViewHolder viewHolder, int position) {
+        Assignments assignment = assignmentsList.get(position);
+
+        viewHolder.assignmentTitle.setText(assignment.getTitle());
+
+        viewHolder.assignmentDeadline.setText(assignment.getDeadline());
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return assignmentsList.size();
+    }
 
     public class AssignmentsViewHolder extends RecyclerView.ViewHolder {
-        private ImageView assignmentImage;
-        private TextView assignmentTitleTextView;
-        private TextView assignmentDescriptionTextView;
+        @BindView(R.id.assignment_title)
+        TextView assignmentTitle;
+        @BindView(R.id.assignment_deadline)
+        TextView assignmentDeadline;
 
 
         public AssignmentsViewHolder(View view) {
             super(view);
-            assignmentTitleTextView = (TextView) view.findViewById(R.id.title);
-            assignmentDescriptionTextView = (TextView) view.findViewById(R.id.assignment_description);
-            assignmentImage = (ImageView) view.findViewById(R.id.assignment_thumbnail);
+            ButterKnife.bind(this, view);
 
         }
 
