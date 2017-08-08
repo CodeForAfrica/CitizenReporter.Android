@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,28 +16,36 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.android.datetimepicker.date.DatePickerDialog;
 
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class Storyboard extends AppCompatActivity {
+public class Storyboard extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     @BindView(R.id.slider) SliderLayout storiesSlider;
     @BindView(R.id.summary) TextView summary;
     @BindView(R.id.cause) TextView whatCausedthis;
     @BindView(R.id.who_is_involved) TextView whoIsInvolved;
     @BindView(R.id.when_happened) TextView whenDidItHappen;
     @BindView(R.id.location) TextView location;
-    private Story story;
+    private Story activeStory;
     private LocalDataHelper dataHelper;
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 31;
+    private final Calendar calendar = Calendar.getInstance();
+    private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+            this, calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +58,19 @@ public class Storyboard extends AppCompatActivity {
         if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
             int storyID = getIntent().getIntExtra("STORY_ID", -1);
             if (storyID > -1) {
-                story = dataHelper.getStory(storyID);
+                Log.d("OPENSTORY", "onCreate: YEAH");
+                activeStory = dataHelper.getStory(storyID);
 
-                summary.setText(story.getTitle());
-                whoIsInvolved.setText(story.getWho());
-                whenDidItHappen.setText(story.getWhen());
-                whatCausedthis.setText(story.getCause());
+                summary.setText(activeStory.getTitle());
+                whoIsInvolved.setText(activeStory.getWho());
+                whenDidItHappen.setText(activeStory.getWhen());
+                whatCausedthis.setText(activeStory.getCause());
+                location.setText(activeStory.getWhere());
+
 
 
             } else {
-                Toast.makeText(this, "This story can not be found",
+                Toast.makeText(this, "This activeStory can not be found",
                         Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
@@ -101,23 +113,30 @@ public class Storyboard extends AppCompatActivity {
         }
     }
 
-    //    @OnClick(R.id.summary_view)
-//    private static void openSummaryDialog() {}
-//
-//    @OnClick(R.id.when_view)
-//    private static void openCalendar() {}
-//
-//    @OnClick(R.id.who_view)
-//    private static void openWhoIsInvolvedDialog() {}
-//
-//    @OnClick(R.id.caused_view)
-//    private static void openWhatCausedThis() {}
+    @OnClick(R.id.summary_view)
+    public void openSummaryDialog() {}
+
+    @OnClick(R.id.when_view)
+    public void openCalendar() {
+        datePickerDialog.setYearRange(1985, 2028);
+        datePickerDialog.show(getFragmentManager(), "datepicker");
+    }
+
+    @OnClick(R.id.who_view)
+    public void openWhoIsInvolvedDialog() {}
+
+    @OnClick(R.id.caused_view)
+    public void openWhatCausedThis() {}
 
     @OnClick(R.id.where_view)
     public void getLocation() {
+        // set a country filter when deploying to specific countries
+//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+//                .setCountry("KE")
+//                .build();
         try {
             Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
                             .build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
@@ -132,7 +151,12 @@ public class Storyboard extends AppCompatActivity {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
+                // TODO check out LatLong Object
                 location.setText(place.getName());
+                activeStory.setWhere(place.getName().toString());
+                // update the current story
+                int an = dataHelper.updateStory(activeStory);
+                Log.d("UPDATE", "onActivityResult: " + String.valueOf(an));
                 Log.i("Storybaord", "Place: " + place.getName());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
@@ -144,4 +168,28 @@ public class Storyboard extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+        String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+
+        String string_date = String.format("%02d", dayOfMonth) + " " + month + " " + year;
+        // TODO attach date to post
+        activeStory.setTitle("New Title");
+        activeStory.setWhen(string_date);
+        whenDidItHappen.setText(string_date);
+        whenDidItHappen.setVisibility(View.VISIBLE);
+
+        // update the current story
+        int as = dataHelper.updateStory(activeStory);
+        Log.d("UPDATE", "onDateSet: " + String.valueOf(as));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("STORYBOARD", "onResume: ");
+    }
+
+    // TODO save and upload
 }

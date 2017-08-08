@@ -22,6 +22,7 @@ public class Story {
     private List<String> media = Collections.<String>emptyList();
     private boolean uploaded;
     private String updated;
+    private String where;
 
     public Story() {
     }
@@ -147,5 +148,13 @@ public class Story {
 
     public void setLocal_id(int local_id) {
         this.local_id = local_id;
+    }
+
+    public String getWhere() {
+        return where;
+    }
+
+    public void setWhere(String where) {
+        this.where = where;
     }
 }

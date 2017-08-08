@@ -196,7 +196,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/when_did_this_happen"
+                    android:text="@string/where_did_this_happen"
                     android:textSize="16sp" />
 
                 <ImageView

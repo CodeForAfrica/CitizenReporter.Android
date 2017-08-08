@@ -35,5 +35,6 @@
     <string name="who_is_involved">Who is involved?</string>
     <string name="when_did_this_happen">When did this happen?</string>
     <string name="title_activity_storyboard">Storyboard</string>
+    <string name="where_did_this_happen">Where did this happen?</string>
 
 </resources>

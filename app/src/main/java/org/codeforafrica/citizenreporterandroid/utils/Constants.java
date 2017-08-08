@@ -25,6 +25,7 @@ public class Constants {
     public static final String KEY_MEDIA = "media";
     public static final String KEY_UPLOADED = "uploaded";
     public static final String KEY_UPDATED = "updated";
+    public static final String KEY_WHERE = "location";
 
     // intents
 

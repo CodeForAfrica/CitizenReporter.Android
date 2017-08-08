@@ -41,6 +41,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
                 + Constants.KEY_UPDATED + " LONG,"
                 + Constants.KEY_MEDIA + " TEXT,"
                 + Constants.KEY_UPLOADED + " TEXT,"
+                + Constants.KEY_WHERE + " TEXT,"
                 + Constants.KEY_WHY + " TEXT);";
 
         db.execSQL(CREATE_STORIES_TABLE);
@@ -63,6 +64,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
         values.put(Constants.KEY_AUTHOR, story.getAuthor());
         values.put(Constants.KEY_AUTHOR_ID, story.getAuthorId());
         values.put(Constants.KEY_MEDIA, story.getMedia());
+        values.put(Constants.KEY_WHERE, story.getWhere());
         values.put(Constants.KEY_UPLOADED, story.isUploaded());
         values.put(Constants.KEY_ASSIGNMENT_ID, story.getAssignmentId());
         values.put(Constants.KEY_UPDATED, java.lang.System.currentTimeMillis());
@@ -92,6 +94,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
                         Constants.KEY_AUTHOR_ID,
                         Constants.KEY_MEDIA,
                         Constants.KEY_UPLOADED,
+                        Constants.KEY_WHERE,
                         Constants.KEY_ASSIGNMENT_ID,
                         Constants.KEY_UPDATED,
                         Constants.KEY_WHEN},
@@ -107,6 +110,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
         story.setWho(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHO)));
         story.setCause(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHY)));
         story.setWhen(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHEN)));
+        story.setWhere(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHERE)));
         story.setAuthor(cursor.getString(cursor.getColumnIndex(Constants.KEY_AUTHOR)));
         story.setAuthorId(cursor.getString(cursor.getColumnIndex(Constants.KEY_AUTHOR_ID)));
         story.readMediaFromDb(cursor.getString(cursor.getColumnIndex(Constants.KEY_MEDIA)));
@@ -136,6 +140,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
                         Constants.KEY_AUTHOR_ID,
                         Constants.KEY_MEDIA,
                         Constants.KEY_UPLOADED,
+                        Constants.KEY_WHERE,
                         Constants.KEY_ASSIGNMENT_ID,
                         Constants.KEY_UPDATED,
                         Constants.KEY_WHEN}, null, null,
@@ -149,6 +154,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
                 story.setWho(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHO)));
                 story.setCause(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHY)));
                 story.setWhen(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHEN)));
+                story.setWhere(cursor.getString(cursor.getColumnIndex(Constants.KEY_WHERE)));
                 story.setAuthor(cursor.getString(cursor.getColumnIndex(Constants.KEY_AUTHOR)));
                 story.setAuthorId(cursor.getString(cursor.getColumnIndex(Constants.KEY_AUTHOR_ID)));
                 story.readMediaFromDb(cursor.getString(cursor.getColumnIndex(Constants.KEY_MEDIA)));
@@ -179,6 +185,7 @@ public class LocalDataHelper extends SQLiteOpenHelper{
         values.put(Constants.KEY_AUTHOR_ID, story.getAuthorId());
         values.put(Constants.KEY_MEDIA, story.getMedia());
         values.put(Constants.KEY_UPLOADED, story.isUploaded());
+        values.put(Constants.KEY_WHERE, story.getWhere());
         values.put(Constants.KEY_ASSIGNMENT_ID, story.getAssignmentId());
         values.put(Constants.KEY_UPDATED, java.lang.System.currentTimeMillis());
 
