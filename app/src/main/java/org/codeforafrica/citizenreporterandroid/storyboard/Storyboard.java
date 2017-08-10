@@ -225,7 +225,10 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         switch (requestCode) {
             case Constants.REQUEST_RECORD_AUDIO:
                 if (resultCode == RESULT_OK) {
+                    Log.i(this.getLocalClassName(), "MimeType: " + StoryBoardUtils.getMimeType(audio_path));
                     Toast.makeText(this, "Audio recorded successfully! " + audio_path, Toast.LENGTH_SHORT).show();
+                    activeStory.addMedia(audio_path);
+                    dataHelper.updateStory(activeStory);
                 } else if (resultCode == RESULT_CANCELED) {
                     Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
                 }
