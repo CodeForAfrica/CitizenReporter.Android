@@ -70,6 +70,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     private Dialog questionDialog;
     private LocalDataHelper dataHelper;
     private final Calendar calendar = Calendar.getInstance();
+    private String audio_path = "";
 
     private static final int TITLE_ID = 0;
     private static final int WHO_ID = 1;
@@ -224,7 +225,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         switch (requestCode) {
             case Constants.REQUEST_RECORD_AUDIO:
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(this, "Audio recorded successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Audio recorded successfully! " + audio_path, Toast.LENGTH_SHORT).show();
                 } else if (resultCode == RESULT_CANCELED) {
                     Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
                 }
@@ -364,7 +365,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
     private void startRecording() {
         // ask for permissions
-        StoryBoardUtils.recordAudio(Storyboard.this, environment);
+        audio_path = StoryBoardUtils.recordAudio(Storyboard.this, environment);
     }
 
 

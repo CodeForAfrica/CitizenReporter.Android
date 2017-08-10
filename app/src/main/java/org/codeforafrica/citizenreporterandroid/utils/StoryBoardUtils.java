@@ -20,7 +20,7 @@ import cafe.adriel.androidaudiorecorder.model.AudioSource;
 
 public class StoryBoardUtils {
 
-    public static void recordAudio(Activity activity, Environment environment) {
+    public static String recordAudio(Activity activity, Environment environment) {
         String audio_filename = Constants.RECORDING_PREFIX +
                 String.valueOf(System.currentTimeMillis()) + ".wav";
         String audio_path =  environment.getExternalStorageDirectory().getPath()
@@ -41,6 +41,8 @@ public class StoryBoardUtils {
 
                 // Start recording
                 .record();
+
+        return audio_path;
     }
 
     public static void requestPermission(Activity activity, String permission) {
