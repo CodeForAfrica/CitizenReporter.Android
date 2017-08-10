@@ -57,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.assignments_item:
                                 selectedFragment = AssignmentsFragment.newInstance();
                                 break;
-                            case R.id.stories_item:
-                                selectedFragment = StoriesFragment.newInstance();
-                                break;
                             case R.id.about_item:
                                 selectedFragment = AboutFragment.newInstance();
                                 break;
