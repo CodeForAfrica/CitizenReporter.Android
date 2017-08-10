@@ -1,8 +1,10 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.widget.BottomNavigationView;
@@ -35,6 +37,7 @@ import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentsFragment;
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
+import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -61,11 +64,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     BottomNavigationView storyboard_add_media;
 
     private Button submitButton;
+    private Environment environment;
     private EditText editTextSummary;
     private Story activeStory;
     private Dialog questionDialog;
     private LocalDataHelper dataHelper;
-    private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 31;
     private final Calendar calendar = Calendar.getInstance();
 
     private static final int TITLE_ID = 0;
@@ -106,6 +109,9 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             }
         }
 
+        StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
+        StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
         //Create HashMap for SliderLayout
         HashMap<String, String> imageUrlMaps = new HashMap<>();
         imageUrlMaps.put(
@@ -143,7 +149,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                         break;
                     case R.id.record_audio:
                         // TODO open audio recorder
-                        Toast.makeText(Storyboard.this, "audio", Toast.LENGTH_SHORT).show();
+                        startRecording();
                         break;
                     case R.id.record_video:
                         // TODO open scene picker
@@ -205,7 +211,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             Intent intent =
                     new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
                             .build(this);
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+            startActivityForResult(intent, Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
             // TODO: Handle the error.
         } catch (GooglePlayServicesNotAvailableException e) {
@@ -215,24 +221,35 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(this, data);
-                // TODO check out LatLong Object
-                location.setText(place.getName());
-                activeStory.setWhere(place.getName().toString());
-                // update the current story
-                int an = dataHelper.updateStory(activeStory);
-                Log.d("UPDATE", "onActivityResult: " + String.valueOf(an));
-                Log.i("Storybaord", "Place: " + place.getName());
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(this, data);
-                // TODO: Handle the error.
-                Log.i("Storybaord", status.getStatusMessage());
+        switch (requestCode) {
+            case Constants.REQUEST_RECORD_AUDIO:
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(this, "Audio recorded successfully!", Toast.LENGTH_SHORT).show();
+                } else if (resultCode == RESULT_CANCELED) {
+                    Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
+                }
+                break;
 
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
+            case Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE:
+                if (resultCode == RESULT_OK) {
+                    Place place = PlaceAutocomplete.getPlace(this, data);
+                    // TODO check out LatLong Object
+                    location.setText(place.getName());
+                    activeStory.setWhere(place.getName().toString());
+                    // update the current story
+                    int an = dataHelper.updateStory(activeStory);
+                    Log.d("UPDATE", "onActivityResult: " + String.valueOf(an));
+                    Log.i("Storybaord", "Place: " + place.getName());
+                } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                    Status status = PlaceAutocomplete.getStatus(this, data);
+                    // TODO: Handle the error.
+                    Log.i("Storybaord", status.getStatusMessage());
+
+                } else if (resultCode == RESULT_CANCELED) {
+                    // The user canceled the operation.
+                }
+                break;
+
         }
     }
 
@@ -343,6 +360,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         });
 
         questionDialog.show();
+    }
+
+    private void startRecording() {
+        // ask for permissions
+        StoryBoardUtils.recordAudio(Storyboard.this, environment);
     }
 
 
