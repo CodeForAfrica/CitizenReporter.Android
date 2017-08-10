@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 
 import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
+import org.codeforafrica.citizenreporterandroid.main.api.ApiClient;
 import org.codeforafrica.citizenreporterandroid.main.api.ApiInterface;
 import org.codeforafrica.citizenreporterandroid.main.models.Assignments;
 
@@ -36,9 +37,10 @@ import butterknife.ButterKnife;
  * Use the {@link AssignmentsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AssignmentsFragment extends Fragment {
+public class    AssignmentsFragment extends Fragment {
     @BindView(R.id.assignment_recycler)
     RecyclerView recyclerView;
+
     private List<Assignments> assignmentsList;
     private LocalDataHelper dataHelper;
     private AssignmentsAdapter adapter;
@@ -73,7 +75,7 @@ public class AssignmentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_assignments_recycler, container, true);
+        View view = inflater.inflate(R.layout.fragment_assignments_recycler, container, false);
         ButterKnife.bind(this, view);
 
         // Inflate the layout for this fragment
@@ -85,15 +87,21 @@ public class AssignmentsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         dataHelper = new LocalDataHelper(getActivity());
         assignmentsList = dataHelper.getAssignments();
         adapter = new AssignmentsAdapter(getContext(), assignmentsList);
+        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.assignment_recycler);
+
         recyclerView.setAdapter(adapter);
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
 
+        if (dataHelper.getAssignmentsCount() == 0) {
+            apiClient = ApiClient.getApiClient();
+
+        }
     }
 
 }
