@@ -3,10 +3,14 @@ package org.codeforafrica.citizenreporterandroid.storyboard;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationMenu;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,9 +28,12 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.SettingsFragment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentsFragment;
+import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 
 import java.util.Calendar;
@@ -50,6 +57,9 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     TextView whenDidItHappen;
     @BindView(R.id.location)
     TextView location;
+    @BindView(R.id.storyboard_media)
+    BottomNavigationView storyboard_add_media;
+
     private Button submitButton;
     private EditText editTextSummary;
     private Story activeStory;
@@ -122,6 +132,33 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             storiesSlider.addSlider(textSliderView);
 
         }
+
+        storyboard_add_media.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.capture_image:
+                        // TODO open scene picker
+                        Toast.makeText(Storyboard.this, "Image", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.record_audio:
+                        // TODO open audio recorder
+                        Toast.makeText(Storyboard.this, "audio", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.record_video:
+                        // TODO open scene picker
+                        Toast.makeText(Storyboard.this, "video", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.open_gallery:
+                        // TODO open gallery and pick images
+                        Toast.makeText(Storyboard.this, "gallery", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
+
+
     }
 
     public void addImagesToSliderLayout(String[] images) {

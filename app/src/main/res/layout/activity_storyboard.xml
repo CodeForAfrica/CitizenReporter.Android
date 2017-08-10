@@ -8,28 +8,26 @@
 
 
     <ScrollView
-        android:layout_width="305dp"
-        android:layout_height="435dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="89dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="1.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <com.daimajia.slider.library.SliderLayout
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="187dp"
-                android:layout_alignParentTop="true"/>
+                android:layout_height="200dp"
+                android:layout_alignParentTop="true" />
 
             <View
                 android:layout_width="match_parent"
@@ -52,9 +50,9 @@
 
                 <TextView
                     android:id="@+id/summary"
-                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/provide_summary"
                     android:textSize="16sp" />
@@ -87,9 +85,9 @@
 
                 <TextView
                     android:id="@+id/cause"
-                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/what_caused_this"
                     android:textSize="16sp" />
@@ -122,9 +120,9 @@
 
                 <TextView
                     android:id="@+id/who_is_involved"
-                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/who_is_involved"
                     android:textSize="16sp" />
@@ -157,9 +155,9 @@
 
                 <TextView
                     android:id="@+id/when_happened"
-                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/when_did_this_happen"
                     android:textSize="16sp" />
@@ -192,9 +190,9 @@
 
                 <TextView
                     android:id="@+id/location"
-                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/where_did_this_happen"
                     android:textSize="16sp" />
@@ -206,9 +204,24 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/separator_gray"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="0dp" />
 
-
-
+            <android.support.design.widget.BottomNavigationView
+                android:id="@+id/storyboard_media"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorPrimary"
+                app:itemIconTint="@color/nav_item_state_list"
+                app:itemTextColor="@color/nav_item_state_list"
+                app:menu="@menu/storyboard_bottom_nav" />
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
