@@ -30,7 +30,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        String CREATE_ASSIGNMENTS_TABLE = "CREATE TABLE" + Constants.ASSIGNMENTS_TABLE_NAME
+        String CREATE_ASSIGNMENTS_TABLE = "CREATE TABLE " + Constants.ASSIGNMENTS_TABLE_NAME
                 +"("
                 + Constants.KEY_ID + " INTEGER PRIMARY KEY,"
                 + Constants.KEY_ASSIGNMENT_TITLE + " TEXT,"
@@ -52,33 +52,11 @@ public class LocalDataHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void saveAssignment(Assignments assignment){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(Constants.KEY_ASSIGNMENT_TITLE, assignment.getTitle());
-        values.put(Constants.KEY_ASSIGNMENT_DESCRIPTION, assignment.getDescription());
-        values.put(Constants.KEY_ASSIGNMENT_MEDIA, assignment.getRequiredMedia());
-        values.put(Constants.KEY_ASSIGNMENT_RESPONSES, assignment.getNumberOfResponses());
-        values.put(Constants.KEY_ASSIGNMENT_AUTHOR, assignment.getAuthor());
-        values.put(Constants.KEY_ASSIGNMENT_DEADLINE, assignment.getDeadline());
-        values.put(Constants.KEY_ASSIGNMENT_LOCATION, assignment.getAssignmentLocation());
-        values.put(Constants.KEY_ASSIGNMENT_UPDATED, java.lang.System.currentTimeMillis());
-
-        db.insert(Constants.ASSIGNMENTS_TABLE_NAME, null, values);
-        Log.d("SAVED", "Saved to DB");
-    }
-
-    public void bulkSaveStories(List<Assignments> assignments){
-        SQLiteDatabase db = this.getWritableDatabase();
-        for (Assignments assignment : assignments) {
-            saveAssignment(assignment);
-        }
-    }
-
     public List<Assignments> getAssignments(){
             SQLiteDatabase db = this.getReadableDatabase();
             List<Assignments> assignmentsList = new ArrayList<>();
             Cursor cursor = db.query(Constants.ASSIGNMENTS_TABLE_NAME,
+
                     new String []{
                             Constants.KEY_ASSIGNMENT_TITLE,
                             Constants.KEY_ASSIGNMENT_DESCRIPTION,
@@ -88,7 +66,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
                             Constants.KEY_ASSIGNMENT_DEADLINE,
                             Constants.KEY_ASSIGNMENT_LOCATION,
                             Constants.KEY_ASSIGNMENT_UPDATED}, null, null,
-                    null, null, Constants.KEY_ASSIGNMENT_TITLE + "DESC");
+                    null, null, Constants.KEY_ASSIGNMENT_TITLE + " DESC");
             if(cursor.moveToFirst()){
                 do{
                     Assignments assignment = new Assignments();
@@ -104,7 +82,13 @@ public class LocalDataHelper extends SQLiteOpenHelper {
             }
             return assignmentsList;
     }
+    public int getAssignmentsCount(){
+        String countQuery = "SELECT * FROM " + Constants.ASSIGNMENTS_TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
 
+        return cursor.getCount();
+    }
 
 
 }

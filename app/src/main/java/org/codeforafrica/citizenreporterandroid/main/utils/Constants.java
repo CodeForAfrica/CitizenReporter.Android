@@ -10,7 +10,7 @@ public class Constants {
     public static final int DB_VERSION = 1;
 
     //Assignments table
-    public static final String ASSIGNMENTS_TABLE_NAME = "assignmentsTBL";
+    public static final String ASSIGNMENTS_TABLE_NAME = "assignments";
 
     //Assignments columns
 

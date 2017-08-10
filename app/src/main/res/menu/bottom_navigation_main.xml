@@ -12,18 +12,6 @@
         <!--android:icon="@drawable/ic_assignment"-->
 
     <item
-        android:id="@+id/stories_item"
-        android:enabled="true"
-        android:icon="@drawable/cfafrica_logo"
-        android:title="Stories" />
-
-    <item
-        android:id="@+id/settings_item"
-        android:enabled="true"
-        android:icon="@drawable/cfafrica_logo"
-        android:title="Settings" />
-
-    <item
         android:id="@+id/about_item"
         android:enabled="true"
         android:icon="@drawable/cfafrica_logo"

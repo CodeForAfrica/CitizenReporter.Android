@@ -46,11 +46,12 @@ public class AssignmentsAdapter extends
 
     @Override
     public void onBindViewHolder(AssignmentsViewHolder viewHolder, int position) {
+
         Assignments assignment = assignmentsList.get(position);
 
-        viewHolder.assignmentTitle.setText(assignment.getTitle());
+        viewHolder.assignment_title.setText(assignment.getTitle());
 
-        viewHolder.assignmentDeadline.setText(assignment.getDeadline());
+        viewHolder.assignment_deadline.setText(assignment.getDeadline());
 
     }
 
@@ -61,9 +62,9 @@ public class AssignmentsAdapter extends
 
     public class AssignmentsViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.assignment_title)
-        TextView assignmentTitle;
+        TextView assignment_title;
         @BindView(R.id.assignment_deadline)
-        TextView assignmentDeadline;
+        TextView assignment_deadline;
 
 
         public AssignmentsViewHolder(View view) {
