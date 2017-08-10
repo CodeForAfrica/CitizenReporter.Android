@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="storyboard_prompts">
+        <item>@string/provide_summary</item>
+        <item>@string/who_is_involved</item>
+        <item>@string/what_caused_this</item>
+    </string-array>
+</resources>

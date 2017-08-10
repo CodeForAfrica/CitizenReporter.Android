@@ -3,7 +3,6 @@ package org.codeforafrica.citizenreporterandroid.main.stories;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.codeforafrica.citizenreporterandroid.R;
-import org.codeforafrica.citizenreporterandroid.Storyboard;
+import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 

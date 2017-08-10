@@ -1,13 +1,19 @@
-package org.codeforafrica.citizenreporterandroid;
+package org.codeforafrica.citizenreporterandroid.storyboard;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.datetimepicker.date.DatePickerDialog;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
@@ -16,8 +22,8 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.android.datetimepicker.date.DatePickerDialog;
 
+import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
@@ -32,16 +38,30 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class Storyboard extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    @BindView(R.id.slider) SliderLayout storiesSlider;
-    @BindView(R.id.summary) TextView summary;
-    @BindView(R.id.cause) TextView whatCausedthis;
-    @BindView(R.id.who_is_involved) TextView whoIsInvolved;
-    @BindView(R.id.when_happened) TextView whenDidItHappen;
-    @BindView(R.id.location) TextView location;
+    @BindView(R.id.slider)
+    SliderLayout storiesSlider;
+    @BindView(R.id.summary)
+    TextView summary;
+    @BindView(R.id.cause)
+    TextView whatCausedthis;
+    @BindView(R.id.who_is_involved)
+    TextView whoIsInvolved;
+    @BindView(R.id.when_happened)
+    TextView whenDidItHappen;
+    @BindView(R.id.location)
+    TextView location;
+    private Button submitButton;
+    private EditText editTextSummary;
     private Story activeStory;
+    private Dialog questionDialog;
     private LocalDataHelper dataHelper;
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 31;
     private final Calendar calendar = Calendar.getInstance();
+
+    private static final int TITLE_ID = 0;
+    private static final int WHO_ID = 1;
+    private static final int CAUSE_ID = 2;
+
     private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
             this, calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -68,7 +88,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 location.setText(activeStory.getWhere());
 
 
-
             } else {
                 Toast.makeText(this, "This activeStory can not be found",
                         Toast.LENGTH_SHORT).show();
@@ -79,12 +98,17 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
         //Create HashMap for SliderLayout
         HashMap<String, String> imageUrlMaps = new HashMap<>();
-        imageUrlMaps.put("Citizen Reporter", "http://media.cleveland.com/pdextra/photo/pittsburgh-police-g20jpg-6ac2c6b9b15b78ef.jpg");
-        imageUrlMaps.put("Citizen Reporter 2", "https://assets.fastcompany.com/image/upload/w_1280,f_auto,q_auto,fl_lossy/fc/3034902-poster-p-1-3034902-poster-riotpolice.jpg");
-        imageUrlMaps.put("Citizen Reporter 3", "http://media.gettyimages.com/photos/baltimore-firefighters-prepare-to-connect-a-hose-while-inspecting-a-picture-id471446974?s=612x612");
+        imageUrlMaps.put(
+                "Citizen Reporter",
+                "http://media.cleveland.com/pdextra/photo/pittsburgh-police-g20jpg-6ac2c6b9b15b78ef.jpg");
+        imageUrlMaps.put(
+                "Citizen Reporter 2",
+                "https://assets.fastcompany.com/image/upload/w_1280,f_auto,q_auto,fl_lossy/fc/3034902-poster-p-1-3034902-poster-riotpolice.jpg");
+        imageUrlMaps.put("Citizen Reporter 3",
+                "http://media.gettyimages.com/photos/baltimore-firefighters-prepare-to-connect-a-hose-while-inspecting-a-picture-id471446974?s=612x612");
 
         //Loop through the hash map
-        for(String name: imageUrlMaps.keySet()){
+        for (String name : imageUrlMaps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(this);
 
             textSliderView
@@ -114,7 +138,9 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     }
 
     @OnClick(R.id.summary_view)
-    public void openSummaryDialog() {}
+    public void openSummaryDialog() {
+        showAnswerQuestionDialog(TITLE_ID, summary);
+    }
 
     @OnClick(R.id.when_view)
     public void openCalendar() {
@@ -123,10 +149,14 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     }
 
     @OnClick(R.id.who_view)
-    public void openWhoIsInvolvedDialog() {}
+    public void openWhoIsInvolvedDialog() {
+        showAnswerQuestionDialog(WHO_ID, whoIsInvolved);
+    }
 
     @OnClick(R.id.caused_view)
-    public void openWhatCausedThis() {}
+    public void openWhatCausedThis() {
+        showAnswerQuestionDialog(CAUSE_ID, whatCausedthis);
+    }
 
     @OnClick(R.id.where_view)
     public void getLocation() {
@@ -190,6 +220,94 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         super.onResume();
         Log.d("STORYBOARD", "onResume: ");
     }
+
+    public void showAnswerQuestionDialog(final int question_id, final TextView textView) {
+
+        questionDialog = new Dialog(Storyboard.this);
+        questionDialog.setContentView(R.layout.fragment_answer_dialog);
+
+        submitButton = (Button) questionDialog.findViewById(R.id.saveDlgBtn);
+        submitButton.setEnabled(false);
+
+        editTextSummary = (EditText) questionDialog.findViewById(R.id.answerTextEdit);
+
+
+        //find current value of summary
+        String current_answer = "" + textView.getText().toString();
+
+        //find the prompt for this question
+        final String prompt = getResources().getStringArray(R.array.storyboard_prompts)[question_id];
+
+        //if it's not default & not empty edit editTextSummary
+        if (!current_answer.equals(prompt) && (!current_answer.equals(""))) {
+            editTextSummary.setText(current_answer);
+            submitButton.setEnabled(true);
+        }
+
+        editTextSummary.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                String new_answer = "" + editTextSummary.getText().toString();
+                if (new_answer.length() > 0) {
+                    submitButton.setEnabled(true);
+                } else {
+                    submitButton.setEnabled(false);
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        questionDialog.findViewById(R.id.cancelDlgBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                questionDialog.dismiss();
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String new_answer = editTextSummary.getText().toString();
+
+                String string_date = "";
+
+                if (new_answer.trim().length() > 0) {
+
+                    if (!new_answer.equals(prompt)) {
+                        //save answer;
+
+                        switch (question_id) {
+                            case TITLE_ID:
+                                activeStory.setTitle(new_answer);
+                                break;
+                            case WHO_ID:
+                                activeStory.setWho(new_answer);
+                                break;
+                            case CAUSE_ID:
+                                activeStory.setCause(new_answer);
+                                break;
+                        }
+                        textView.setText(new_answer);
+                    }
+                } else {
+
+                    textView.setText(prompt);
+                }
+
+
+                dataHelper.updateStory(activeStory);
+
+                questionDialog.dismiss();
+            }
+        });
+
+        questionDialog.show();
+    }
+
 
     // TODO save and upload
 }
