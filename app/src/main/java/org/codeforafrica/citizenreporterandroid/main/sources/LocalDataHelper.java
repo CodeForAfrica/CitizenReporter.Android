@@ -82,6 +82,31 @@ public class LocalDataHelper extends SQLiteOpenHelper {
             }
             return assignmentsList;
     }
+
+    public void saveAssignment(Assignments assignment){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Constants.KEY_ASSIGNMENT_TITLE, assignment.getTitle());
+        values.put(Constants.KEY_ASSIGNMENT_DESCRIPTION, assignment.getDescription());
+        values.put(Constants.KEY_ASSIGNMENT_MEDIA, assignment.getRequiredMedia().toString());
+        values.put(Constants.KEY_ASSIGNMENT_RESPONSES, assignment.getNumberOfResponses());
+        values.put(Constants.KEY_ASSIGNMENT_AUTHOR, assignment.getAuthor());
+        values.put(Constants.KEY_ASSIGNMENT_DEADLINE, assignment.getDeadline());
+        values.put(Constants.KEY_ASSIGNMENT_LOCATION, assignment.getAssignmentLocation());
+        values.put(Constants.KEY_ASSIGNMENT_UPDATED, java.lang.System.currentTimeMillis());
+
+        // insert row
+        db.insert(Constants.ASSIGNMENTS_TABLE_NAME, null, values);
+        Log.d("SAVED", "Saved to DB");
+    }
+
+    public void bulkSaveStories(List<Assignments> assignments) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        for (Assignments assignment : assignments) {
+            saveAssignment(assignment);
+        }
+
+    }
     public int getAssignmentsCount(){
         String countQuery = "SELECT * FROM " + Constants.ASSIGNMENTS_TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();

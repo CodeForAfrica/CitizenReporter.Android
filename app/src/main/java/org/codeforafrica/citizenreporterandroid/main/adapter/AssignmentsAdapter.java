@@ -30,6 +30,10 @@ public class AssignmentsAdapter extends
     private List<Assignments> assignmentsList;
 
 
+    public void setAssignmentList(List<Assignments> assignmentsList) {
+        this.assignmentsList = assignmentsList;
+    }
+
     public AssignmentsAdapter(Context mContext, List<Assignments> assignmentsList) {
         this.context = context;
         this.assignmentsList = assignmentsList;

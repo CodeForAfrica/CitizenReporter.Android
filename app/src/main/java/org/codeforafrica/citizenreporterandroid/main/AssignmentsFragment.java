@@ -23,6 +23,7 @@ import org.codeforafrica.citizenreporterandroid.main.models.Assignments;
 
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.main.sources.LocalDataHelper;
+import org.codeforafrica.citizenreporterandroid.main.utils.NetworkHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,9 +87,17 @@ public class    AssignmentsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+
+
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         dataHelper = new LocalDataHelper(getActivity());
+        if (dataHelper.getAssignmentsCount() == 0) {
+            apiClient = ApiClient.getApiClient();
+            NetworkHelper.getAssignments(getActivity(), apiClient, adapter);
+        }
+        System.out.println(dataHelper.getAssignmentsCount());
+
         assignmentsList = dataHelper.getAssignments();
         adapter = new AssignmentsAdapter(getContext(), assignmentsList);
         RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.assignment_recycler);
@@ -96,12 +105,9 @@ public class    AssignmentsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setHasFixedSize(true);
 
-        if (dataHelper.getAssignmentsCount() == 0) {
-            apiClient = ApiClient.getApiClient();
 
-        }
     }
 
 }
