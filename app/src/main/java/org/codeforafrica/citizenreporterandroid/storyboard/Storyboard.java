@@ -117,18 +117,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        //Create HashMap for SliderLayout
-        HashMap<String, String> imageUrlMaps = new HashMap<>();
-        imageUrlMaps.put(
-                "Citizen Reporter",
-                "http://media.cleveland.com/pdextra/photo/pittsburgh-police-g20jpg-6ac2c6b9b15b78ef.jpg");
-        imageUrlMaps.put(
-                "Citizen Reporter 2",
-                "https://assets.fastcompany.com/image/upload/w_1280,f_auto,q_auto,fl_lossy/fc/3034902-poster-p-1-3034902-poster-riotpolice.jpg");
-        imageUrlMaps.put("Citizen Reporter 3",
-                "http://media.gettyimages.com/photos/baltimore-firefighters-prepare-to-connect-a-hose-while-inspecting-a-picture-id471446974?s=612x612");
-
-        //Loop through the hash map
 
         storyboard_add_media.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -253,6 +241,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                     activeStory.addMedia(audio_path);
                     Log.i(this.getLocalClassName(), "onActivityResult: " + activeStory.getMedia().size());
                     dataHelper.updateStory(activeStory);
+                    addMediaToSliderLayout(activeStory);
                 } else if (resultCode == RESULT_CANCELED) {
                     Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
                 }
