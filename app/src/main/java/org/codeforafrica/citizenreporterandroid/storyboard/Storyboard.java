@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -30,18 +29,17 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import org.codeforafrica.citizenreporterandroid.R;
-import org.codeforafrica.citizenreporterandroid.SettingsFragment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
-import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentsFragment;
-import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,6 +69,8 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     private LocalDataHelper dataHelper;
     private final Calendar calendar = Calendar.getInstance();
     private String audio_path = "";
+    private HashMap<String, Integer> localMediaMap = new HashMap<>();
+    private Random randomGenerator = new Random();
 
     private static final int TITLE_ID = 0;
     private static final int WHO_ID = 1;
@@ -89,17 +89,21 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         ButterKnife.bind(this);
         String action = getIntent().getAction();
 
+
         if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
             int storyID = getIntent().getIntExtra("STORY_ID", -1);
             if (storyID > -1) {
                 Log.d("OPENSTORY", "onCreate: YEAH");
                 activeStory = dataHelper.getStory(storyID);
 
+                addMediaToSliderLayout(activeStory);
+
                 summary.setText(activeStory.getTitle());
                 whoIsInvolved.setText(activeStory.getWho());
                 whenDidItHappen.setText(activeStory.getWhen());
                 whatCausedthis.setText(activeStory.getCause());
                 location.setText(activeStory.getWhere());
+
 
 
             } else {
@@ -125,20 +129,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 "http://media.gettyimages.com/photos/baltimore-firefighters-prepare-to-connect-a-hose-while-inspecting-a-picture-id471446974?s=612x612");
 
         //Loop through the hash map
-        for (String name : imageUrlMaps.keySet()) {
-            TextSliderView textSliderView = new TextSliderView(this);
-
-            textSliderView
-                    .description(name)
-                    .image(imageUrlMaps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
-
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle().putString("extra", name);
-
-            storiesSlider.addSlider(textSliderView);
-
-        }
 
         storyboard_add_media.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -168,8 +158,41 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
     }
 
-    public void addImagesToSliderLayout(String[] images) {
-        // TODO
+    public void addMediaToSliderLayout(Story story) {
+        Log.i(this.getLocalClassName(), "addMediaToSliderLayout: run");
+        List<String> media = story.getMedia();
+        Log.i(this.getLocalClassName(), "addMediaToSliderLayout: " + media.size());
+        for (String item : media) {
+            Log.i(this.getLocalClassName(), "addMediaToSliderLayout: " + item);
+
+            String mimetype = null;
+            try {
+                mimetype = StoryBoardUtils.getMimeType(item);
+                if (mimetype.equals(Constants.AUDIO_MIMETYPE)) {
+                    localMediaMap.put(String.valueOf(randomGenerator.nextInt(10000)),
+                            R.drawable.sound_wave);
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (String name : localMediaMap.keySet()) {
+            TextSliderView textSliderView = new TextSliderView(this);
+            Log.d(this.getLocalClassName(), "name: " + name);
+
+            textSliderView
+                    .description(name)
+                    .image(localMediaMap.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.Fit);
+
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle().putString("extra", name);
+
+            storiesSlider.addSlider(textSliderView);
+
+        }
+
     }
 
     @Override
@@ -228,6 +251,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                     Log.i(this.getLocalClassName(), "MimeType: " + StoryBoardUtils.getMimeType(audio_path));
                     Toast.makeText(this, "Audio recorded successfully! " + audio_path, Toast.LENGTH_SHORT).show();
                     activeStory.addMedia(audio_path);
+                    Log.i(this.getLocalClassName(), "onActivityResult: " + activeStory.getMedia().size());
                     dataHelper.updateStory(activeStory);
                 } else if (resultCode == RESULT_CANCELED) {
                     Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
