@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/assignment_image"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             />
 
@@ -29,25 +29,47 @@
             android:id="@+id/assignment_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:textSize="18sp"
+            >
+
+            </TextView>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/rel_layout">
 
             <TextView
                 android:id="@+id/assignment_deadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:textSize="18sp" />
+                android:textSize="9sp" />
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:id="@+id/assignment_location"
+                android:layout_below="@id/assignment_deadline"
+                android:textSize="9sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/assignment_author"
+                android:layout_alignParentRight="true"
+                android:textSize="9sp"/>
 
         </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/assignment_details"
+            android:text="View Assignments"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:background="#29db61" />
 
 
     </LinearLayout>
