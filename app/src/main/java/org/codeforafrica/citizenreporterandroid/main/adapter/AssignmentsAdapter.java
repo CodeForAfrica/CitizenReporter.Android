@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
+import org.codeforafrica.citizenreporterandroid.main.AssignmentDetailActivity;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.main.models.Assignments;
 import org.codeforafrica.citizenreporterandroid.R;
@@ -38,8 +40,11 @@ public class AssignmentsAdapter extends
         TextView assignment_location;
         @BindView(R.id.assignment_author)
         TextView assignment_author;
+        @BindView(R.id.assignment_image)
+        ImageView featured_image;
         @BindView(R.id.assignment_details)
         Button assignment_details;
+
 
         public AssignmentsViewHolder(View view) {
             super(view);
@@ -82,10 +87,11 @@ public class AssignmentsAdapter extends
         viewHolder.assignment_deadline.setText(assignment.getDeadline());
         viewHolder.assignment_location.setText(assignment.getAssignmentLocation());
         viewHolder.assignment_author.setText(assignment.getAuthor());
+        Glide.with(mContext).load(assignment.getFeaturedImage()).into(viewHolder.featured_image);
         viewHolder.assignment_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, MainActivity.class);
+                Intent intent = new Intent(mContext, AssignmentDetailActivity.class);
                 mContext.startActivity(intent);
             }
         });
