@@ -20,7 +20,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_cam_add" />
+            android:src="@drawable/ic_camera_alt_black_24dp" />
 
         <View
             android:id="@+id/camView"
@@ -45,7 +45,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_video_add"
+            android:src="@drawable/ic_video_call_black_48dp"
             android:contentDescription="add video" />
 
         <View
@@ -71,7 +71,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/ic_mic_add" />
+            android:src="@drawable/ic_record_voice_over_black_48dp" />
 
         <View
             android:id="@+id/camView1"

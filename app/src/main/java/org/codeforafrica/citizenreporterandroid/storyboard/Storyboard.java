@@ -59,6 +59,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     @BindView(R.id.location)
     TextView location;
 
+
     private Button submitButton;
     private Environment environment;
     private EditText editTextSummary;
@@ -179,6 +180,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
         }
 
+    }
+
+    @OnClick(R.id.button_mic)
+    public void openRecorder(){
+        startRecording();
     }
 
     @Override

@@ -6,12 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.github.kobakei.materialfabspeeddial.FabSpeedDial
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fab_menu="@menu/fab_menu"/>
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -38,7 +32,7 @@
                 <com.daimajia.slider.library.SliderLayout
                     android:id="@+id/slider"
                     android:layout_width="match_parent"
-                    android:layout_height="260dp"
+                    android:layout_height="220dp"
                     android:layout_alignParentTop="true" />
 
                 <View
@@ -224,16 +218,14 @@
                     android:background="@color/separator_gray"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="0dp" />
-
-                <!--<android.support.design.widget.BottomNavigationView-->
-                <!--android:id="@+id/storyboard_media"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:background="@color/colorPrimary"-->
-                <!--app:itemIconTint="@color/nav_item_state_list"-->
-                <!--app:itemTextColor="@color/nav_item_state_list"-->
-                <!--app:menu="@menu/storyboard_bottom_nav" />-->
+                <include
+                    layout="@layout/bottom_nav"
+                    android:id="@+id/bottom_action_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignWithParentIfMissing="true"
+                    android:layout_alignParentBottom="true"
+                    />
             </LinearLayout>
 
         </RelativeLayout>
