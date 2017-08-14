@@ -78,6 +78,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
                     assignment.setDeadline(cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_DEADLINE)));
                     assignment.setAssignmentLocation(cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_LOCATION)));
 
+                    assignmentsList.add(assignment);
                 } while(cursor.moveToNext());
             }
             return assignmentsList;
@@ -88,7 +89,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Constants.KEY_ASSIGNMENT_TITLE, assignment.getTitle());
         values.put(Constants.KEY_ASSIGNMENT_DESCRIPTION, assignment.getDescription());
-        values.put(Constants.KEY_ASSIGNMENT_MEDIA, assignment.getRequiredMedia().toString());
+        values.put(Constants.KEY_ASSIGNMENT_MEDIA, assignment.getRequiredMedia());
         values.put(Constants.KEY_ASSIGNMENT_RESPONSES, assignment.getNumberOfResponses());
         values.put(Constants.KEY_ASSIGNMENT_AUTHOR, assignment.getAuthor());
         values.put(Constants.KEY_ASSIGNMENT_DEADLINE, assignment.getDeadline());

@@ -39,7 +39,7 @@ import butterknife.ButterKnife;
  * create an instance of this fragment.
  */
 public class    AssignmentsFragment extends Fragment {
-    @BindView(R.id.assignment_recycler)
+    //@BindView(R.id.assignment_recycler)
     RecyclerView recyclerView;
 
     private List<Assignments> assignmentsList;
@@ -70,6 +70,7 @@ public class    AssignmentsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
 
 
@@ -88,7 +89,6 @@ public class    AssignmentsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         dataHelper = new LocalDataHelper(getActivity());
@@ -96,15 +96,17 @@ public class    AssignmentsFragment extends Fragment {
             apiClient = ApiClient.getApiClient();
             NetworkHelper.getAssignments(getActivity(), apiClient, adapter);
         }
-        System.out.println(dataHelper.getAssignmentsCount());
+        //System.out.println(dataHelper.getAssignmentsCount());
 
         assignmentsList = dataHelper.getAssignments();
-        adapter = new AssignmentsAdapter(getContext(), assignmentsList);
-        RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.assignment_recycler);
-
+        System.out.println(assignmentsList.size());
+        adapter = new AssignmentsAdapter(assignmentsList, getContext());
+        recyclerView = (RecyclerView) view.findViewById(R.id.assignment_recycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 //        recyclerView.setHasFixedSize(true);
 
 
