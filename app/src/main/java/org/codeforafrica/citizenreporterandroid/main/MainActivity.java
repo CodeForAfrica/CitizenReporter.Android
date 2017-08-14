@@ -1,5 +1,6 @@
 package org.codeforafrica.citizenreporterandroid.main;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent menuIntent = new Intent(this, SettingsActivity.class);
+            startActivity(menuIntent);
             return true;
         }
 

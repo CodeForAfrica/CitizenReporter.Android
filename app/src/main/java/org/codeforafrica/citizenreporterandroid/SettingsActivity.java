@@ -63,6 +63,4 @@ public class SettingsActivity extends AppCompatActivity {
         Intent about = new Intent(this, FeedbackActivity.class);
         startActivity(about);
     }
-
-
 }
