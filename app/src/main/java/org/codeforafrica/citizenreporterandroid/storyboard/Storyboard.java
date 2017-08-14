@@ -58,8 +58,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     TextView whenDidItHappen;
     @BindView(R.id.location)
     TextView location;
-    @BindView(R.id.storyboard_media)
-    BottomNavigationView storyboard_add_media;
 
     private Button submitButton;
     private Environment environment;
@@ -118,30 +116,30 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
 
-        storyboard_add_media.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.capture_image:
-                        // TODO open scene picker
-                        Toast.makeText(Storyboard.this, "Image", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.record_audio:
-                        // TODO open audio recorder
-                        startRecording();
-                        break;
-                    case R.id.record_video:
-                        // TODO open scene picker
-                        Toast.makeText(Storyboard.this, "video", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.open_gallery:
-                        // TODO open gallery and pick images
-                        Toast.makeText(Storyboard.this, "gallery", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return true;
-            }
-        });
+//        storyboard_add_media.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.capture_image:
+//                        // TODO open scene picker
+//                        Toast.makeText(Storyboard.this, "Image", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.record_audio:
+//                        // TODO open audio recorder
+//                        startRecording();
+//                        break;
+//                    case R.id.record_video:
+//                        // TODO open scene picker
+//                        Toast.makeText(Storyboard.this, "video", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case R.id.open_gallery:
+//                        // TODO open gallery and pick images
+//                        Toast.makeText(Storyboard.this, "gallery", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
 
     }

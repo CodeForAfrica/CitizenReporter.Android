@@ -69,4 +69,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.github.phillipahereza:AndroidAudioRecorder:-SNAPSHOT'
+    compile 'com.github.kobakei:MaterialFabSpeedDial:1.1.5'
 }

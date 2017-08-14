@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/capture_photo_item"
+        android:title="Capture Photo"
+        android:icon="@drawable/ic_camera_alt_black_24dp"
+        android:orderInCategory="1"/>
+    <item
+        android:id="@+id/record_video_item"
+        android:title="Record Video"
+        android:icon="@drawable/ic_video_call_black_48dp"
+        android:orderInCategory="2"/>
+    <item
+        android:id="@+id/record_audio_item"
+        android:title="Record Audio"
+        android:icon="@drawable/ic_record_voice_over_black_48dp"
+        android:orderInCategory="3"/>
+    <item
+        android:id="@+id/open_gallery_item"
+        android:title="Gallery"
+        android:icon="@drawable/ic_image_black_24dp"
+        android:orderInCategory="3"/>
+
+</menu>
