@@ -14,7 +14,7 @@ public class AssignmentDetailActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_about);
+        setContentView(R.layout.assignment_detail);
 
 
 
