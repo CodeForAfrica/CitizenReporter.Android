@@ -6,11 +6,12 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.codeforafrica.citizenreporterandroid.data.models.Assignments;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
+import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesRecyclerViewAdapter;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -180,6 +181,39 @@ public class NetworkHelper {
                 Toast.makeText(context,
                         "FCM update failed",
                         Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public static void getAssignments(final Context context, APIInterface apiClient,
+                                      final AssignmentsAdapter adapter) {
+        Log.d("API", "getAssignments: method called");
+
+        Call<List<Assignments>> assignmentsCall = apiClient.getAssignments();
+        assignmentsCall.enqueue(new Callback<List<Assignments>>() {
+            @Override
+            public void onResponse(Call<List<Assignments>> call, Response<List<Assignments>> response) {
+                if (response.isSuccessful()) {
+                    List<Assignments> assignments = response.body();
+                    LocalDataHelper dataHelper = new LocalDataHelper(context);
+                    if (assignments.size() > 0) {
+                        // only save to the database if the API call returned any stories
+                        dataHelper.bulkSaveAssignments(assignments);
+                        Log.d("API", "Assignments after api call "
+                                + String.valueOf(assignments.size()));
+                        // update the adapter to display the new stories
+                        adapter.setAssignmentList(dataHelper.getAssignments());
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+                Log.d(TAG, "Assignments response code: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<List<Assignments>> call, Throwable t) {
+                // TODO fail gracefully
             }
         });
 

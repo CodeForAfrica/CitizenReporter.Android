@@ -27,6 +27,21 @@ public class Constants {
     public static final String KEY_UPDATED = "updated";
     public static final String KEY_WHERE = "location";
 
+    //Assignments table
+    public static final String ASSIGNMENTS_TABLE_NAME = "assignments";
+
+    //Assignments columns
+
+    public static final String KEY_ASSIGNMENT_TITLE = "title";
+    public static final String KEY_ASSIGNMENT_DESCRIPTION = "description";
+    public static final String KEY_ASSIGNMENT_MEDIA = "requiredMedia";
+    public static final String KEY_ASSIGNMENT_RESPONSES = "numberOfResponses";
+    public static final String KEY_ASSIGNMENT_AUTHOR = "author";
+    public static final String KEY_ASSIGNMENT_DEADLINE = "deadline";
+    public static final String KEY_ASSIGNMENT_LOCATION = "assignmentLocation";
+
+    public static final String KEY_ASSIGNMENT_UPDATED = "updated";
+
     // storyboard
 
     public static final int REQUEST_RECORD_AUDIO = 321;
