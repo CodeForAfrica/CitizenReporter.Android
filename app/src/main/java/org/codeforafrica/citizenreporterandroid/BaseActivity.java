@@ -8,6 +8,10 @@ import android.util.Log;
 import com.facebook.AccessToken;
 
 import org.codeforafrica.citizenreporterandroid.auth.LoginActivity;
+import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -29,4 +33,5 @@ public class BaseActivity extends AppCompatActivity {
             finish();
         }
     }
+
 }

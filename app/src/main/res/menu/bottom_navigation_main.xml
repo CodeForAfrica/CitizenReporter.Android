@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.codeforafrica.citizenreporterandroid.main.MainActivity">
+
+    <item
+        android:id="@+id/assignments_item"
+        android:enabled="true"
+        android:icon="@drawable/ic_ic_assignment"
+        android:title="Assignments" />
+
+    <item
+        android:id="@+id/stories_item"
+        android:enabled="true"
+        android:icon="@drawable/ic_ic_stories"
+        android:title="Stories" />
+
+    <item
+        android:id="@+id/settings_item"
+        android:enabled="true"
+        android:icon="@drawable/ic_ic_settings"
+        android:title="Settings" />
+
+</menu>

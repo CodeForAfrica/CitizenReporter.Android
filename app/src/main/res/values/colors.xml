@@ -13,4 +13,13 @@
     <color name="cfAfrica_blue">#0d68a8</color>
     <color name="cfAfrica_red">#ed1c24</color>
     <color name="separator_gray">#d4d2d2</color>
+    <color name="story_title">#585656</color>
+    <color name="colorWhite">#FFF</color>
+    <color name="white_trans">#99FFFFFF</color>
+    <color name="fbutton_color_green_sea">#16a085</color>
+    <color name="orange_fire">#d54e21</color>
+    <color name="colorBlack">#181818</color>
+    <color name="colorDarkGray">#A9A9A9</color>
+    <color name="colorLightGray">#D3D3D3</color>
+    <color name="colorPurple">#0000CC</color>
 </resources>

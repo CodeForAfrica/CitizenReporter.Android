@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="storyboard_prompts">
+        <item>@string/provide_summary</item>
+        <item>@string/who_is_involved</item>
+        <item>@string/what_caused_this</item>
+    </string-array>
+
+    <array name="scenes">
+        <item>Portrait</item>
+        <item>Signature</item>
+        <item>Reaction/Interaction</item>
+        <item>Candid</item>
+        <item>Environment</item>
+    </array>
+
+    <array name="scenes_descriptions">
+        <item>Introduce the character. Get close.</item>
+        <item>Summarize the entire issue by illustrating an essential element of the story.</item>
+        <item>Depict how people are responding to the event or its aftermath.</item>
+        <item>Show the character engaged in her environment.</item>
+        <item>Show Where your story takes place.</item>
+    </array>
+
+    <array name="scenes_images">
+        <item>@drawable/scene_portrait</item>
+        <item>@drawable/scene_signature</item>
+        <item>@drawable/scene_reaction</item>
+        <item>@drawable/scene_candid</item>
+        <item>@drawable/scene_environmental</item>
+    </array>
+
+    <string-array name="feedbacktypelist">
+        <item>@string/feedbacktype1</item>
+        <item>@string/feedbacktype2</item>
+        <item>@string/feedbacktype3</item>
+        <item>@string/feedbacktype4</item>
+    </string-array>
+</resources>
