@@ -16,8 +16,6 @@ public class AssignmentDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assignment_detail);
 
-
-
     }
 
 
