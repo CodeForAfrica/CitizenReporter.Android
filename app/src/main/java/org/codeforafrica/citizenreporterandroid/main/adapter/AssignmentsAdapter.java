@@ -69,8 +69,7 @@ public class AssignmentsAdapter extends
     @Override
     public AssignmentsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_assignments, parent, false);
-
+                .inflate(R.layout.item_assignments, parent, false);
 
         return new AssignmentsViewHolder(view);
     }

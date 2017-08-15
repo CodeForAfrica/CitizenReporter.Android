@@ -23,12 +23,13 @@ import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class AssignmentsFragment extends Fragment {
 
-    //@BindView(R.id.assignment_recycler)
+    @BindView(R.id.assignment_recycler)
     RecyclerView recyclerView;
 
     private List<Assignments> assignmentsList;
@@ -67,9 +68,7 @@ public class AssignmentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_assignments, container, false);
-        ButterKnife.bind(this, view);
-
-        // Inflate the layout for this fragment
+        ButterKnife.bind(view);
 
         return view;
 
@@ -81,22 +80,20 @@ public class AssignmentsFragment extends Fragment {
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         dataHelper = new LocalDataHelper(getActivity());
-        if (dataHelper.getAssignmentsCount() == 0) {
-            apiClient = APIClient.getApiClient();
-            NetworkHelper.getAssignments(getActivity(), apiClient, adapter);
-        }
-        //System.out.println(dataHelper.getAssignmentsCount());
 
         assignmentsList = dataHelper.getAssignments();
         System.out.println(assignmentsList.size());
         adapter = new AssignmentsAdapter(assignmentsList, getContext());
+
         recyclerView = (RecyclerView) view.findViewById(R.id.assignment_recycler);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
+        if (dataHelper.getAssignmentsCount() == 0) {
+            apiClient = APIClient.getApiClient();
+            NetworkHelper.getAssignments(getActivity(), apiClient, adapter);
+        }
 
-//        recyclerView.setHasFixedSize(true);
 
 
     }

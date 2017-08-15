@@ -48,7 +48,7 @@ public interface APIInterface {
             @Part MultipartBody.Part file
             );
 
-    @GET("/assignments")
+    @GET("assignments")
     Call<List<Assignments>> getAssignments();
 
 

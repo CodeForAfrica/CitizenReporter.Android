@@ -188,6 +188,7 @@ public class NetworkHelper {
 
     public static void getAssignments(final Context context, APIInterface apiClient,
                                       final AssignmentsAdapter adapter) {
+        Log.d("API", "getAssignments: method called");
 
         Call<List<Assignments>> assignmentsCall = apiClient.getAssignments();
         assignmentsCall.enqueue(new Callback<List<Assignments>>() {
@@ -206,6 +207,8 @@ public class NetworkHelper {
                         adapter.notifyDataSetChanged();
                     }
                 }
+
+                Log.d(TAG, "Assignments response code: " + response.code());
             }
 
             @Override
