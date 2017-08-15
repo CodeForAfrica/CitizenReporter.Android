@@ -3,6 +3,7 @@ package org.codeforafrica.citizenreporterandroid.storyboard;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +11,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -182,6 +187,16 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     @OnClick(R.id.button_mic)
     public void openRecorder(){
         startRecording();
+    }
+
+    @OnClick(R.id.button_camera)
+    public void startCameraProcess(){
+        startScenePicker(Constants.CAMERA_MODE);
+    }
+
+    @OnClick(R.id.button_video)
+    public void startVideoProcess(){
+        startScenePicker(Constants.VIDEO_MODE);
     }
 
     @Override
@@ -383,6 +398,43 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     private void startRecording() {
         // ask for permissions
         audio_path = StoryBoardUtils.recordAudio(Storyboard.this, environment);
+    }
+
+    public void startScenePicker(final int mode) {
+
+        final Dialog mDialog = new Dialog(this);
+        mDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(R.layout.list_pick_scene);
+        mDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mDialog.setTitle(this.getResources().getString(R.string.pick_scene));
+        mDialog.show();
+
+        String[] sceneTitles = this.getResources().getStringArray(R.array.scenes);
+        String[] sceneDescriptions = this.getResources().getStringArray(R.array.scenes_descriptions);
+        TypedArray sceneImages = this.getResources().obtainTypedArray(R.array.scenes_images);
+        ListView sceneslist = (ListView)mDialog.findViewById(R.id.listView);
+
+        SceneAdapter scenesAdapter = new SceneAdapter(this, sceneTitles, sceneDescriptions, sceneImages, R.layout.row_scene);
+        sceneslist.setAdapter(scenesAdapter);
+
+        sceneslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int j, long l) {
+                /**
+                 * TODO send intent to open up camera or video overlay
+                 * Forexample
+                 *
+                 * Intent i = new Intent(activity, OverlayCameraActivity.class);
+                 * i.putExtra("mode", mode);
+                 * i.putExtra("group", j);
+                 * activity.startActivityForResult(i, RequestCodes.OVERLAY_CAMERA);
+                 *
+                 * where group, j indicates the scene picked
+                 */
+                mDialog.dismiss();
+            }
+        });
+
     }
 
 
