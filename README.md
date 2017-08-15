@@ -2,5 +2,5 @@
 
 
 # Special thanks :thumbsup: to
-- @Jeffkungu
-- @Jonathan-Ngondi
+- [@Jeff Kungu](https://github.com/Jeffkungu)
+- [@Jonathan Ngondi](https://github.com/Jonathan-Ngondi)
