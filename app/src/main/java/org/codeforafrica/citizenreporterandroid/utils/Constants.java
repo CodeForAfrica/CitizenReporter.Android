@@ -52,4 +52,9 @@ public class Constants {
     // intents
 
     public static final String ACTION_EDIT_VIEW_STORY = "EDIT_VIEW_STORY";
+
+    // mode constants
+
+    public static final int CAMERA_MODE = 673;
+    public static final int VIDEO_MODE = 674;
 }
