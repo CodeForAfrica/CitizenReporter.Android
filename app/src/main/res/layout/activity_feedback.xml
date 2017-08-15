@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.codeforafrica.citizenreporterandroid.FeedbackActivity">
+    tools:context="org.codeforafrica.citizenreporterandroid.feedback.FeedbackActivity">
 
+
+    <include layout="@layout/content_feedback" />
 
 </android.support.design.widget.CoordinatorLayout>

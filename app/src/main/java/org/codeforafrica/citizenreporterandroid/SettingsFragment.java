@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.facebook.login.LoginManager;
 
 import org.codeforafrica.citizenreporterandroid.auth.LoginActivity;
+import org.codeforafrica.citizenreporterandroid.feedback.FeedbackActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

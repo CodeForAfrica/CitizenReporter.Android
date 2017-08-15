@@ -76,7 +76,7 @@
                 android:value="org.codeforafrica.citizenreporterandroid.SettingsActivity" />
         </activity>
         <activity
-            android:name=".FeedbackActivity"
+            android:name=".feedback.FeedbackActivity"
             android:label="@string/title_activity_feedback"
             android:parentActivityName=".SettingsActivity"
             android:theme="@style/AppTheme">

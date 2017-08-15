@@ -18,4 +18,8 @@
     <color name="white_trans">#99FFFFFF</color>
     <color name="fbutton_color_green_sea">#16a085</color>
     <color name="orange_fire">#d54e21</color>
+    <color name="colorBlack">#181818</color>
+    <color name="colorDarkGray">#A9A9A9</color>
+    <color name="colorLightGray">#D3D3D3</color>
+    <color name="colorPurple">#0000CC</color>
 </resources>
