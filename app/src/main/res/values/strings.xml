@@ -37,4 +37,10 @@
     <string name="title_activity_storyboard">Storyboard</string>
     <string name="where_did_this_happen">Where did this happen?</string>
 
+    <!--Pick Scene-->
+    <string name="pick_scene">Pick Scene</string>
+    <string name="pick_scene_description">What kind of scene are you trying to capture?</string>
+    <string name="view_assignment_detail">View Detail</string>
+
+
 </resources>
