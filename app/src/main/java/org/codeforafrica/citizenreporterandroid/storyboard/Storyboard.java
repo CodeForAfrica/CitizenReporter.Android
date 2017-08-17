@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -39,6 +40,7 @@ import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +50,7 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import gun0912.tedbottompicker.TedBottomPicker;
 
 public class Storyboard extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     @BindView(R.id.slider)
@@ -141,6 +144,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
         StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
 
     }
 
@@ -242,6 +246,24 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         } catch (GooglePlayServicesNotAvailableException e) {
             // TODO: Handle the error.
         }
+    }
+
+    @OnClick(R.id.button_gallery)
+    public void openImagePicker(){
+        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(this)
+                .setOnMultiImageSelectedListener(new TedBottomPicker.OnMultiImageSelectedListener() {
+                    @Override
+                    public void onImagesSelected(ArrayList<Uri> uriList) {
+                        // here is selected uri list
+                    }
+                })
+                .setPeekHeight(1600)
+                .showTitle(false)
+                .setCompleteButtonText("Done")
+                .setEmptySelectionText("No Select")
+                .create();
+
+        bottomSheetDialogFragment.show(getSupportFragmentManager());
     }
 
     @Override
