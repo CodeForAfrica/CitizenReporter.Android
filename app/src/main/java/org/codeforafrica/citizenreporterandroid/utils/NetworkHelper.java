@@ -3,6 +3,7 @@ package org.codeforafrica.citizenreporterandroid.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -187,7 +188,7 @@ public class NetworkHelper {
     }
 
     public static void getAssignments(final Context context, APIInterface apiClient,
-                                      final AssignmentsAdapter adapter) {
+                                      final AssignmentsAdapter adapter, final SwipeRefreshLayout refreshLayout) {
         Log.d("API", "getAssignments: method called");
 
         Call<List<Assignment>> assignmentsCall = apiClient.getAssignments();
@@ -205,6 +206,9 @@ public class NetworkHelper {
                         // update the adapter to display the new stories
                         adapter.setAssignmentList(dataHelper.getAssignments());
                         adapter.notifyDataSetChanged();
+                        if (refreshLayout != null) {
+                            refreshLayout.setRefreshing(false);
+                        }
                     }
                 }
 
