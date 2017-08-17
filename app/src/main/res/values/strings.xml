@@ -55,5 +55,6 @@
     <string name="feedbackbody">Type your message here</string>
     <string name="feedbackresponse">Would you like an email respose sent back?</string>
     <string name="feedbackbutton">Send Feedback</string>
+    <string name="deadline">Deadline:</string>
 
 </resources>

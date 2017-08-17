@@ -151,11 +151,13 @@ public class LoginActivity extends AppCompatActivity {
                 profile_pic = profile.getProfilePictureUri(400, 400);
                 fb_id = profile.getId();
 
+                String name = first_name + " " + last_name;
+
                 editor.putString("fb_id", fb_id);
                 editor.putString("profile_url", profile_pic.toString());
+                editor.putString("username", name);
                 editor.commit();
 
-                String name = first_name + " " + last_name;
 
                 User newUser = new User(name, fb_id, profile_pic.toString());
 
