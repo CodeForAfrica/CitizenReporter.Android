@@ -3,8 +3,13 @@ package org.codeforafrica.citizenreporterandroid.utils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Camera;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.codeforafrica.citizenreporterandroid.R;
@@ -13,16 +18,27 @@ import org.codeforafrica.citizenreporterandroid.R;
  * Created by Mugiwara_Munyi on 16/08/2017.
  */
 
-public class HelperOverlay extends Activity {
+public class HelperOverlay extends Activity implements SurfaceHolder.Callback{
     Context context;
+    private SurfaceView overlay;
+    private SurfaceHolder overlayHolder;
+    private boolean inPreview = false;
+    ImageView image;
+    CameraManager camera;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.photo_overlay);
+        image = (ImageView) findViewById(R.id.image);
+        overlay = (SurfaceView) findViewById(R.id.surface_view);
+
+        overlayHolder = overlay.getHolder();
+
         showOverlay();
     }
+
 
     private void showOverlay(){
 
