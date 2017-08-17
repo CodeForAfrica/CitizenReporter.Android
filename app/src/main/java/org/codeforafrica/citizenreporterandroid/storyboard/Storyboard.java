@@ -37,6 +37,7 @@ import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
+import org.codeforafrica.citizenreporterandroid.utils.HelperOverlay;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
 import java.util.Calendar;
@@ -418,7 +419,9 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int j, long l) {
                 /**
-                 * TODO send intent to open up camera or video overlay
+                 * TODO send intent to open up camera or video photo_overlay
+                 *
+                 *
                  * Forexample
                  *
                  * Intent i = new Intent(activity, OverlayCameraActivity.class);
@@ -428,6 +431,8 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                  *
                  * where group, j indicates the scene picked
                  */
+
+
                 mDialog.dismiss();
             }
         });
