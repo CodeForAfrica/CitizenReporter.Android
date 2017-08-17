@@ -1,6 +1,6 @@
 package org.codeforafrica.citizenreporterandroid.utils;
 
-import org.codeforafrica.citizenreporterandroid.data.models.Assignments;
+import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 
@@ -49,7 +49,7 @@ public interface APIInterface {
             );
 
     @GET("assignments")
-    Call<List<Assignments>> getAssignments();
+    Call<List<Assignment>> getAssignments();
 
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class Story {
-    private int local_id;
+    private long local_id;
     private int assignmentId;
     private String title;
     private String cause;
@@ -152,7 +152,7 @@ public class Story {
         this.updated = updated;
     }
 
-    public int getLocal_id() {
+    public long getLocal_id() {
         return local_id;
     }
 

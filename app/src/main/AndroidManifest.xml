@@ -100,7 +100,7 @@
 
         </activity>
 
-            <activity android:name=".main.AssignmentDetailActivity"
+            <activity android:name=".main.assignments.AssignmentDetailActivity"
             android:label="AssignmentDetail">
             </activity>
     </application>

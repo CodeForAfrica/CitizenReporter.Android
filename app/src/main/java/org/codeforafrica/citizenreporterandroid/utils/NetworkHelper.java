@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.codeforafrica.citizenreporterandroid.data.models.Assignments;
+import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
@@ -190,17 +190,17 @@ public class NetworkHelper {
                                       final AssignmentsAdapter adapter) {
         Log.d("API", "getAssignments: method called");
 
-        Call<List<Assignments>> assignmentsCall = apiClient.getAssignments();
-        assignmentsCall.enqueue(new Callback<List<Assignments>>() {
+        Call<List<Assignment>> assignmentsCall = apiClient.getAssignments();
+        assignmentsCall.enqueue(new Callback<List<Assignment>>() {
             @Override
-            public void onResponse(Call<List<Assignments>> call, Response<List<Assignments>> response) {
+            public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
                 if (response.isSuccessful()) {
-                    List<Assignments> assignments = response.body();
+                    List<Assignment> assignments = response.body();
                     LocalDataHelper dataHelper = new LocalDataHelper(context);
                     if (assignments.size() > 0) {
                         // only save to the database if the API call returned any stories
                         dataHelper.bulkSaveAssignments(assignments);
-                        Log.d("API", "Assignments after api call "
+                        Log.d("API", "Assignment after api call "
                                 + String.valueOf(assignments.size()));
                         // update the adapter to display the new stories
                         adapter.setAssignmentList(dataHelper.getAssignments());
@@ -208,11 +208,11 @@ public class NetworkHelper {
                     }
                 }
 
-                Log.d(TAG, "Assignments response code: " + response.code());
+                Log.d(TAG, "Assignment response code: " + response.code());
             }
 
             @Override
-            public void onFailure(Call<List<Assignments>> call, Throwable t) {
+            public void onFailure(Call<List<Assignment>> call, Throwable t) {
                 // TODO fail gracefully
             }
         });

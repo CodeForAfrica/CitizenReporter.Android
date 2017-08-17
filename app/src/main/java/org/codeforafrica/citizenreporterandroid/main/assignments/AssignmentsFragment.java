@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 
 import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
-import org.codeforafrica.citizenreporterandroid.data.models.Assignments;
+import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
@@ -32,7 +32,7 @@ public class AssignmentsFragment extends Fragment {
     @BindView(R.id.assignment_recycler)
     RecyclerView recyclerView;
 
-    private List<Assignments> assignmentsList;
+    private List<Assignment> assignmentsList;
     private LocalDataHelper dataHelper;
     private AssignmentsAdapter adapter;
     private SharedPreferences preferences;
