@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_creporter_launcher"
@@ -22,8 +21,7 @@
         tools:replace="android:icon">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY"/>
-
+            android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -97,12 +95,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity" />
-
         </activity>
-
-            <activity android:name=".main.assignments.AssignmentDetailActivity"
-            android:label="AssignmentDetail">
-            </activity>
+        <activity
+            android:name=".main.assignments.AssignmentDetailActivity"
+            android:label="AssignmentDetail"></activity>
+        <activity
+            android:name=".main.assignments.VideoCaptureActivity"
+            android:label="@string/title_activity_video_capture"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
