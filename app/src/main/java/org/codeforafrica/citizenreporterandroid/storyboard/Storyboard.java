@@ -36,6 +36,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.main.assignments.VideoCaptureActivity;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
@@ -48,6 +49,8 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static org.codeforafrica.citizenreporterandroid.utils.Constants.ACTIVITY_RECORD_VIDEO;
 
 public class Storyboard extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     @BindView(R.id.slider)
@@ -428,6 +431,10 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                  *
                  * where group, j indicates the scene picked
                  */
+                Intent i = new Intent(Storyboard.this, VideoCaptureActivity.class);
+                i.putExtra("mode", mode);
+                i.putExtra("group", j);
+                startActivityForResult(i, ACTIVITY_RECORD_VIDEO);
                 mDialog.dismiss();
             }
         });
