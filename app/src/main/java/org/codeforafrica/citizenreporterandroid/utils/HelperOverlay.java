@@ -10,6 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
+
 import android.widget.LinearLayout;
 
 import org.codeforafrica.citizenreporterandroid.R;
@@ -17,6 +18,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 /**
  * Created by Mugiwara_Munyi on 16/08/2017.
  */
+
 
 public class HelperOverlay extends Activity implements SurfaceHolder.Callback{
     Context context;
@@ -56,6 +58,7 @@ public class HelperOverlay extends Activity implements SurfaceHolder.Callback{
         });
 
     }
+
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
