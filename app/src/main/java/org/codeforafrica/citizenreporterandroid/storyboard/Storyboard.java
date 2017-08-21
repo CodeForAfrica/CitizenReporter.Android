@@ -1,6 +1,7 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +37,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.main.camera.OverlayCameraActivity;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.HelperOverlay;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
@@ -431,6 +433,13 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                  *
                  * where group, j indicates the scene picked
                  */
+                Activity activity = Storyboard.this;
+
+                Intent i = new Intent(activity, OverlayCameraActivity.class);
+                i.putExtra("mode", mode);
+                i.putExtra("group", j);
+                activity.startActivityForResult(i, 676);
+
 
 
                 mDialog.dismiss();

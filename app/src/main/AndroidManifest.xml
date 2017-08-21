@@ -103,6 +103,12 @@
 
         </activity>
 
+        <activity
+            android:name=".main.camera.OverlayCameraActivity"
+            android:label="camera"
+            android:parentActivityName=".storyboard.Storyboard"
+            ></activity>
+
             <activity android:name=".main.assignments.AssignmentDetailActivity"
             android:label="AssignmentDetail">
             </activity>

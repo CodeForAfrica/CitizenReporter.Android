@@ -20,7 +20,7 @@ import org.codeforafrica.citizenreporterandroid.R;
  */
 
 
-public class HelperOverlay extends Activity implements SurfaceHolder.Callback{
+public class HelperOverlay extends Activity implements SurfaceHolder.Callback {
     Context context;
     private SurfaceView overlay;
     private SurfaceHolder overlayHolder;
@@ -29,20 +29,21 @@ public class HelperOverlay extends Activity implements SurfaceHolder.Callback{
     CameraManager camera;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.photo_overlay);
         image = (ImageView) findViewById(R.id.image);
-        overlay = (SurfaceView) findViewById(R.id.surface_view);
+     /*   overlay = (SurfaceView) findViewById(R.id.surface_view);
 
         overlayHolder = overlay.getHolder();
 
         showOverlay();
+        */
     }
 
 
-    private void showOverlay(){
+    /*private void showOverlay(){
 
         final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
 
@@ -55,9 +56,9 @@ public class HelperOverlay extends Activity implements SurfaceHolder.Callback{
 
                 dialog.dismiss();
             }
-        });
+        });*/
 
-    }
+//}
 
 
     @Override
