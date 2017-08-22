@@ -2,6 +2,7 @@ package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
@@ -38,6 +39,7 @@ import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
+import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
 import java.util.ArrayList;
@@ -250,11 +252,17 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
     @OnClick(R.id.button_gallery)
     public void openImagePicker(){
+        final Context context = this;
         TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(this)
                 .setOnMultiImageSelectedListener(new TedBottomPicker.OnMultiImageSelectedListener() {
                     @Override
                     public void onImagesSelected(ArrayList<Uri> uriList) {
-                        // here is selected uri list
+                        for (Uri uri : uriList) {
+                            String uri_string = MediaUtils.getPathFromUri(context, uri);
+
+
+                        }
+
                     }
                 })
                 .setPeekHeight(1600)
