@@ -71,6 +71,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.github.phillipahereza:AndroidAudioRecorder:-SNAPSHOT'
     compile 'com.github.kobakei:MaterialFabSpeedDial:1.1.5'
+    compile 'com.github.Fueled:fab.ulous:1.0.0'
+
 
     //Glide
     compile 'com.github.bumptech.glide:glide:3.8.0'

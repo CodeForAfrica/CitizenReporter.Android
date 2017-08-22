@@ -10,17 +10,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +34,7 @@ import com.android.datetimepicker.date.DatePickerDialog;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.fueled.fabulous.Fabulous;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -75,7 +81,12 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     @BindView(R.id.story_who_is_involved)
     EditText story_who;
 
+    @BindView(R.id.attachments_button)
+    ImageView attachmentsMenuBtn;
+
+
     private LocalDataHelper dataHelper;
+    private PopupMenu popupMenu;
     private Story activeStory;
     private SharedPreferences preferences;
     private final Calendar calendar = Calendar.getInstance();
@@ -139,10 +150,16 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
         }
 
+        popupMenu = new PopupMenu(this, attachmentsMenuBtn);
+        popupMenu.inflate(R.menu.attachments_menu);
+
+
         attachmentsAdapter = new AttachmentsAdapter(attachmentsList, this);
 
         StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+
     }
 
 
@@ -202,6 +219,37 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         datePickerDialog.show(getFragmentManager(), "datepicker");
     }
 
+    @OnClick(R.id.attachments_button)
+    public void openAttachmentsMenu() {
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.select_from_gallery:
+                        // todo open gallery picker
+                        return true;
+
+                    case R.id.capture_photo:
+                        // todo open scene picker
+                        return true;
+
+                    case R.id.capture_video:
+                        // todo open scene pocker
+                        return true;
+
+                    case R.id.record_sound:
+                        // todo open sound recorder
+                        return true;
+                    default:
+                        return true;
+
+                }
+            }
+        });
+        popupMenu.show();
+
+    }
+
     public void attachAuthorCred(Story story) {
         preferences = PreferenceManager.getDefaultSharedPreferences(Storyboard.this);
         String fb_id = preferences.getString("fb_id", "");
@@ -224,5 +272,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         int as = dataHelper.updateStory(activeStory);
         Log.d("UPDATE", "onDateSet: " + String.valueOf(as));
     }
+
 
 }
