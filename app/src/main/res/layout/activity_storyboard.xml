@@ -1,234 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:orientation="vertical"
+    tools:context="org.codeforafrica.gmaillikeapp.MainActivity">
+
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/story_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Title"
+                android:inputType="textPersonName" />
 
-                <com.daimajia.slider.library.SliderLayout
-                    android:id="@+id/slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:layout_alignParentTop="true" />
+            <EditText
+                android:id="@+id/story_cause"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="What caused this?"
+                android:inputType="textPersonName" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/separator_gray"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="0dp" />
+            <EditText
+                android:id="@+id/story_who_is_involved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Who is involved?"
+                android:inputType="textPersonName" />
 
-                <LinearLayout
-                    android:id="@+id/summary_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingStart="8dp"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="8dp">
+            <Button
+                android:id="@+id/storybaord_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:text="Date"
+                android:textAlignment="textStart" />
 
-                    <TextView
-                        android:id="@+id/summary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="@string/provide_summary"
-                        android:textSize="16sp" />
+            <Button
+                android:id="@+id/storyboard_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:text="Location"
+                android:textAlignment="textStart"
+                android:textSize="14sp" />
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/right_caret" />
+            <EditText
+                android:id="@+id/summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@android:color/transparent"
+                android:ems="10"
+                android:hint="Provide a brief, precise summary of your story"
+                android:inputType="textMultiLine" />
 
-                </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/attachments_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/separator_gray"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="0dp" />
-
-                <LinearLayout
-                    android:id="@+id/caused_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingStart="8dp"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="8dp">
-
-                    <TextView
-                        android:id="@+id/cause"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="@string/what_caused_this"
-                        android:textSize="16sp" />
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/right_caret" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/separator_gray"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="0dp" />
-
-                <LinearLayout
-                    android:id="@+id/who_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingStart="8dp"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="8dp">
-
-                    <TextView
-                        android:id="@+id/who_is_involved"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="@string/who_is_involved"
-                        android:textSize="16sp" />
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/right_caret" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/separator_gray"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="0dp" />
-
-                <LinearLayout
-                    android:id="@+id/when_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingStart="8dp"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="8dp">
-
-                    <TextView
-                        android:id="@+id/when_happened"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="@string/when_did_this_happen"
-                        android:textSize="16sp" />
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/right_caret" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/separator_gray"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="0dp" />
-
-                <LinearLayout
-                    android:id="@+id/where_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingStart="8dp"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="8dp">
-
-                    <TextView
-                        android:id="@+id/location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="@string/where_did_this_happen"
-                        android:textSize="16sp" />
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/right_caret" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/separator_gray"
-                    tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="0dp" />
-                <include
-                    layout="@layout/bottom_nav"
-                    android:id="@+id/bottom_action_buttons"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_alignWithParentIfMissing="true"
-                    android:layout_alignParentBottom="true"
-                    />
-            </LinearLayout>
-
-        </RelativeLayout>
-
+        </LinearLayout>
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

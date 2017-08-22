@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -55,40 +56,35 @@ import butterknife.OnClick;
 import gun0912.tedbottompicker.TedBottomPicker;
 
 public class Storyboard extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    @BindView(R.id.slider)
-    SliderLayout storiesSlider;
-    @BindView(R.id.summary)
-    TextView summary;
-    @BindView(R.id.cause)
-    TextView whatCausedthis;
-    @BindView(R.id.who_is_involved)
-    TextView whoIsInvolved;
-    @BindView(R.id.when_happened)
-    TextView whenDidItHappen;
-    @BindView(R.id.location)
-    TextView location;
 
+    @BindView(R.id.storyboard_location)
+    Button location;
 
-    private Button submitButton;
-    private Environment environment;
-    private EditText editTextSummary;
-    private Story activeStory;
-    private Dialog questionDialog;
+    @BindView(R.id.storybaord_date)
+    Button date;
+
+    @BindView(R.id.attachments_recyclerview)
+    RecyclerView attachmentsRecyclerview;
+
+    @BindView(R.id.story_title)
+    EditText story_title;
+
+    @BindView(R.id.story_cause)
+    EditText story_cause;
+
+    @BindView(R.id.story_who_is_involved)
+    EditText story_who;
+
     private LocalDataHelper dataHelper;
+    private Story activeStory;
+    private SharedPreferences preferences;
     private final Calendar calendar = Calendar.getInstance();
-    private String audio_path = "";
-    private HashMap<String, Integer> localMediaMap = new HashMap<>();
-    private Random randomGenerator = new Random();
-
-    private static final int TITLE_ID = 0;
-    private static final int WHO_ID = 1;
-    private static final int CAUSE_ID = 2;
+    private AttachmentsAdapter attachmentsAdapter;
+    private List<String> attachmentsList = new ArrayList<>();
 
     private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
             this, calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-    private SharedPreferences preferences;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,22 +94,21 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         ButterKnife.bind(this);
         String action = getIntent().getAction();
 
-
         if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
             long storyID = getIntent().getLongExtra("STORY_ID", -1);
             if (storyID > -1) {
+                // open a saved story
+
                 Log.d("OPENSTORY", "onCreate: YEAH");
                 activeStory = dataHelper.getStory(storyID);
                 attachAuthorCred(activeStory);
+                story_title.setText(activeStory.getTitle());
+                story_cause.setText(activeStory.getCause());
+                story_who.setText(activeStory.getWho());
 
-                addMediaToSliderLayout(activeStory);
+                date.setText(activeStory.getWhen());
 
-                summary.setText(activeStory.getTitle());
-                whoIsInvolved.setText(activeStory.getWho());
-                whenDidItHappen.setText(activeStory.getWhen());
-                whatCausedthis.setText(activeStory.getCause());
                 location.setText(activeStory.getWhere());
-
 
 
             } else {
@@ -144,152 +139,22 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
         }
 
+        attachmentsAdapter = new AttachmentsAdapter(attachmentsList, this);
+
         StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-
     }
 
-    public void addMediaToSliderLayout(Story story) {
-        Log.i(this.getLocalClassName(), "addMediaToSliderLayout: run");
-        List<String> media = story.getMedia();
-        Log.i(this.getLocalClassName(), "addMediaToSliderLayout: " + media.size());
-        for (String item : media) {
-            Log.i(this.getLocalClassName(), "addMediaToSliderLayout: " + item);
-
-            String mimetype = null;
-            try {
-                mimetype = StoryBoardUtils.getMimeType(item);
-                if (mimetype.equals(Constants.AUDIO_MIMETYPE)) {
-                    localMediaMap.put(String.valueOf(randomGenerator.nextInt(10000)),
-                            R.drawable.sound_wave);
-                }
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (String name : localMediaMap.keySet()) {
-            TextSliderView textSliderView = new TextSliderView(this);
-            Log.d(this.getLocalClassName(), "name: " + name);
-
-            textSliderView
-                    .description(name)
-                    .image(localMediaMap.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit);
-
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle().putString("extra", name);
-
-            storiesSlider.addSlider(textSliderView);
-
-        }
-
-    }
-
-    @OnClick(R.id.button_mic)
-    public void openRecorder(){
-        startRecording();
-    }
-
-    @OnClick(R.id.button_camera)
-    public void startCameraProcess(){
-        startScenePicker(Constants.CAMERA_MODE);
-    }
-
-    @OnClick(R.id.button_video)
-    public void startVideoProcess(){
-        startScenePicker(Constants.VIDEO_MODE);
-    }
 
     @Override
-    public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @OnClick(R.id.summary_view)
-    public void openSummaryDialog() {
-        showAnswerQuestionDialog(TITLE_ID, summary);
-    }
-
-    @OnClick(R.id.when_view)
-    public void openCalendar() {
-        datePickerDialog.setYearRange(1985, 2028);
-        datePickerDialog.show(getFragmentManager(), "datepicker");
-    }
-
-    @OnClick(R.id.who_view)
-    public void openWhoIsInvolvedDialog() {
-        showAnswerQuestionDialog(WHO_ID, whoIsInvolved);
-    }
-
-    @OnClick(R.id.caused_view)
-    public void openWhatCausedThis() {
-        showAnswerQuestionDialog(CAUSE_ID, whatCausedthis);
-    }
-
-    @OnClick(R.id.where_view)
-    public void getLocation() {
-        // set a country filter when deploying to specific countries
-//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-//                .setCountry("KE")
-//                .build();
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                            .build(this);
-            startActivityForResult(intent, Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
-        }
-    }
-
-    @OnClick(R.id.button_gallery)
-    public void openImagePicker(){
-        final Context context = this;
-        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(this)
-                .setOnMultiImageSelectedListener(new TedBottomPicker.OnMultiImageSelectedListener() {
-                    @Override
-                    public void onImagesSelected(ArrayList<Uri> uriList) {
-                        for (Uri uri : uriList) {
-                            String uri_string = MediaUtils.getPathFromUri(context, uri);
-
-
-                        }
-
-                    }
-                })
-                .setPeekHeight(1600)
-                .showTitle(false)
-                .setCompleteButtonText("Done")
-                .setEmptySelectionText("No Select")
-                .create();
-
-        bottomSheetDialogFragment.show(getSupportFragmentManager());
+    protected void onResume() {
+        super.onResume();
+        Log.d("STORYBOARD", "onResume: ");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case Constants.REQUEST_RECORD_AUDIO:
-                if (resultCode == RESULT_OK) {
-                    Log.i(this.getLocalClassName(), "MimeType: " + StoryBoardUtils.getMimeType(audio_path));
-                    Toast.makeText(this, "Audio recorded successfully! " + audio_path, Toast.LENGTH_SHORT).show();
-                    activeStory.addMedia(audio_path);
-                    Log.i(this.getLocalClassName(), "onActivityResult: " + activeStory.getMedia().size());
-                    dataHelper.updateStory(activeStory);
-                    addMediaToSliderLayout(activeStory);
-                } else if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
             case Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     Place place = PlaceAutocomplete.getPlace(this, data);
@@ -313,155 +178,28 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 
-    @Override
-    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-
-        String string_date = String.format("%02d", dayOfMonth) + " " + month + " " + year;
-        // TODO attach date to post
-        activeStory.setTitle("New Title");
-        activeStory.setWhen(string_date);
-        whenDidItHappen.setText(string_date);
-        whenDidItHappen.setVisibility(View.VISIBLE);
-
-        // update the current story
-        int as = dataHelper.updateStory(activeStory);
-        Log.d("UPDATE", "onDateSet: " + String.valueOf(as));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("STORYBOARD", "onResume: ");
-    }
-
-    public void showAnswerQuestionDialog(final int question_id, final TextView textView) {
-
-        questionDialog = new Dialog(Storyboard.this);
-        questionDialog.setContentView(R.layout.fragment_answer_dialog);
-
-        submitButton = (Button) questionDialog.findViewById(R.id.saveDlgBtn);
-        submitButton.setEnabled(false);
-
-        editTextSummary = (EditText) questionDialog.findViewById(R.id.answerTextEdit);
-
-
-        //find current value of summary
-        String current_answer = "" + textView.getText().toString();
-
-        //find the prompt for this question
-        final String prompt = getResources().getStringArray(R.array.storyboard_prompts)[question_id];
-
-        //if it's not default & not empty edit editTextSummary
-        if (!current_answer.equals(prompt) && (!current_answer.equals(""))) {
-            editTextSummary.setText(current_answer);
-            submitButton.setEnabled(true);
+    @OnClick(R.id.storyboard_location)
+    public void getLocation() {
+        // set a country filter when deploying to specific countries
+//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+//                .setCountry("KE")
+//                .build();
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                            .build(this);
+            startActivityForResult(intent, Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
         }
-
-        editTextSummary.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                String new_answer = "" + editTextSummary.getText().toString();
-                if (new_answer.length() > 0) {
-                    submitButton.setEnabled(true);
-                } else {
-                    submitButton.setEnabled(false);
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-        });
-
-        questionDialog.findViewById(R.id.cancelDlgBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                questionDialog.dismiss();
-            }
-        });
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String new_answer = editTextSummary.getText().toString();
-
-                String string_date = "";
-
-                if (new_answer.trim().length() > 0) {
-
-                    if (!new_answer.equals(prompt)) {
-                        //save answer;
-
-                        switch (question_id) {
-                            case TITLE_ID:
-                                activeStory.setTitle(new_answer);
-                                break;
-                            case WHO_ID:
-                                activeStory.setWho(new_answer);
-                                break;
-                            case CAUSE_ID:
-                                activeStory.setCause(new_answer);
-                                break;
-                        }
-                        textView.setText(new_answer);
-                    }
-                } else {
-
-                    textView.setText(prompt);
-                }
-
-
-                dataHelper.updateStory(activeStory);
-
-                questionDialog.dismiss();
-            }
-        });
-
-        questionDialog.show();
     }
 
-    private void startRecording() {
-        // ask for permissions
-        audio_path = StoryBoardUtils.recordAudio(Storyboard.this, environment);
-    }
-
-    public void startScenePicker(final int mode) {
-
-        final Dialog mDialog = new Dialog(this);
-        mDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        mDialog.setContentView(R.layout.list_pick_scene);
-        mDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mDialog.setTitle(this.getResources().getString(R.string.pick_scene));
-        mDialog.show();
-
-        String[] sceneTitles = this.getResources().getStringArray(R.array.scenes);
-        String[] sceneDescriptions = this.getResources().getStringArray(R.array.scenes_descriptions);
-        TypedArray sceneImages = this.getResources().obtainTypedArray(R.array.scenes_images);
-        ListView sceneslist = (ListView)mDialog.findViewById(R.id.listView);
-
-        SceneAdapter scenesAdapter = new SceneAdapter(this, sceneTitles, sceneDescriptions, sceneImages, R.layout.row_scene);
-        sceneslist.setAdapter(scenesAdapter);
-
-        sceneslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int j, long l) {
-                /**
-                 * TODO send intent to open up camera or video overlay
-                 * Forexample
-                 *
-                 * Intent i = new Intent(activity, OverlayCameraActivity.class);
-                 * i.putExtra("mode", mode);
-                 * i.putExtra("group", j);
-                 * activity.startActivityForResult(i, RequestCodes.OVERLAY_CAMERA);
-                 *
-                 * where group, j indicates the scene picked
-                 */
-                mDialog.dismiss();
-            }
-        });
-
+    @OnClick(R.id.storybaord_date)
+    public void openCalendar() {
+        datePickerDialog.setYearRange(1985, 2028);
+        datePickerDialog.show(getFragmentManager(), "datepicker");
     }
 
     public void attachAuthorCred(Story story) {
@@ -472,6 +210,19 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         story.setAuthorId(fb_id);
     }
 
+    @Override
+    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+        String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
 
-    // TODO save and upload
+        String string_date = String.format("%02d", dayOfMonth) + " " + month + " " + year;
+        // TODO attach date to post
+        activeStory.setTitle("New Title");
+        activeStory.setWhen(string_date);
+        date.setText(string_date);
+
+        // update the current story
+        int as = dataHelper.updateStory(activeStory);
+        Log.d("UPDATE", "onDateSet: " + String.valueOf(as));
+    }
+
 }
