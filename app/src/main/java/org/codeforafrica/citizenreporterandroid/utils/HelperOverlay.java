@@ -1,17 +1,15 @@
 package org.codeforafrica.citizenreporterandroid.utils;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Camera;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.ImageView;
-
-import android.widget.LinearLayout;
 
 import org.codeforafrica.citizenreporterandroid.R;
 
@@ -20,49 +18,31 @@ import org.codeforafrica.citizenreporterandroid.R;
  */
 
 
-public class HelperOverlay extends Activity implements SurfaceHolder.Callback {
+public class HelperOverlay extends SurfaceView implements SurfaceHolder.Callback {
     Context context;
     private SurfaceView overlay;
     private SurfaceHolder overlayHolder;
     private boolean inPreview = false;
-    ImageView image;
-    CameraManager camera;
+    private Bitmap bmp;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        context = this;
-        setContentView(R.layout.photo_overlay);
-        image = (ImageView) findViewById(R.id.image);
-     /*   overlay = (SurfaceView) findViewById(R.id.surface_view);
 
-        overlayHolder = overlay.getHolder();
 
-        showOverlay();
-        */
+    public HelperOverlay(Context context) {
+        super(context);
+        this.bmp = BitmapFactory.decodeResource(getResources(), R.drawable.close_face_overlay_001);
+        overlayHolder = getHolder();
+
     }
 
-
-    /*private void showOverlay(){
-
-        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
-
-        dialog.setContentView(R.layout.photo_overlay);
-        LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.overlayLayout);
-
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                dialog.dismiss();
-            }
-        });*/
-
-//}
 
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        Canvas canvas = overlayHolder.lockCanvas();
+        if(canvas != null){
+            draw(canvas);
+            overlayHolder.unlockCanvasAndPost(canvas);
+        }
 
     }
 
@@ -75,4 +55,7 @@ public class HelperOverlay extends Activity implements SurfaceHolder.Callback {
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
 
     }
+
+
+
 }
