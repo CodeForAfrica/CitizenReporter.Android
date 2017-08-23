@@ -421,7 +421,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int j, long l) {
                 /**
-                 * TODO send intent to open up camera or video photo_overlay
+                 * TODO send intent to open up camera or video fragment_camera
                  *
                  *
                  * Forexample
