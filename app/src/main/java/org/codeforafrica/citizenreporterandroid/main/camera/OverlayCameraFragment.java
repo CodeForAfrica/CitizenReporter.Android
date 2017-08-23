@@ -27,6 +27,7 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -38,9 +39,11 @@ import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Surface;
+import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.codeforafrica.citizenreporterandroid.R;
@@ -49,15 +52,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
-import bolts.Capture;
 
 /**
  * Created by Mugiwara_Munyi on 17/08/2017.
@@ -172,6 +175,7 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
      */
 
     private CameraDevice mCameraDevice;
+
     /*
      * The {@link android.util.Size} of camera preview.
      */
@@ -242,6 +246,24 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
         }
     };
 
+    String mCurrentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
     /*
      * {@link CaptureRequest.Builder} for the camera preview.
      */
@@ -258,6 +280,11 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
      * @see #mCaptureCallback
      */
     private int mState = STATE_PREVIEW;
+
+    /*
+     * A {@link SurfaceView} to display the png instruction overlay.
+     */
+    private ImageView mOverlay;
 
     /*
      * A {@link Semaphore} to prevent the app from exiting before closing the camera.
@@ -357,6 +384,7 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
                 @Override
                 public void run () {
                     Toast.makeText(activity, "Ping!", Toast.LENGTH_SHORT).show();
+                    System.out.println(mFile);
                 }
             });
         }
@@ -420,7 +448,7 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.photo_overlay, container, false);
+        return inflater.inflate(R.layout.fragment_camera, container, false);
     }
 
     @Override
@@ -428,12 +456,15 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
         view.findViewById(R.id.picture).setOnClickListener(this);
         view.findViewById(R.id.picture_info).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
+        mOverlay = (ImageView) view.findViewById(R.id.overlay);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+        mFile = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), timeStamp+".jpg");
     }
 
     @Override
@@ -765,6 +796,7 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
      */
     private void lockFocus(){
         try{
+
             //This is how to tell the camera to lock focus
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CameraMetadata.CONTROL_AF_TRIGGER_START);
@@ -874,6 +906,7 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
     public void onClick(View view){
         switch (view.getId()){
             case R.id.picture: {
+                mOverlay.setVisibility(View.INVISIBLE);
                 takePicture();
                 break;
             }
