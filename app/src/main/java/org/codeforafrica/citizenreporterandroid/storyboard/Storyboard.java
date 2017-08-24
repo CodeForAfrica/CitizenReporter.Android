@@ -1,44 +1,28 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.datetimepicker.date.DatePickerDialog;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.fueled.fabulous.Fabulous;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -57,10 +41,7 @@ import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -163,9 +144,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
         StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        addAudioAttachment();
-        addVideoAttachment();
 
     }
 
@@ -289,6 +267,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                         for (Uri uri : uriList) {
                             Log.d("IMAGE SELECTOR", "onImagesSelected: "
                                     + MediaUtils.getPathFromUri(context, uri));
+                            addImageAttachment(uri);
                         }
 
                     }
@@ -309,15 +288,12 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         TextView filesize = (TextView) view.findViewById(R.id.image_filesize_tv);
         ImageView image = (ImageView) view.findViewById(R.id.attached_image);
 
-        filename.setText("IMG_11203.jpg");
-        filesize.setText("1.5MB");
-
-        Picasso.with(this)
+        filename.setText(uri.getLastPathSegment());
+        filesize.setText(getFileSize(uri));
+        Picasso
+                .with(Storyboard.this)
                 .load(uri)
                 .into(image);
-
-
-
         attachmentsLayout.addView(view);
     }
 
@@ -345,6 +321,17 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         attachmentsLayout.addView(view);
 
     }
+
+    public String getFileSize(Uri uri) {
+        File f = new File(uri.getPath());
+        double size = f.length() / (1024*1024);
+        if (size > 1.0) {
+            return String.valueOf(Math.round(size*100*1024)/100D) + "KB";
+        } else {
+            return String.valueOf(Math.round(size*100)/100D) + "KB";
+        }
+    }
+
 
 
 

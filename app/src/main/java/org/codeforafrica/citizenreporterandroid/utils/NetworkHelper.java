@@ -61,7 +61,7 @@ public class NetworkHelper {
                                     Toast.LENGTH_SHORT).show();
                             break;
                         default:
-                            Toast.makeText(context, "Server Error",
+                            Toast.makeText(context, "Server Error" + response.code(),
                                     Toast.LENGTH_SHORT).show();
                     }
                 }

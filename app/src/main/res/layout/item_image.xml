@@ -45,11 +45,12 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.15"
-                app:srcCompat="@android:drawable/ic_lock_lock" />
+                app:srcCompat="@drawable/ic_insert_photo_white_48dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="0.70"
                 android:orientation="vertical"
                 android:paddingEnd="4dp"
@@ -69,14 +70,6 @@
                     android:layout_height="wrap_content"
                     android:text="3.6 MB" />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/image_tile_close_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.15"
-                app:srcCompat="@android:drawable/ic_delete" />
 
         </LinearLayout>
     </LinearLayout>
