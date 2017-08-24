@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -103,6 +104,8 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         setContentView(R.layout.activity_storyboard);
         dataHelper = new LocalDataHelper(this);
         ButterKnife.bind(this);
+        attachmentsRecyclerview.setHasFixedSize(true);
+        attachmentsRecyclerview.setLayoutManager(new LinearLayoutManager(this));
         String action = getIntent().getAction();
 
         if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
@@ -155,6 +158,8 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
 
         attachmentsAdapter = new AttachmentsAdapter(attachmentsList, this);
+        attachmentsRecyclerview.setAdapter(attachmentsAdapter);
+        attachmentsRecyclerview.setNestedScrollingEnabled(false);
 
         StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -226,7 +231,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.select_from_gallery:
-                        // todo open gallery picker
+                        openImagePicker();
                         return true;
 
                     case R.id.capture_photo:
@@ -271,6 +276,32 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         // update the current story
         int as = dataHelper.updateStory(activeStory);
         Log.d("UPDATE", "onDateSet: " + String.valueOf(as));
+    }
+
+    public void openImagePicker(){
+        final Context context = this;
+        TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(this)
+                .setOnMultiImageSelectedListener(new TedBottomPicker.OnMultiImageSelectedListener() {
+                    @Override
+                    public void onImagesSelected(ArrayList<Uri> uriList) {
+                        for (Uri uri : uriList) {
+                            Log.d("IMAGE SELECTOR", "onImagesSelected: "
+                                    + MediaUtils.getPathFromUri(context, uri));
+                            attachmentsList.add(MediaUtils.getPathFromUri(context, uri));
+                        }
+                        Log.d("IMAGE PICKER", "openImagePicker: " + attachmentsList.size());
+                        attachmentsAdapter.updateList(attachmentsList);
+
+                    }
+                })
+                .setPeekHeight(500)
+                .showTitle(false)
+                .showCameraTile(false)
+                .setCompleteButtonText("Done")
+                .setEmptySelectionText("No Select")
+                .create();
+
+        bottomSheetDialogFragment.show(getSupportFragmentManager());
     }
 
 

@@ -26,7 +26,9 @@ import java.util.List;
  */
 
 public class AttachmentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final int VIDEO = 101, IMAGE = 103, AUDIO=104;
+    private final int VIDEO = 101, IMAGE = 103, AUDIO = 104;
+
+
     private List<String> items;
     private Context context;
 
@@ -62,7 +64,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (holder.getItemViewType()) {
             case IMAGE:
                 ImageViewHolder vh1 = (ImageViewHolder) holder;
-                Picasso.with(context).load("file:///android_asset/DvpvklR.png").into(vh1.attachedImage);
+                Picasso.with(context).load(path).into(vh1.attachedImage);
                 vh1.image_filenameTV.setText(getFileName(path));
                 vh1.image_filesizeTV.setText(getFileSize(path));
                 break;
@@ -100,6 +102,19 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     }
+
+    public void setAttachmentItems(List<String> items) {
+        this.items = items;
+    }
+
+    public void updateList(List<String> items) {
+        if (items != null && items.size() > 0) {
+            items.clear();
+            items.addAll(items);
+            notifyDataSetChanged();
+        }
+    }
+
 
 
     public static String getMimeType(String url) {
