@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -73,6 +74,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
 
     private LocalDataHelper dataHelper;
+    private Environment environment;
     private PopupMenu popupMenu;
     private Story activeStory;
     private SharedPreferences preferences;
@@ -82,6 +84,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             this, calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     private LayoutInflater inflater;
+    private String audio_path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +180,19 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 }
                 break;
 
+            case Constants.REQUEST_RECORD_AUDIO:
+                if (resultCode == RESULT_OK) {
+                    Log.i(this.getLocalClassName(), "MimeType: " + StoryBoardUtils.getMimeType(audio_path));
+                    Toast.makeText(this, "Audio recorded successfully! " + audio_path, Toast.LENGTH_SHORT).show();
+                    addAudioAttachment();
+//                    activeStory.addMedia(audio_path);
+                    Log.i(this.getLocalClassName(), "onActivityResult: " + activeStory.getMedia().size());
+                    dataHelper.updateStory(activeStory);
+                } else if (resultCode == RESULT_CANCELED) {
+                    Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
         }
     }
 
@@ -223,7 +239,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                         return true;
 
                     case R.id.record_sound:
-                        // todo open sound recorder
+                        startRecording();
                         return true;
                     default:
                         return true;
@@ -330,6 +346,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         } else {
             return String.valueOf(Math.round(size*100)/100D) + "KB";
         }
+    }
+
+    private void startRecording() {
+        // ask for permissions
+        audio_path = StoryBoardUtils.recordAudio(Storyboard.this, environment);
     }
 
 
