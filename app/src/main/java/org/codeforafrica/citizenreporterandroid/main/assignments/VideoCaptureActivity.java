@@ -156,7 +156,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(mIsRecording) {
                     mIsRecording = false;
-                    mRecordImageButton.setImageResource(R.drawable.aar_ic_stop);
+                    mRecordImageButton.setImageResource(R.drawable.stop_record);
                     mMediaRecorder.stop();
                     mMediaRecorder.reset();
                     startPreview();
@@ -208,7 +208,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
         }
     }
 
-    // Method to freezee out the app resources if no longer in use
+    // Method to freeze out the app resources if no longer in use
     @Override
     protected void onPause() {
         closeCamera();
@@ -429,7 +429,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
                 mIsRecording = true;
-                mRecordImageButton.setImageResource(R.drawable.aar_ic_rec);
+                mRecordImageButton.setImageResource(R.drawable.recording_video);
                 try {
                     createVideoFileName();
                 } catch (IOException e) {
@@ -449,7 +449,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
             }
         } else {
             mIsRecording = true;
-            mRecordImageButton.setImageResource(R.drawable.aar_ic_rec);
+            mRecordImageButton.setImageResource(R.drawable.recording_video);
             try {
                 createVideoFileName();
             } catch (IOException e) {
