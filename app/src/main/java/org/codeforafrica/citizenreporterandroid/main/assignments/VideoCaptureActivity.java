@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -77,6 +79,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
     private Size mPrivewSize;
     private Size mVideoSize;
     private MediaRecorder mMediaRecorder;
+    private Chronometer mChronometer;
     private int mTotalRotation;
     private CaptureRequest.Builder mCaptureRequestBuilder;
     private ImageButton mRecordImageButton;
@@ -116,6 +119,9 @@ public class VideoCaptureActivity extends AppCompatActivity {
                 }
                 try {
                     startRecord();
+                    mChronometer.setBase(SystemClock.elapsedRealtime());
+                    mChronometer.setVisibility(View.VISIBLE);
+                    mChronometer.start();
                 } catch (CameraAccessException e) {
                     e.printStackTrace();
                 }
@@ -149,12 +155,15 @@ public class VideoCaptureActivity extends AppCompatActivity {
 
         mMediaRecorder = new MediaRecorder();
 
+        mChronometer = (Chronometer) findViewById(R.id.chronometer2);
         mTextureView = (TextureView) findViewById(R.id.textureView);
         mRecordImageButton = (ImageButton) findViewById(R.id.imageButton);
         mRecordImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mIsRecording) {
+                    mChronometer.stop();
+                    mChronometer.setVisibility(View.INVISIBLE);
                     mIsRecording = false;
                     mRecordImageButton.setImageResource(R.drawable.stop_record);
                     mMediaRecorder.stop();
@@ -302,7 +311,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
             mCameraDevice.createCaptureSession(Arrays.asList(previewSurface, recordVideoSurface),
                     new CameraCaptureSession.StateCallback() {
                         @Override
-                        public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                        public void onConfigured(CameraCaptureSession cameraCaptureSession) {
                             try {
                                 cameraCaptureSession.setRepeatingRequest(
                                         mCaptureRequestBuilder.build(), null, null
@@ -437,6 +446,9 @@ public class VideoCaptureActivity extends AppCompatActivity {
                 }
                 try {
                     startRecord();
+                    mChronometer.setBase(SystemClock.elapsedRealtime());
+                    mChronometer.setVisibility(View.VISIBLE);
+                    mChronometer.start();
                 } catch (CameraAccessException e) {
                     e.printStackTrace();
                 }
@@ -457,6 +469,9 @@ public class VideoCaptureActivity extends AppCompatActivity {
             }
             try {
                 startRecord();
+                mChronometer.setBase(SystemClock.elapsedRealtime());
+                mChronometer.setVisibility(View.VISIBLE);
+                mChronometer.start();
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
