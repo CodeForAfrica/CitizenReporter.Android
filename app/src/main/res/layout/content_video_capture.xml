@@ -39,8 +39,8 @@
         android:id="@+id/textureView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -48,6 +48,16 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/record_video"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Chronometer
+        android:id="@+id/chronometer2"
+        android:visibility="invisible"
+        android:textColor="#ff0000"
+        android:textSize="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageButton"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
