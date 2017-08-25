@@ -282,7 +282,7 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
     private int mState = STATE_PREVIEW;
 
     /*
-     * A {@link SurfaceView} to display the png instruction overlay.
+     * A {@link ImageView} to display the png instruction overlay.
      */
     private ImageView mOverlay0, mOverlay1, mOverlay2, mOverlay3, mOverlay4;
 
