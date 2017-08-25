@@ -1,10 +1,11 @@
 package org.codeforafrica.citizenreporterandroid.data.models;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,6 +85,10 @@ public class Story {
         this.when = when;
     }
 
+    public void setMedia(List<String> media) {
+        this.media = media;
+    }
+
     public String putMediaIntoDB() {
         /**
          * method returns a string consisting of all the paths the media attached separated by comas
@@ -93,6 +98,7 @@ public class Story {
             String concat_media = "";
             for(String item: media){
                 concat_media = concat_media + item + ",";
+                Log.d("======", "putMediaIntoDB: " + item);
             }
             return concat_media;
         } else {
@@ -104,12 +110,6 @@ public class Story {
         return media;
     }
 
-    public void addMedia(String media) {
-        /**
-         * adds a media item to the media list of the object
-         */
-        this.media.add(media);
-    }
 
     public void setMediaFromDB(String media_csv) {
         /**
@@ -128,9 +128,9 @@ public class Story {
             for (String path: temp_items) {
                 items.add(path);
             }
-            this.media = items;
+            media = items;
         } else {
-            this.media = Collections.EMPTY_LIST;
+            media = Collections.EMPTY_LIST;
         }
 
     }

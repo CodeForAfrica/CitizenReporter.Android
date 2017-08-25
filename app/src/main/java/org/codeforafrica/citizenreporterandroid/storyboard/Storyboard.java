@@ -42,6 +42,7 @@ import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -78,6 +79,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     private PopupMenu popupMenu;
     private Story activeStory;
     private SharedPreferences preferences;
+    private List<String> local_media;
     private final Calendar calendar = Calendar.getInstance();
 
     private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
@@ -94,6 +96,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         ButterKnife.bind(this);
         String action = getIntent().getAction();
         inflater = LayoutInflater.from(Storyboard.this);
+        local_media = new ArrayList<>();
 
 
         if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
@@ -185,7 +188,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                     Log.i(this.getLocalClassName(), "MimeType: " + StoryBoardUtils.getMimeType(audio_path));
                     Toast.makeText(this, "Audio recorded successfully! " + audio_path, Toast.LENGTH_SHORT).show();
                     addAudioAttachment();
-//                    activeStory.addMedia(audio_path);
+                    local_media.add(audio_path);
                     Log.i(this.getLocalClassName(), "onActivityResult: " + activeStory.getMedia().size());
                     dataHelper.updateStory(activeStory);
                 } else if (resultCode == RESULT_CANCELED) {
@@ -284,6 +287,8 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                             Log.d("IMAGE SELECTOR", "onImagesSelected: "
                                     + MediaUtils.getPathFromUri(context, uri));
                             addImageAttachment(uri);
+
+                            local_media.add(MediaUtils.getPathFromUri(context, uri));
                         }
 
                     }
@@ -351,6 +356,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     private void startRecording() {
         // ask for permissions
         audio_path = StoryBoardUtils.recordAudio(Storyboard.this, environment);
+    }
+
+    public void savePost(Story story) {
+        // first lets add the media
+        story.setMedia(local_media);
     }
 
 
