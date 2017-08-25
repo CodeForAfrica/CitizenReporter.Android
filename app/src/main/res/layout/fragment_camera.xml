@@ -10,13 +10,61 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"/>
-
-    <ImageView
-        android:id="@+id/overlay"
-        android:layout_height="match_parent"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:rotation = "90"
-        android:src="@drawable/close_face_overlay_001"/>
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/overlay0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="90"
+            android:src="@drawable/close_face_overlay_001"
+            android:layout_marginBottom="88dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/overlay1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="90"
+            android:src="@drawable/signature"
+            android:layout_marginBottom="88dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/overlay2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="90"
+            android:src="@drawable/reaction"
+            android:layout_marginBottom="88dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/overlay3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="90"
+            android:src="@drawable/candid"
+            android:layout_marginBottom="88dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/overlay4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="90"
+            android:src="@drawable/environment"
+            android:layout_marginBottom="88dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+
+
+    </RelativeLayout>
+
+
+
 
 
     <FrameLayout
@@ -33,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:rotation="90"
             android:text="@string/picture" />
 
         <ImageButton
@@ -41,10 +90,13 @@
             style="@android:style/Widget.Material.Light.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:rotation="90"
             android:layout_gravity="center_vertical|right"
             android:padding="20dp"
             android:src="@drawable/ic_action_info" />
 
     </FrameLayout>
+
+
 
 </RelativeLayout>

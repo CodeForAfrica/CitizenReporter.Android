@@ -284,7 +284,7 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
     /*
      * A {@link SurfaceView} to display the png instruction overlay.
      */
-    private ImageView mOverlay;
+    private ImageView mOverlay0, mOverlay1, mOverlay2, mOverlay3, mOverlay4;
 
     /*
      * A {@link Semaphore} to prevent the app from exiting before closing the camera.
@@ -442,12 +442,21 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
 
     }
 
-    public static OverlayCameraFragment newInstance(){
-        return new OverlayCameraFragment();
+    public static OverlayCameraFragment newInstance(int group){
+
+        OverlayCameraFragment f = new OverlayCameraFragment();
+        Bundle extras = new Bundle();
+        extras.putInt("group", group);
+        f.setArguments(extras);
+
+
+
+        return f;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+
         return inflater.inflate(R.layout.fragment_camera, container, false);
     }
 
@@ -455,9 +464,43 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
     public void onViewCreated(final View view, Bundle savedInstanceState){
         view.findViewById(R.id.picture).setOnClickListener(this);
         view.findViewById(R.id.picture_info).setOnClickListener(this);
+        Bundle args = getArguments();
+        int index = args.getInt("group", 0);
+
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
-        mOverlay = (ImageView) view.findViewById(R.id.overlay);
-       // mOverlay.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        mOverlay0 = (ImageView) view.findViewById(R.id.overlay0);
+        mOverlay1 = (ImageView) view.findViewById(R.id.overlay1);
+        mOverlay2 = (ImageView) view.findViewById(R.id.overlay2);
+        mOverlay3 = (ImageView) view.findViewById(R.id.overlay3);
+        mOverlay4 = (ImageView) view.findViewById(R.id.overlay4);
+
+        mOverlay0.setVisibility(view.INVISIBLE);
+        mOverlay1.setVisibility(view.INVISIBLE);
+        mOverlay2.setVisibility(view.INVISIBLE);
+        mOverlay3.setVisibility(view.INVISIBLE);
+        mOverlay4.setVisibility(view.INVISIBLE);
+
+        int scene = index;
+        System.out.println(scene);
+
+        if(scene == 0 ){
+            mOverlay0.setVisibility(view.VISIBLE);
+
+        } else if (scene == 1){
+            mOverlay1.setVisibility(view.VISIBLE);
+
+        } else if (scene == 2){
+            mOverlay2.setVisibility(view.VISIBLE);
+
+        } else if (scene == 3){
+            mOverlay3.setVisibility(view.VISIBLE);
+
+        } else if (scene == 4){
+            mOverlay4.setVisibility(view.VISIBLE);
+
+        }
+
     }
 
     @Override
@@ -907,7 +950,12 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
     public void onClick(View view){
         switch (view.getId()){
             case R.id.picture: {
-                mOverlay.setVisibility(View.INVISIBLE);
+                mOverlay0.setVisibility(View.INVISIBLE);
+                mOverlay1.setVisibility(View.INVISIBLE);
+                mOverlay2.setVisibility(View.INVISIBLE);
+                mOverlay3.setVisibility(View.INVISIBLE);
+                mOverlay4.setVisibility(View.INVISIBLE);
+
                 takePicture();
                 break;
             }

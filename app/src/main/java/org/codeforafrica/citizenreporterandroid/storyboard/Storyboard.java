@@ -438,6 +438,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 Intent i = new Intent(activity, OverlayCameraActivity.class);
                 i.putExtra("mode", mode);
                 i.putExtra("group", j);
+                System.out.println(j);
                 activity.startActivityForResult(i, 676);
 
 
