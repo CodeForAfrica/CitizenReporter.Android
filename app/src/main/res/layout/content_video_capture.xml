@@ -8,33 +8,6 @@
     tools:context="org.codeforafrica.citizenreporterandroid.main.assignments.VideoCaptureActivity"
     tools:showIn="@layout/activity_video_capture">
 
-    <!--<Button-->
-        <!--android:id="@+id/recordButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:text="Record" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/playButton"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:text="Play" />-->
-
-    <!--<VideoView-->
-        <!--android:id="@+id/videoView1"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_above="@+id/recordButton"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true" />-->
-
-
     <TextureView
         android:id="@+id/textureView"
         android:layout_width="wrap_content"
@@ -46,9 +19,9 @@
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/record_video"
+        app:srcCompat="@drawable/recording_video"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true" />
 
     <Chronometer
         android:id="@+id/chronometer2"
@@ -58,6 +31,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/imageButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignStart="@+id/imageButton"
+        android:layout_marginStart="21dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        app:srcCompat="@mipmap/ic_camera" />
 
 </RelativeLayout>
