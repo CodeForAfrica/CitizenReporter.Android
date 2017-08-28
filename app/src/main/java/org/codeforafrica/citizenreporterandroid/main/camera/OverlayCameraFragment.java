@@ -469,8 +469,10 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
 
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
 
-        int overlayHeight = mPreviewSize.getHeight();
-        int overlayWidth = mPreviewSize.getWidth();
+        setUpCameraOutputs(int width, in);
+
+        int overlayHeight = mTextureView.getHeight();
+        int overlayWidth = mTextureView.getWidth();
 
 
         mOverlay0 = (ImageView) view.findViewById(R.id.overlay0);
