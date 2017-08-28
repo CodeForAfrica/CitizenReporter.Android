@@ -49,6 +49,7 @@ public class Constants {
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 31;
     public static final String AUDIO_MIMETYPE = "audio/x-wav";
 
+
     // intents
 
     public static final String ACTION_EDIT_VIEW_STORY = "EDIT_VIEW_STORY";

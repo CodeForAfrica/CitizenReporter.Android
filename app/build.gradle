@@ -72,6 +72,7 @@ dependencies {
     compile 'com.github.phillipahereza:AndroidAudioRecorder:-SNAPSHOT'
     compile 'com.github.kobakei:MaterialFabSpeedDial:1.1.5'
     compile 'com.github.Fueled:fab.ulous:1.0.0'
+    compile 'com.pixplicity.sharp:library:1.1.0'
 
 
     //Glide

@@ -1,25 +1,30 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +40,10 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.storyboard.overlay.OverlayCameraActivity;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
+import org.codeforafrica.citizenreporterandroid.utils.RequestCodes;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
 import java.io.File;
@@ -81,6 +88,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     private SharedPreferences preferences;
     private List<String> local_media;
     private final Calendar calendar = Calendar.getInstance();
+    private Context context;
 
     private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
             this, calendar.get(Calendar.YEAR),
@@ -97,6 +105,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         String action = getIntent().getAction();
         inflater = LayoutInflater.from(Storyboard.this);
         local_media = new ArrayList<>();
+        context = this;
 
 
         if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
@@ -196,6 +205,15 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 }
                 break;
 
+            case Constants.CAMERA_MODE:
+                Log.d("OverlayCameraResult", "onActivityResult: camera mode");
+                break;
+
+            case Constants.VIDEO_MODE:
+                Log.d("OverlayCameraResult", "onActivityResult: video mode");
+                break;
+
+
         }
     }
 
@@ -234,11 +252,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                         return true;
 
                     case R.id.capture_photo:
-                        // todo open scene picker
+                        startOverlayCamera(Storyboard.this, context, Constants.CAMERA_MODE);
                         return true;
 
                     case R.id.capture_video:
-                        // todo open scene pocker
+                        startOverlayCamera(Storyboard.this, context, Constants.VIDEO_MODE);
                         return true;
 
                     case R.id.record_sound:
@@ -361,6 +379,43 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     public void savePost(Story story) {
         // first lets add the media
         story.setMedia(local_media);
+    }
+
+
+    public void startOverlayCamera(final Activity activity, Context context, final int mode) {
+
+        final Dialog mDialog = new Dialog(activity);
+        mDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(R.layout.list_pick_scene);
+        mDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mDialog.setTitle(context.getResources().getString(R.string.pick_scene));
+        mDialog.show();
+
+        String[] sceneTitles = context.getResources().getStringArray(R.array.scenes);
+        String[] sceneDescriptions = context.getResources()
+                .getStringArray(R.array.scenes_descriptions);
+        TypedArray sceneImages = context.getResources()
+                .obtainTypedArray(R.array.scenes_images);
+        ListView sceneslist = (ListView) mDialog.findViewById(R.id.listView);
+
+        SceneAdapter scenesAdapter = new SceneAdapter(activity,
+                sceneTitles,
+                sceneDescriptions,
+                sceneImages, R.layout.row_scene);
+        sceneslist.setAdapter(scenesAdapter);
+
+        sceneslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int j, long l) {
+
+                Intent i = new Intent(activity, OverlayCameraActivity.class);
+                i.putExtra("mode", mode);
+                i.putExtra("group", j);
+                activity.startActivityForResult(i, RequestCodes.OVERLAY_CAMERA);
+
+                mDialog.dismiss();
+            }
+        });
     }
 
 
