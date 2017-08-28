@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
 import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
-import org.codeforafrica.citizenreporterandroid.data.models.Assignments;
+import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
@@ -32,11 +34,15 @@ public class AssignmentsFragment extends Fragment {
     @BindView(R.id.assignment_recycler)
     RecyclerView recyclerView;
 
-    private List<Assignments> assignmentsList;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout refreshLayout;
+
+    private List<Assignment> assignmentsList;
     private LocalDataHelper dataHelper;
     private AssignmentsAdapter adapter;
     private SharedPreferences preferences;
     private APIInterface apiClient;
+
 
     public AssignmentsFragment() {
         // Required empty public constructor
@@ -91,12 +97,24 @@ public class AssignmentsFragment extends Fragment {
 
         if (dataHelper.getAssignmentsCount() == 0) {
             apiClient = APIClient.getApiClient();
-            NetworkHelper.getAssignments(getActivity(), apiClient, adapter);
+            NetworkHelper.getAssignments(getActivity(), apiClient, adapter, null);
         }
 
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                apiClient = APIClient.getApiClient();
+                NetworkHelper.getAssignments(getActivity(), apiClient, adapter, refreshLayout);
+                Log.i("StoriesFragment", "onRefresh: Refreshing layout");
+
+            }
+        });
 
     }
+
+
 
 }
 

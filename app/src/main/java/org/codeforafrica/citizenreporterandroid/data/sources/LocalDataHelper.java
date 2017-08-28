@@ -1,6 +1,6 @@
 package org.codeforafrica.citizenreporterandroid.data.sources;
 
-import org.codeforafrica.citizenreporterandroid.data.models.Assignments;
+import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 
@@ -71,9 +71,9 @@ public class LocalDataHelper extends SQLiteOpenHelper {
 
     }
 
-    public List<Assignments> getAssignments(){
+    public List<Assignment> getAssignments(){
             SQLiteDatabase db = this.getReadableDatabase();
-            List<Assignments> assignmentsList = new ArrayList<>();
+            List<Assignment> assignmentsList = new ArrayList<>();
             Cursor cursor = db.query(Constants.ASSIGNMENTS_TABLE_NAME,
 
                     new String []{
@@ -88,7 +88,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
                     null, null, Constants.KEY_ASSIGNMENT_TITLE + " DESC");
             if(cursor.moveToFirst()){
                 do{
-                    Assignments assignment = new Assignments();
+                    Assignment assignment = new Assignment();
                     assignment.setTitle(cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_TITLE)));
                     assignment.setDescription(cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_DESCRIPTION)));
                     assignment.setRequiredMedia(cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_MEDIA)));
@@ -103,7 +103,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
             return assignmentsList;
     }
 
-    public void saveAssignment(Assignments assignment){
+    public void saveAssignment(Assignment assignment){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Constants.KEY_ASSIGNMENT_TITLE, assignment.getTitle());
@@ -120,9 +120,9 @@ public class LocalDataHelper extends SQLiteOpenHelper {
         Log.d("SAVED", "Saved to DB");
     }
 
-    public void bulkSaveAssignments(List<Assignments> assignments) {
+    public void bulkSaveAssignments(List<Assignment> assignments) {
         SQLiteDatabase db = this.getWritableDatabase();
-        for (Assignments assignment : assignments) {
+        for (Assignment assignment : assignments) {
             saveAssignment(assignment);
         }
 
@@ -135,7 +135,44 @@ public class LocalDataHelper extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
-    public void saveStory(Story story){
+    public Assignment getAssignment(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(Constants.ASSIGNMENTS_TABLE_NAME,
+
+                new String []{
+                        Constants.KEY_ASSIGNMENT_TITLE,
+                        Constants.KEY_ASSIGNMENT_DESCRIPTION,
+                        Constants.KEY_ASSIGNMENT_MEDIA,
+                        Constants.KEY_ASSIGNMENT_RESPONSES,
+                        Constants.KEY_ASSIGNMENT_AUTHOR,
+                        Constants.KEY_ASSIGNMENT_DEADLINE,
+                        Constants.KEY_ASSIGNMENT_LOCATION,
+                        Constants.KEY_ASSIGNMENT_UPDATED}, null, null,
+                null, null, Constants.KEY_ASSIGNMENT_TITLE + " DESC");
+
+        if (cursor != null)
+            cursor.moveToFirst();
+        Assignment assignment = new Assignment();
+        assignment.setTitle(
+                cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_TITLE)));
+        assignment.setDescription(
+                cursor.getString(
+                        cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_DESCRIPTION)));
+        assignment.setRequiredMedia(
+                cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_MEDIA)));
+        assignment.setNumberOfResponses(
+                cursor.getInt(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_RESPONSES)));
+        assignment.setAuthor(
+                cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_AUTHOR)));
+        assignment.setDeadline(
+                cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_DEADLINE)));
+        assignment.setAssignmentLocation(
+                cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_LOCATION)));
+
+        return assignment;
+    }
+
+    public long saveStory(Story story){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Constants.KEY_TITLE, story.getTitle());
@@ -151,8 +188,9 @@ public class LocalDataHelper extends SQLiteOpenHelper {
         values.put(Constants.KEY_UPDATED, java.lang.System.currentTimeMillis());
 
         // insert row
-        db.insert(Constants.STORIES_TABLE_NAME, null, values);
+        long id = db.insert(Constants.STORIES_TABLE_NAME, null, values);
         Log.d("SAVED", "Saved to DB");
+        return id;
     }
 
     public void bulkSaveStories(List<Story> stories) {
@@ -163,7 +201,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
 
     }
 
-    public Story getStory(int id){
+    public Story getStory(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(Constants.STORIES_TABLE_NAME,
                 new String[] {

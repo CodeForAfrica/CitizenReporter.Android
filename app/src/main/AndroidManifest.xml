@@ -10,7 +10,9 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -22,8 +24,7 @@
         tools:replace="android:icon">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY"/>
-
+            android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -97,12 +98,19 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity" />
-
         </activity>
+        <activity
+            android:name=".main.assignments.AssignmentDetailActivity"
+            android:label="AssignmentDetail"/>
+        <activity
+            android:name=".main.assignments.VideoCaptureActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <activity android:name=".main.AssignmentDetailActivity"
-            android:label="AssignmentDetail">
-            </activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -27,10 +27,10 @@ public class Constants {
     public static final String KEY_UPDATED = "updated";
     public static final String KEY_WHERE = "location";
 
-    //Assignments table
+    //Assignment table
     public static final String ASSIGNMENTS_TABLE_NAME = "assignments";
 
-    //Assignments columns
+    //Assignment columns
 
     public static final String KEY_ASSIGNMENT_TITLE = "title";
     public static final String KEY_ASSIGNMENT_DESCRIPTION = "description";
@@ -52,9 +52,14 @@ public class Constants {
     // intents
 
     public static final String ACTION_EDIT_VIEW_STORY = "EDIT_VIEW_STORY";
+    public static final String ACTION_NEW_STORY = "NEW_STORY";
 
     // mode constants
 
     public static final int CAMERA_MODE = 673;
     public static final int VIDEO_MODE = 674;
+
+    // Request code
+    public static final int ACTIVITY_RECORD_VIDEO = 675;
+
 }

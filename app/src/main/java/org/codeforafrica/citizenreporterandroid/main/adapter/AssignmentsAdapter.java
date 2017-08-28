@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import org.codeforafrica.citizenreporterandroid.main.AssignmentDetailActivity;
-import org.codeforafrica.citizenreporterandroid.data.models.Assignments;
+import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentDetailActivity;
+import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.R;
 
 import java.util.List;
@@ -53,14 +53,14 @@ public class AssignmentsAdapter extends
     }
 
     private Context mContext;
-    private List<Assignments> assignmentsList;
+    private List<Assignment> assignmentsList;
 
 
-    public void setAssignmentList(List<Assignments> assignmentsList) {
+    public void setAssignmentList(List<Assignment> assignmentsList) {
         this.assignmentsList = assignmentsList;
     }
 
-    public AssignmentsAdapter(List<Assignments> assignmentsList, Context context) {
+    public AssignmentsAdapter(List<Assignment> assignmentsList, Context context) {
         mContext = context;
         this.assignmentsList = assignmentsList;
     }
@@ -77,7 +77,7 @@ public class AssignmentsAdapter extends
     @Override
     public void onBindViewHolder(final AssignmentsViewHolder viewHolder, int position) {
 
-        Assignments assignment = assignmentsList.get(position);
+        final Assignment assignment = assignmentsList.get(position);
 
         viewHolder.assignment_title.setText(assignment.getTitle());
         viewHolder.assignment_deadline.setText(assignment.getDeadline());
@@ -88,6 +88,7 @@ public class AssignmentsAdapter extends
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, AssignmentDetailActivity.class);
+                intent.putExtra("assignment_id", assignment.getId());
                 mContext.startActivity(intent);
             }
         });
