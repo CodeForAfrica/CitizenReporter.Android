@@ -383,7 +383,7 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run () {
-                    Toast.makeText(activity, "Ping!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Photo Saved!", Toast.LENGTH_SHORT).show();
                     System.out.println(mFile);
                 }
             });
@@ -456,8 +456,19 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        final View roo = inflater.inflate(R.layout.fragment_camera, container, false);
+        roo.post(new Runnable(){
+            @Override
+            public void run(){
+                int height = roo.getMeasuredHeight();
+                int width = roo.getMeasuredWidth();
+                Log.d(TAG, "HOW BIG IS THIS TEXTUREVIEW really? "+width+","+height);
 
-        return inflater.inflate(R.layout.fragment_camera, container, false);
+            }
+
+        });
+
+        return roo;
     }
 
     @Override
@@ -469,38 +480,22 @@ public class OverlayCameraFragment extends Fragment implements  View.OnClickList
 
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
 
-
-
-        int overlayHeight = mTextureView.getHeight();
-        int overlayWidth = mTextureView.getWidth();
-
-
         mOverlay0 = (ImageView) view.findViewById(R.id.overlay0);
         mOverlay1 = (ImageView) view.findViewById(R.id.overlay1);
         mOverlay2 = (ImageView) view.findViewById(R.id.overlay2);
         mOverlay3 = (ImageView) view.findViewById(R.id.overlay3);
         mOverlay4 = (ImageView) view.findViewById(R.id.overlay4);
 
-        mOverlay0.getLayoutParams().height = overlayHeight;
-        mOverlay0.getLayoutParams().width = overlayWidth;
-        mOverlay1.getLayoutParams().height = overlayHeight;
-        mOverlay1.getLayoutParams().width = overlayWidth;
-        mOverlay2.getLayoutParams().height = overlayHeight;
-        mOverlay2.getLayoutParams().width = overlayWidth;
-        mOverlay3.getLayoutParams().height = overlayHeight;
-        mOverlay3.getLayoutParams().width = overlayWidth;
-        mOverlay4.getLayoutParams().height = overlayHeight;
-        mOverlay4.getLayoutParams().width = overlayWidth;
-
-
         mOverlay0.setVisibility(view.INVISIBLE);
+
+
         mOverlay1.setVisibility(view.INVISIBLE);
         mOverlay2.setVisibility(view.INVISIBLE);
         mOverlay3.setVisibility(view.INVISIBLE);
         mOverlay4.setVisibility(view.INVISIBLE);
 
         int scene = index;
-        System.out.println(scene);
+
 
         if(scene == 0 ){
             mOverlay0.setVisibility(view.VISIBLE);

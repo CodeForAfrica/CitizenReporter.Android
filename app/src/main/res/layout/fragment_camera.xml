@@ -3,65 +3,66 @@
     android:layout_height="match_parent">
 
 
-
     <org.codeforafrica.citizenreporterandroid.main.camera.AutoFitTextureView
         android:id="@+id/texture"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"/>
-    <RelativeLayout
+
+    <ImageView
+        android:id="@+id/overlay0"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_close_face_overlay"
+        android:rotation="90"
+        android:layout_marginBottom="88dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:scaleType="fitCenter"
+        />
+    <ImageView
+        android:id="@+id/overlay1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rotation="90"
+        android:src="@drawable/ic_signature"
+        android:layout_marginBottom="88dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:scaleType="fitCenter"/>
+    <ImageView
+        android:id="@+id/overlay2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rotation="90"
+        android:src="@drawable/ic_reaction"
+        android:layout_marginBottom="88dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:scaleType="fitCenter"/>
+    <ImageView
+        android:id="@+id/overlay3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rotation="90"
+        android:src="@drawable/ic_candid"
+        android:layout_marginBottom="88dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:scaleType="fitCenter"/>
+    <ImageView
+        android:id="@+id/overlay4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rotation="90"
+        android:src="@drawable/ic_environment"
+        android:layout_marginBottom="88dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:scaleType="fitCenter"/>
 
-        <ImageView
-            android:id="@+id/overlay0"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:rotation="90"
-            android:src="@drawable/close_face_overlay_001"
-            android:layout_marginBottom="88dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
-        <ImageView
-            android:id="@+id/overlay1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:rotation="90"
-            android:src="@drawable/signature"
-            android:layout_marginBottom="88dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
-        <ImageView
-            android:id="@+id/overlay2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:rotation="90"
-            android:src="@drawable/reaction"
-            android:layout_marginBottom="88dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
-        <ImageView
-            android:id="@+id/overlay3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:rotation="90"
-            android:src="@drawable/candid"
-            android:layout_marginBottom="88dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
-        <ImageView
-            android:id="@+id/overlay4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:rotation="90"
-            android:src="@drawable/environment"
-            android:layout_marginBottom="88dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
 
-
-    </RelativeLayout>
 
 
 
