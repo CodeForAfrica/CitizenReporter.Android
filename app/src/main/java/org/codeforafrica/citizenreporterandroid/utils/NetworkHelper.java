@@ -195,8 +195,11 @@ public class NetworkHelper {
         assignmentsCall.enqueue(new Callback<List<Assignment>>() {
             @Override
             public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
+                Log.d(TAG, "API Response:" + response.body());
+                Log.d(TAG, "Is Response Successful? " + response.isSuccessful());
                 if (response.isSuccessful()) {
                     List<Assignment> assignments = response.body();
+
                     LocalDataHelper dataHelper = new LocalDataHelper(context);
                     if (assignments.size() > 0) {
                         // only save to the database if the API call returned any stories
