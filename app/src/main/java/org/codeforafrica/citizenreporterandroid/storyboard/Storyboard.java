@@ -89,6 +89,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     private List<String> local_media;
     private final Calendar calendar = Calendar.getInstance();
     private Context context;
+    private Boolean isSaved = false;
 
     private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
             this, calendar.get(Calendar.YEAR),
@@ -117,7 +118,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 activeStory = dataHelper.getStory(storyID);
                 attachAuthorCred(activeStory);
                 story_title.setText(activeStory.getTitle());
-                story_cause.setText(activeStory.getCause());
+                story_cause.setText(activeStory.getSummary());
                 story_who.setText(activeStory.getWho());
 
                 date.setText(activeStory.getWhen());
@@ -134,7 +135,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         } else {
             int assignmentID = getIntent().getIntExtra("assignmentID", 0);
             activeStory = new Story();
-            activeStory.setCause("");
+            activeStory.setSummary("");
             activeStory.setWhen("");
             activeStory.setWho("");
             activeStory.setTitle("");
@@ -160,6 +161,22 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (!isSaved) {
+            activeStory.setTitle("Draft");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (!isSaved) {
+            activeStory.setTitle("Draft");
+        }
     }
 
 
@@ -272,6 +289,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
     }
 
+
     public void attachAuthorCred(Story story) {
         preferences = PreferenceManager.getDefaultSharedPreferences(Storyboard.this);
         String fb_id = preferences.getString("fb_id", "");
@@ -376,9 +394,32 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         audio_path = StoryBoardUtils.recordAudio(Storyboard.this, environment);
     }
 
+    @OnClick(R.id.save_button)
+    public void savedClicked() {
+        savePost(activeStory);
+    }
+
     public void savePost(Story story) {
+        Log.d("Save story", "savePost() called with: story = [" + story + "]");
         // first lets add the media
         story.setMedia(local_media);
+
+        story.setTitle(story_title.getText().toString());
+
+        story.setSummary(story_cause.getText().toString());
+
+        story.setWhere(location.getText().toString());
+
+        story.setWhen(date.getText().toString());
+
+        story.setWho(story_who.getText().toString());
+
+        story.setSummary(story_cause.getText().toString());
+
+        dataHelper.saveStory(story);
+
+        Toast.makeText(this, "story has been saved", Toast.LENGTH_SHORT).show();
+
     }
 
 
