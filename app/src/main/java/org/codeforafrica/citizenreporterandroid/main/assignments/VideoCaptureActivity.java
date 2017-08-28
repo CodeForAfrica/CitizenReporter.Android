@@ -302,7 +302,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
         setOverlayImage();
     }
 
-    // Method to set overlay images for specific scene chosen
+    // Method to set overlay images for specific scene chosen by user
     private void setOverlayImage() {
         int imageOverlay = getIntent().getIntExtra("group", -1);
         if(imageOverlay != -1) {
