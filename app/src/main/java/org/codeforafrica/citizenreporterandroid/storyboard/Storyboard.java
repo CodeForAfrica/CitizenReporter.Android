@@ -39,7 +39,6 @@ import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.main.camera.OverlayCameraActivity;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
-import org.codeforafrica.citizenreporterandroid.utils.HelperOverlay;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
 import java.util.Calendar;
