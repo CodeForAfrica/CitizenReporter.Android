@@ -1,11 +1,14 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +37,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.main.camera.OverlayCameraActivity;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
@@ -80,6 +84,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
             this, calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    private SharedPreferences preferences;
 
 
     @Override
@@ -92,10 +97,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
 
         if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
-            int storyID = getIntent().getIntExtra("STORY_ID", -1);
+            long storyID = getIntent().getLongExtra("STORY_ID", -1);
             if (storyID > -1) {
                 Log.d("OPENSTORY", "onCreate: YEAH");
                 activeStory = dataHelper.getStory(storyID);
+                attachAuthorCred(activeStory);
 
                 addMediaToSliderLayout(activeStory);
 
@@ -113,37 +119,30 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
             }
+        } else {
+            int assignmentID = getIntent().getIntExtra("assignmentID", 0);
+            activeStory = new Story();
+            activeStory.setCause("");
+            activeStory.setWhen("");
+            activeStory.setWho("");
+            activeStory.setTitle("");
+            activeStory.setAssignmentId(assignmentID);
+            attachAuthorCred(activeStory);
+            long savedID = dataHelper.saveStory(activeStory);
+
+            // make story null
+
+            activeStory = null;
+
+            if (savedID >= 0) {
+                activeStory = dataHelper.getStory(savedID);
+            }
+
+
         }
 
         StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
         StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-
-//        storyboard_add_media.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.capture_image:
-//                        // TODO open scene picker
-//                        Toast.makeText(Storyboard.this, "Image", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case R.id.record_audio:
-//                        // TODO open audio recorder
-//                        startRecording();
-//                        break;
-//                    case R.id.record_video:
-//                        // TODO open scene picker
-//                        Toast.makeText(Storyboard.this, "video", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case R.id.open_gallery:
-//                        // TODO open gallery and pick images
-//                        Toast.makeText(Storyboard.this, "gallery", Toast.LENGTH_SHORT).show();
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
-
 
     }
 
@@ -421,7 +420,9 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int j, long l) {
                 /**
-                 * TODO send intent to open up camera or video overlay
+                 * TODO send intent to open up camera or video fragment_camera
+                 *
+                 *
                  * Forexample
                  *
                  * Intent i = new Intent(activity, OverlayCameraActivity.class);
@@ -431,10 +432,28 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                  *
                  * where group, j indicates the scene picked
                  */
+                Activity activity = Storyboard.this;
+
+                Intent i = new Intent(activity, OverlayCameraActivity.class);
+                i.putExtra("mode", mode);
+                i.putExtra("group", j);
+                System.out.println(j);
+                activity.startActivityForResult(i, 676);
+
+
+
                 mDialog.dismiss();
             }
         });
 
+    }
+
+    public void attachAuthorCred(Story story) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(Storyboard.this);
+        String fb_id = preferences.getString("fb_id", "");
+        String name = preferences.getString("username", "");
+        story.setAuthor(name);
+        story.setAuthorId(fb_id);
     }
 
 

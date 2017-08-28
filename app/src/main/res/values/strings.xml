@@ -55,5 +55,23 @@
     <string name="feedbackbody">Type your message here</string>
     <string name="feedbackresponse">Would you like an email respose sent back?</string>
     <string name="feedbackbutton">Send Feedback</string>
+    <string name="deadline">Deadline:</string>
+
+    <!--Photo Overlay-->
+    <string name="intro_message">
+        <![CDATA[
+
+
+            This part of Citizen Reporter let\'s you take newsworthy footage and shows you how to
+            capture it.
+
+
+        ]]>
+    </string>
+    <string name="picture">Click!</string>
+    <string name="description_info">Info</string>
+    <string name="request_permission">This sample needs camera permission.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+
 
 </resources>

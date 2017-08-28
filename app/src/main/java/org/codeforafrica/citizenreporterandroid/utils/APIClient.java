@@ -11,7 +11,7 @@ public class APIClient {
 
     public static APIInterface getApiClient(){
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://a3ca48e8.ngrok.io/api/")
+                .baseUrl("http://api.creporter.codeforafrica.org/api/")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
         APIInterface apiClient = retrofit.create(APIInterface.class);
@@ -19,3 +19,4 @@ public class APIClient {
     }
 
 }
+
