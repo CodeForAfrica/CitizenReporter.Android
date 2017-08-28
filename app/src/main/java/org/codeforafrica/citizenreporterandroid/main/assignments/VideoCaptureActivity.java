@@ -34,6 +34,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.codeforafrica.citizenreporterandroid.R;
@@ -193,6 +194,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
             };
     private CaptureRequest.Builder mCaptureRequestBuilder;
 
+    private ImageView mImageView;
     private ImageButton mRecordImageButton;
     private ImageButton mStillImagButton;
     private boolean mIsRecording = false;
@@ -269,6 +271,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
 
         mMediaRecorder = new MediaRecorder();
 
+        mImageView = (ImageView) findViewById(R.id.ivoverlay);
         mChronometer = (Chronometer) findViewById(R.id.chronometer2);
         mTextureView = (TextureView) findViewById(R.id.textureView);
         mRecordImageButton = (ImageButton) findViewById(R.id.imageButton);
@@ -285,6 +288,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
                 if (mIsRecording) {
                     mChronometer.stop();
                     mChronometer.setVisibility(View.INVISIBLE);
+                    mImageView.setVisibility(View.VISIBLE);
                     mIsRecording = false;
                     mRecordImageButton.setImageResource(R.drawable.recording_video);
                     mMediaRecorder.stop();
@@ -295,6 +299,36 @@ public class VideoCaptureActivity extends AppCompatActivity {
                 }
             }
         });
+        setOverlayImage();
+    }
+
+    // Method to set overlay images for specific onclicke
+    private void setOverlayImage() {
+        int imageOverlay = getIntent().getIntExtra("group", -1);
+        if(imageOverlay != -1) {
+            int imageOverlayId;
+            switch(imageOverlay) {
+                case 0:
+                    imageOverlayId = R.drawable.overlay_close;
+                    break;
+                case 1:
+                    imageOverlayId = R.drawable.overlay_detail;
+                    break;
+                case 2:
+                    imageOverlayId = R.drawable.overlay_long;
+                    break;
+                case 3:
+                    imageOverlayId = R.drawable.overlay_medium;
+                    break;
+                case 4:
+                    imageOverlayId = R.drawable.overlay_wide;
+                    break;
+                default:
+                    imageOverlayId = R.drawable.overlay_close;
+                    break;
+            }
+            mImageView.setImageResource(imageOverlayId);
+        }
     }
 
 
@@ -629,6 +663,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
                 }
 
                 startRecord();
+                mImageView.setVisibility(View.INVISIBLE);
                 mChronometer.setBase(SystemClock.elapsedRealtime());
                 mChronometer.setVisibility(View.VISIBLE);
                 mChronometer.start();
@@ -649,6 +684,7 @@ public class VideoCaptureActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             startRecord();
+            mImageView.setVisibility(View.INVISIBLE);
             mChronometer.setBase(SystemClock.elapsedRealtime());
             mChronometer.setVisibility(View.VISIBLE);
             mChronometer.start();
