@@ -2,10 +2,12 @@ package org.codeforafrica.citizenreporterandroid.main.stories;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,8 @@ public class StoriesRecyclerViewAdapter extends
     public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.story_title) TextView story_title;
         @BindView(R.id.story_date_saved) TextView story_date_saved;
+        @BindView(R.id.story_uploaded)
+        ImageView uploaded;
 
         public StoryHolder(View itemView) {
             super(itemView);
@@ -75,6 +79,7 @@ public class StoriesRecyclerViewAdapter extends
         Story story = storyList.get(position);
         holder.story_title.setText(story.getTitle());
         holder.story_date_saved.setText(story.getUpdated());
+        setUploadedDisplay(story, holder.uploaded);
 
     }
 
@@ -92,5 +97,11 @@ public class StoriesRecyclerViewAdapter extends
             storyList = list;
         }
         notifyDataSetChanged();
+    }
+
+    public void setUploadedDisplay(Story story, View uploadedView){
+        if (story.isUploaded()) {
+            uploadedView.setVisibility(View.VISIBLE);
+        }
     }
 }
