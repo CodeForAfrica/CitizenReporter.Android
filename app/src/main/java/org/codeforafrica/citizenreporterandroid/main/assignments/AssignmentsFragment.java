@@ -19,6 +19,7 @@ import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
+import org.codeforafrica.citizenreporterandroid.storyboard.AttachmentsAdapter;
 import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;

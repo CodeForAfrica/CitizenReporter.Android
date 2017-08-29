@@ -89,5 +89,9 @@ public class StoriesFragment extends Fragment {
 //        adapter.notifyDataSetChanged();
     }
 
-
+    @Override
+    public void onResume() {
+        adapter.notify(dataHelper.getAllStories());
+        super.onResume();
+    }
 }

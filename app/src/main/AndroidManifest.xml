@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.codeforafrica.citizenreporterandroid">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -10,7 +12,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
 
     <application
         android:allowBackup="true"
@@ -22,8 +23,7 @@
         tools:replace="android:icon">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY"/>
-
+            android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -93,16 +93,18 @@
             android:name=".storyboard.Storyboard"
             android:label="@string/title_activity_storyboard"
             android:parentActivityName=".main.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity" />
-
         </activity>
-
-            <activity android:name=".main.assignments.AssignmentDetailActivity"
-            android:label="AssignmentDetail">
-            </activity>
+        <activity
+            android:name=".main.assignments.AssignmentDetailActivity"
+            android:label="AssignmentDetail"></activity>
+        <activity
+            android:name=".storyboard.overlay.OverlayCameraActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

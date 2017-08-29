@@ -60,7 +60,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initFb();
+        callbackManager = CallbackManager.Factory.create();
+        mProfileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                updateProfile(newProfile);
+            }
+        };
+        mProfileTracker.startTracking();
+
+
         setContentView(R.layout.activity_login);
         loginButton = (LoginButton) findViewById(R.id.login_button);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -97,86 +106,36 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    private void setupTokenTracker() {
-        mTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-            }
-        };
-    }
-
-    private void setupProfileTracker() {
-        mProfileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-
-            }
-        };
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 
-    private void initFb() {
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        setupTokenTracker();
-        setupProfileTracker();
-
-        mTokenTracker.startTracking();
-        mProfileTracker.startTracking();
-
-    }
-
 
     public void startLoginProcess() {
-        final Intent intent = new Intent(this, MainActivity.class);
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 loginButton.setVisibility(View.GONE);
-                Log.d("Facebook Login", "AccessToken: " + loginResult.getAccessToken().toString());
-                profile = Profile.getCurrentProfile();
-                first_name = profile.getFirstName();
-                last_name = profile.getLastName();
-                profile_pic = profile.getProfilePictureUri(400, 400);
-                fb_id = profile.getId();
+                Log.d("Facebook Login", "AccessToken: " + loginResult.getAccessToken().getToken());
+                Profile prof = Profile.getCurrentProfile();
+                updateProfile(prof);
 
-                String name = first_name + " " + last_name;
+                mProfileTracker = new ProfileTracker() {
+                    @Override
+                    protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                        updateProfile(newProfile);
 
-                editor.putString("fb_id", fb_id);
-                editor.putString("profile_url", profile_pic.toString());
-                editor.putString("username", name);
-                editor.commit();
+                    }
+                };
 
-
-                User newUser = new User(name, fb_id, profile_pic.toString());
-
-                apiClient = APIClient.getApiClient();
-
-                registerUserDetails(LoginActivity.this, apiClient, newUser);
-
-                Log.d("First name", first_name);
-                Log.d("Last name", last_name);
-                Log.d("FB_ID", fb_id);
-                Log.d("Profile_pic", profile_pic.toString());
-
-
-                startActivity(intent);
 
             }
 
             @Override
             public void onCancel() {
+                Toast.makeText(LoginActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -192,6 +151,44 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+
+    private void updateProfile(Profile newProfile) {
+        if (newProfile != null) {
+            Log.i("UPDATE", "updateProfile: update profile worked");
+            Intent intent = new Intent(this, MainActivity.class);
+            profile = newProfile;
+            first_name = profile.getFirstName();
+            last_name = profile.getLastName();
+            profile_pic = profile.getProfilePictureUri(400, 400);
+            fb_id = profile.getId();
+
+            String name = first_name + " " + last_name;
+
+            editor.putString("fb_id", fb_id);
+            editor.putString("profile_url", profile_pic.toString());
+            editor.putString("username", name);
+            editor.commit();
+
+
+            User newUser = new User(name, fb_id, profile_pic.toString());
+
+            apiClient = APIClient.getApiClient();
+
+            registerUserDetails(LoginActivity.this, apiClient, newUser);
+
+            Log.d("First name", first_name);
+            Log.d("Last name", last_name);
+            Log.d("FB_ID", fb_id);
+            Log.d("Profile_pic", profile_pic.toString());
+            startActivity(intent);
+        }
+    }
 
 }
-

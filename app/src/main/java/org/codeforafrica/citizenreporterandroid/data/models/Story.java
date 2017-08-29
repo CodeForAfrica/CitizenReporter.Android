@@ -1,10 +1,13 @@
 package org.codeforafrica.citizenreporterandroid.data.models;
 
 
+import android.util.Log;
+
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,17 +15,32 @@ import java.util.List;
  */
 
 public class Story {
+    @SerializedName("id")
+    private long remote_id;
+
+    @SerializedName("local_id")
     private long local_id;
+    @SerializedName("assignmentId")
     private int assignmentId;
+    @SerializedName("title")
     private String title;
-    private String cause;
+    @SerializedName("summary")
+    private String summary;
+    @SerializedName("who")
     private String who;
+    @SerializedName("author")
     private String author;
+    @SerializedName("fb_id")
     private String authorId;
+    @SerializedName("when")
     private String when;
-    private List<String> media = new ArrayList<>();
+
+    private transient List<String> media = new ArrayList<>();
+    @SerializedName("uploaded")
     private boolean uploaded;
+    @SerializedName("updated")
     private String updated;
+    @SerializedName("where")
     private String where;
 
     public Story() {
@@ -44,12 +62,12 @@ public class Story {
         this.title = title;
     }
 
-    public String getCause() {
-        return cause;
+    public String getSummary() {
+        return summary;
     }
 
-    public void setCause(String cause) {
-        this.cause = cause;
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public String getWho() {
@@ -84,6 +102,10 @@ public class Story {
         this.when = when;
     }
 
+    public void setMedia(List<String> media) {
+        this.media = media;
+    }
+
     public String putMediaIntoDB() {
         /**
          * method returns a string consisting of all the paths the media attached separated by comas
@@ -93,6 +115,7 @@ public class Story {
             String concat_media = "";
             for(String item: media){
                 concat_media = concat_media + item + ",";
+                Log.d("======", "putMediaIntoDB: " + item);
             }
             return concat_media;
         } else {
@@ -104,12 +127,6 @@ public class Story {
         return media;
     }
 
-    public void addMedia(String media) {
-        /**
-         * adds a media item to the media list of the object
-         */
-        this.media.add(media);
-    }
 
     public void setMediaFromDB(String media_csv) {
         /**
@@ -128,9 +145,9 @@ public class Story {
             for (String path: temp_items) {
                 items.add(path);
             }
-            this.media = items;
+            media = items;
         } else {
-            this.media = Collections.EMPTY_LIST;
+            media = Collections.EMPTY_LIST;
         }
 
     }
@@ -166,5 +183,13 @@ public class Story {
 
     public void setWhere(String where) {
         this.where = where;
+    }
+
+    public long getRemote_id() {
+        return remote_id;
+    }
+
+    public void setRemote_id(long remote_id) {
+        this.remote_id = remote_id;
     }
 }
