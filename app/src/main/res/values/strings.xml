@@ -60,5 +60,8 @@
     <string name="add_photo">Capture Photo</string>
     <string name="add_video">Add video</string>
     <string name="record_audio">Record Audio</string>
+    <string name="sdcard_title">SD Card Required</string>
+    <string name="sdcard_message">A mounted SD card is required to upload media</string>
+    <string name="ok">Ok</string>
 
 </resources>

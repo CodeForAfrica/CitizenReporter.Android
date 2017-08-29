@@ -225,10 +225,44 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             case RequestCodes.OVERLAY_CAMERA:
                 if (resultCode == Constants.CAMERA_MODE) {
                     Log.d("OverlayCameraResult", "onActivityResult: camera mode");
+                    StoryBoardUtils.launchCamera(Storyboard.this, new StoryBoardUtils.LaunchCameraCallback() {
+                        @Override
+                        public void onMediaCapturePathReady(String mediaCapturePath) {
+//                            mMediaCapturePath = mediaCapturePath;
+                            Log.d("MEDIA CAPTURE IMAGE", "onMediaCapturePathReady: " + mediaCapturePath);
+                            local_media.add(mediaCapturePath);
+                            File f = new File(mediaCapturePath);
+                            Uri imageUri = Uri.fromFile(f);
+                            addImageAttachment(imageUri);
+
+                        }
+                    });
                 } else if (resultCode == Constants.VIDEO_MODE) {
                     Log.d("OverlayCameraResult", "onActivityResult: video mode");
+                    StoryBoardUtils.launchVideoCamera_SD(Storyboard.this, new StoryBoardUtils.LaunchVideoCameraCallback(){
+                        @Override
+                        public void onMediaCapturePathReady(String mediaCapturePath) {
+//                            mMediaCapturePath = mediaCapturePath;
+                            Log.d("MEDIA CAPTURE VIDEO", "onMediaCapturePathReady: " + mediaCapturePath);
+                            local_media.add(mediaCapturePath);
+                            File f = new File(mediaCapturePath);
+                            Uri videoUri = Uri.fromFile(f);
+                            addVideoAttachment(videoUri);
+                        }
+                    });
                 }
 
+                break;
+
+            case RequestCodes.TAKE_PHOTO:
+                if (resultCode == Activity.RESULT_OK) {
+
+                }
+                break;
+            case RequestCodes.TAKE_VIDEO:
+                if (resultCode == Activity.RESULT_OK) {
+
+                }
                 break;
 
 
@@ -306,13 +340,10 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
         String string_date = String.format("%02d", dayOfMonth) + " " + month + " " + year;
         // TODO attach date to post
-        activeStory.setTitle("New Title");
+
         activeStory.setWhen(string_date);
         date.setText(string_date);
 
-        // update the current story
-        int as = dataHelper.updateStory(activeStory);
-        Log.d("UPDATE", "onDateSet: " + String.valueOf(as));
     }
 
     public void openImagePicker(){
@@ -368,13 +399,13 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
     }
 
-    public void addVideoAttachment() {
+    public void addVideoAttachment(Uri uri) {
         View view = inflater.inflate(R.layout.item_video, null);
         TextView filename = (TextView) view.findViewById(R.id.video_filename_tv);
         TextView filesize = (TextView) view.findViewById(R.id.video_filesize_tv);
 
 
-        filename.setText("recording.mp4");
+        filename.setText(uri.getLastPathSegment());
         filesize.setText("1.5MB");
 
         attachmentsLayout.addView(view);

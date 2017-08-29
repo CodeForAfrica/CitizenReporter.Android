@@ -46,7 +46,7 @@ public class Constants {
 
     public static final int REQUEST_RECORD_AUDIO = 321;
     public static final int REQUEST_CAMERA_PERMISSION = 729;
-    public static final String RECORDING_PREFIX = "/creporter_";
+    public static final String RECORDING_PREFIX = "/cr_";
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 31;
     public static final String AUDIO_MIMETYPE = "audio/x-wav";
 
