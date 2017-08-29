@@ -113,7 +113,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             long storyID = getIntent().getLongExtra("STORY_ID", -1);
             if (storyID > -1) {
                 // open a saved story
-
                 Log.d("OPENSTORY", "onCreate: YEAH");
                 activeStory = dataHelper.getStory(storyID);
                 attachAuthorCred(activeStory);
@@ -136,11 +135,12 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             int assignmentID = getIntent().getIntExtra("assignmentID", 0);
             activeStory = new Story();
             activeStory.setSummary("");
-            activeStory.setWhen("");
+            activeStory.setWhen("Date");
             activeStory.setWho("");
-            activeStory.setTitle("");
+            activeStory.setTitle("Draft");
             activeStory.setAssignmentId(assignmentID);
             attachAuthorCred(activeStory);
+
             long savedID = dataHelper.saveStory(activeStory);
 
             // make story null
@@ -150,7 +150,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             if (savedID >= 0) {
                 activeStory = dataHelper.getStory(savedID);
             }
-
 
         }
 
@@ -164,18 +163,35 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (!isSaved) {
+    protected void onPause() {
+        if (!isSaved && activeStory.getTitle().isEmpty()) {
             activeStory.setTitle("Draft");
+            savePost(activeStory);
+        } else {
+            savePost(activeStory);
         }
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        if (!isSaved && activeStory.getTitle().isEmpty()) {
+            activeStory.setTitle("Draft");
+            savePost(activeStory);
+        } else {
+            savePost(activeStory);
+        }
+        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (!isSaved) {
+        if (!isSaved && activeStory.getTitle().isEmpty()) {
             activeStory.setTitle("Draft");
+            savePost(activeStory);
+        } else {
+            savePost(activeStory);
         }
     }
 
@@ -449,7 +465,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
         story.setSummary(story_cause.getText().toString());
 
-        dataHelper.saveStory(story);
+        dataHelper.updateStory(story);
 
         Toast.makeText(this, "story has been saved", Toast.LENGTH_SHORT).show();
 

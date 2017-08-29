@@ -82,4 +82,15 @@ public class StoriesRecyclerViewAdapter extends
     public int getItemCount() {
         return storyList.size();
     }
+
+    public void notify(List<Story> list) {
+        if (storyList != null) {
+            storyList.clear();
+            storyList.addAll(list);
+
+        } else {
+            storyList = list;
+        }
+        notifyDataSetChanged();
+    }
 }
