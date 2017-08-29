@@ -48,6 +48,7 @@ import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -123,6 +124,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 date.setText(activeStory.getWhen());
 
                 location.setText(activeStory.getWhere());
+
+                for (String path : activeStory.getMedia()) {
+                    local_media.add(path);
+                    displaySavedMedia(path);
+                }
 
 
             } else {
@@ -375,7 +381,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
                             local_media.add(MediaUtils.getPathFromUri(context, uri));
                         }
-
                     }
                 })
                 .setPeekHeight(500)
@@ -506,6 +511,20 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 mDialog.dismiss();
             }
         });
+    }
+
+    private void displaySavedMedia(String path) {
+        String mimetype = StoryBoardUtils.getMimeType(path);
+        if (mimetype.contains("audio")) {
+            // todo add audio attachment
+            addAudioAttachment();
+        } else if (mimetype.contains("image")){
+            File f = new File(path);
+            addImageAttachment(Uri.fromFile(f));
+        } else if (mimetype.contains("video")){
+            File f = new File(path);
+            addVideoAttachment(Uri.fromFile(f));
+        }
     }
 
 
