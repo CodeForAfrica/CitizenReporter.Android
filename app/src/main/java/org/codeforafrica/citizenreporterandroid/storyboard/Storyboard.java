@@ -222,13 +222,15 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 }
                 break;
 
-            case Constants.CAMERA_MODE:
-                Log.d("OverlayCameraResult", "onActivityResult: camera mode");
+            case RequestCodes.OVERLAY_CAMERA:
+                if (resultCode == Constants.CAMERA_MODE) {
+                    Log.d("OverlayCameraResult", "onActivityResult: camera mode");
+                } else if (resultCode == Constants.VIDEO_MODE) {
+                    Log.d("OverlayCameraResult", "onActivityResult: video mode");
+                }
+
                 break;
 
-            case Constants.VIDEO_MODE:
-                Log.d("OverlayCameraResult", "onActivityResult: video mode");
-                break;
 
 
         }

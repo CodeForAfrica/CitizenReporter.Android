@@ -203,6 +203,8 @@ public class OverlayCameraActivity extends AppCompatActivity {
 
     private void closeOverlay () {
 
+        mStoryMode = getIntent().getIntExtra("mode",-1);
+
         Intent intent=new Intent();
         intent.putExtra("MESSAGE", "Overlay selected");
         setResult(mStoryMode, intent);
