@@ -78,6 +78,8 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     @BindView(R.id.attachments_button)
     ImageView attachmentsMenuBtn;
 
+    @BindView(R.id.summary) EditText summary;
+
     @BindView(R.id.attachmentsLayout)
     LinearLayout attachmentsLayout;
 
@@ -121,6 +123,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 story_title.setText(activeStory.getTitle());
                 story_cause.setText(activeStory.getSummary());
                 story_who.setText(activeStory.getWho());
+                summary.setText(activeStory.getSummary());
 
                 date.setText(activeStory.getWhen());
 
