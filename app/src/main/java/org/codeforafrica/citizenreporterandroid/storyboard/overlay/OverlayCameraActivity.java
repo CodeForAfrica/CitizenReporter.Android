@@ -20,6 +20,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -44,11 +45,16 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.pixplicity.sharp.Sharp;
 import com.pixplicity.sharp.SharpPicture;
 
 
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.utils.Constants;
+import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
+import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,6 +62,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 
 public class OverlayCameraActivity extends AppCompatActivity {
@@ -81,7 +88,19 @@ public class OverlayCameraActivity extends AppCompatActivity {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             setupCamera(width, height);
-            openCamera();
+            if (ActivityCompat.checkSelfPermission(OverlayCameraActivity.this,
+                    Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                openCamera();
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(OverlayCameraActivity.this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)){
+
+                }
+
+                ActivityCompat.requestPermissions(
+                        OverlayCameraActivity.this, new String[] {Manifest.permission.CAMERA},
+                        Constants.REQUEST_CAMERA_PERMISSION);
+            }
         }
 
         @Override
@@ -108,17 +127,20 @@ public class OverlayCameraActivity extends AppCompatActivity {
         configureTransform(previewSize.getWidth(), previewSize.getHeight());
         CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                cameraManager.openCamera(mCameraId, mCameraDeviceStateCallback, null);
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)){
+
+                }
+
+                ActivityCompat.requestPermissions(
+                        this, new String[] {Manifest.permission.CAMERA},
+                        Constants.REQUEST_CAMERA_PERMISSION);
             }
-            cameraManager.openCamera(mCameraId, mCameraDeviceStateCallback, null);
+
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -130,7 +152,7 @@ public class OverlayCameraActivity extends AppCompatActivity {
         public void onOpened(@NonNull CameraDevice camera) {
             mCameraDevice = camera;
             createCameraPreviewSession();
-//            Toast.makeText(CamaraIntentActivity.this, "camera Opened", Toast.LENGTH_LONG).show();
+            Toast.makeText(OverlayCameraActivity.this, "camera Opened", Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -152,6 +174,9 @@ public class OverlayCameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_overlay);
+
+        StoryBoardUtils.requestPermission(this, Manifest.permission.CAMERA);
 
         overlayGroup = getIntent().getIntExtra("group", 0);
         overlayIdx = getIntent().getIntExtra("overlay", 0);
@@ -161,7 +186,11 @@ public class OverlayCameraActivity extends AppCompatActivity {
         mOverlayView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Toast.makeText(OverlayCameraActivity.this, "Overlay Clicked", Toast.LENGTH_LONG).show();
+
+                closeOverlay();
+
             }
         });
 
@@ -174,10 +203,11 @@ public class OverlayCameraActivity extends AppCompatActivity {
 
     private void closeOverlay () {
 
-
         Intent intent=new Intent();
         intent.putExtra("MESSAGE", "Overlay selected");
         setResult(mStoryMode, intent);
+
+        closeCamera();
 
         finish();
 
@@ -185,7 +215,6 @@ public class OverlayCameraActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
 
         if (mTextureView.isAvailable()) {
             setupCamera(mTextureView.getWidth(), mTextureView.getHeight());
@@ -213,6 +242,7 @@ public class OverlayCameraActivity extends AppCompatActivity {
             mCameraDevice.close();
             mCameraDevice = null;
         }
+
     }
 
 
@@ -235,7 +265,6 @@ public class OverlayCameraActivity extends AppCompatActivity {
     {
         try
         {
-            // images/overlays/svg
             String groupPath = "images/overlays/svg/" + overlayGroup;
 
             //if (overlays == null)
@@ -390,6 +419,22 @@ public class OverlayCameraActivity extends AppCompatActivity {
             matrix.postRotate(180, centerX, centerY);
         }
         mTextureView.setTransform(matrix);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == Constants.REQUEST_CAMERA_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                Toast.makeText(this,
+                        "Permission to access your location was denied",
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
 }

@@ -101,7 +101,10 @@
         <activity
             android:name=".main.assignments.AssignmentDetailActivity"
             android:label="AssignmentDetail"></activity>
-        <activity android:name=".storyboard.overlay.OverlayCameraActivity"></activity>
+        <activity
+            android:name=".storyboard.overlay.OverlayCameraActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
