@@ -235,7 +235,9 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                 if (resultCode == RESULT_OK) {
                     Log.i(this.getLocalClassName(), "MimeType: " + StoryBoardUtils.getMimeType(audio_path));
                     Toast.makeText(this, "Audio recorded successfully! " + audio_path, Toast.LENGTH_SHORT).show();
-                    addAudioAttachment();
+                    File f = new File(audio_path);
+                    Uri audioUri = Uri.fromFile(f);
+                    addAudioAttachment(audioUri);
                     local_media.add(audio_path);
                     Log.i(this.getLocalClassName(), "onActivityResult: " + activeStory.getMedia().size());
                     dataHelper.updateStory(activeStory);
@@ -408,12 +410,12 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         attachmentsLayout.addView(view);
     }
 
-    public void addAudioAttachment() {
+    public void addAudioAttachment(Uri uri) {
         View view = inflater.inflate(R.layout.item_audio, null);
         TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
         TextView filesize = (TextView) view.findViewById(R.id.audio_filesize_tv);
 
-        filename.setText("recording.mp3");
+        filename.setText(uri.getLastPathSegment());
         filesize.setText("1.5MB");
 
         attachmentsLayout.addView(view);
@@ -514,15 +516,14 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     }
 
     private void displaySavedMedia(String path) {
+        File f = new File(path);
         String mimetype = StoryBoardUtils.getMimeType(path);
         if (mimetype.contains("audio")) {
             // todo add audio attachment
-            addAudioAttachment();
+            addAudioAttachment(Uri.fromFile(f));
         } else if (mimetype.contains("image")){
-            File f = new File(path);
             addImageAttachment(Uri.fromFile(f));
         } else if (mimetype.contains("video")){
-            File f = new File(path);
             addVideoAttachment(Uri.fromFile(f));
         }
     }
