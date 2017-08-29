@@ -3,6 +3,7 @@ package org.codeforafrica.citizenreporterandroid.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,8 +15,12 @@ import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesRecyclerViewAdapter;
 
+import java.io.File;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,7 +80,7 @@ public class NetworkHelper {
     }
 
     public static void uploadUserStory(
-            final Context context, APIInterface apiClient, Story story) {
+            final Context context, APIInterface apiClient, final Story story) {
         Call<Story> storyUploadCall = apiClient.uploadStory(story);
         storyUploadCall.enqueue(new Callback<Story>() {
             @Override
@@ -85,6 +90,10 @@ public class NetworkHelper {
                         case 201:
                             Toast.makeText(context, "Story Successfully Uploaded",
                                     Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "onResponse: " + response.body().toString());
+                            story.setUploaded(true);
+                            LocalDataHelper dataHelper = new LocalDataHelper(context);
+                            dataHelper.updateStory(story);
                             break;
                         case 202:
                             // server returns a 202 if the user already exists
@@ -224,14 +233,45 @@ public class NetworkHelper {
     }
 
 
-//    public static void uploadMediaFiles(
-//            final Context context, APIInterface apiClient, String remoteStoryId, Uri fileUri) {
-//        ResponseBody id = ResponseBody.create(MultipartBody.FORM, remoteStoryId);
-//
-//        RequestBody filePart = RequestBody.create(MediaType.parse());
-//        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-//        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
-//
-//    }
+
+    private void uploadFile(String filePath, int storyID) {
+        // create upload service client
+        FileUploadService service =
+                APIClient.createService(FileUploadService.class);
+
+        // https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
+        // use the FileUtils to get the actual file by uri
+        File file = new File(filePath);
+
+        // create RequestBody instance from file
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse(filePath),
+                        file
+                );
+
+        // MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+
+        RequestBody id =
+                RequestBody.create(
+                        okhttp3.MultipartBody.FORM, String.valueOf(storyID));
+
+        // finally, execute the request
+        Call<ResponseBody> call = service.upload(id, body);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call,
+                                   Response<ResponseBody> response) {
+                Log.v("Upload", "success");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Upload error:", t.getMessage());
+            }
+        });
+    }
 
 }

@@ -41,8 +41,11 @@ import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.storyboard.overlay.OverlayCameraActivity;
+import org.codeforafrica.citizenreporterandroid.utils.APIClient;
+import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
 import org.codeforafrica.citizenreporterandroid.utils.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
+import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 import org.codeforafrica.citizenreporterandroid.utils.RequestCodes;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
@@ -459,6 +462,13 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     @OnClick(R.id.save_button)
     public void savedClicked() {
         savePost(activeStory);
+    }
+
+
+    @OnClick(R.id.upload_button)
+    public void uploadStory() {
+        APIInterface apiClient = APIClient.getApiClient();
+        NetworkHelper.uploadUserStory(Storyboard.this, apiClient, activeStory);
     }
 
     public void savePost(Story story) {

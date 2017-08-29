@@ -38,15 +38,9 @@ public interface APIInterface {
     @PATCH("users/update/{fb_id}/")
     Call<ResponseBody> updateLocation(@Path("fb_id") String fb_id, @Field("location") String locationString);
 
-    @POST()
+    @POST("stories/")
     Call<Story> uploadStory(@Body Story story);
 
-    @Multipart
-    @POST()
-    Call<ResponseBody> uploadFile(
-            @Part ResponseBody story_id,
-            @Part MultipartBody.Part file
-            );
 
     @GET("assignments")
     Call<List<Assignment>> getAssignments();

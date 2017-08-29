@@ -3,6 +3,8 @@ package org.codeforafrica.citizenreporterandroid.data.models;
 
 import android.util.Log;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,17 +15,32 @@ import java.util.List;
  */
 
 public class Story {
+    @SerializedName("id")
+    private long remote_id;
+
+    @SerializedName("local_id")
     private long local_id;
+    @SerializedName("assignmentId")
     private int assignmentId;
+    @SerializedName("title")
     private String title;
+    @SerializedName("summary")
     private String summary;
+    @SerializedName("who")
     private String who;
+    @SerializedName("author")
     private String author;
+    @SerializedName("fb_id")
     private String authorId;
+    @SerializedName("when")
     private String when;
-    private List<String> media = new ArrayList<>();
+
+    private transient List<String> media = new ArrayList<>();
+    @SerializedName("uploaded")
     private boolean uploaded;
+    @SerializedName("updated")
     private String updated;
+    @SerializedName("where")
     private String where;
 
     public Story() {
@@ -166,5 +183,13 @@ public class Story {
 
     public void setWhere(String where) {
         this.where = where;
+    }
+
+    public long getRemote_id() {
+        return remote_id;
+    }
+
+    public void setRemote_id(long remote_id) {
+        this.remote_id = remote_id;
     }
 }
