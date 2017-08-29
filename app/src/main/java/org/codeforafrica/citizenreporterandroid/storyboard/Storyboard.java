@@ -91,6 +91,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     private final Calendar calendar = Calendar.getInstance();
     private Context context;
     private Boolean isSaved = false;
+    private String mMediaCaptureString;
 
     private final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
             this, calendar.get(Calendar.YEAR),
@@ -254,11 +255,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                         public void onMediaCapturePathReady(String mediaCapturePath) {
 //                            mMediaCapturePath = mediaCapturePath;
                             Log.d("MEDIA CAPTURE IMAGE", "onMediaCapturePathReady: " + mediaCapturePath);
-                            local_media.add(mediaCapturePath);
-                            File f = new File(mediaCapturePath);
-                            Uri imageUri = Uri.fromFile(f);
-                            addImageAttachment(imageUri);
-
+                            mMediaCaptureString = mediaCapturePath;
                         }
                     });
                 } else if (resultCode == Constants.VIDEO_MODE) {
@@ -268,10 +265,8 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                         public void onMediaCapturePathReady(String mediaCapturePath) {
 //                            mMediaCapturePath = mediaCapturePath;
                             Log.d("MEDIA CAPTURE VIDEO", "onMediaCapturePathReady: " + mediaCapturePath);
-                            local_media.add(mediaCapturePath);
-                            File f = new File(mediaCapturePath);
-                            Uri videoUri = Uri.fromFile(f);
-                            addVideoAttachment(videoUri);
+                            mMediaCaptureString = mediaCapturePath;
+
                         }
                     });
                 }
@@ -280,11 +275,19 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
             case RequestCodes.TAKE_PHOTO:
                 if (resultCode == Activity.RESULT_OK) {
+                    local_media.add(mMediaCaptureString);
+                    File f = new File(mMediaCaptureString);
+                    Uri imageUri = Uri.fromFile(f);
+                    addImageAttachment(imageUri);
 
                 }
                 break;
             case RequestCodes.TAKE_VIDEO:
                 if (resultCode == Activity.RESULT_OK) {
+                    local_media.add(mMediaCaptureString);
+                    File f = new File(mMediaCaptureString);
+                    Uri videoUri = Uri.fromFile(f);
+                    addVideoAttachment(videoUri);
 
                 }
                 break;
