@@ -1,8 +1,5 @@
 package org.codeforafrica.citizenreporterandroid.test;
 
-import org.codeforafrica.citizenreporterandroid.OnboardingActivity;
-import org.codeforafrica.citizenreporterandroid.OnboardingActivityPresenter;
-import org.codeforafrica.citizenreporterandroid.OnboardingActivityView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,28 +7,25 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static org.junit.Assert.*;
+import org.codeforafrica.citizenreporterandroid.ui.onboarding.OnboardingActivityPresenter;
+import org.codeforafrica.citizenreporterandroid.ui.onboarding.OnboardingActivityView;
 
 /**
  * Created by Ahereza on 8/31/17.
  */
 public class OnboardingActivityPresenterTest {
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+  @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Mock
-    OnboardingActivityView view;
+  @Mock OnboardingActivityView view;
 
-    OnboardingActivityPresenter presenter;
+  OnboardingActivityPresenter presenter;
 
-    @Before public void setUp(){
-        presenter = new OnboardingActivityPresenter(view);
-    }
-    @Test
-    public void testProceedToLogin() {
-        presenter.proceedToLogin();
-        Mockito.verify(view).startLoginActivity();
-    }
+  @Before public void setUp() {
+    presenter = new OnboardingActivityPresenter(view);
+  }
 
+  @Test public void testProceedToLogin() {
+    presenter.proceedToLogin();
+    Mockito.verify(view).startLoginActivity();
+  }
 }

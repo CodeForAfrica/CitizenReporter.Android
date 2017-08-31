@@ -1,17 +1,14 @@
 package org.codeforafrica.citizenreporterandroid.test;
 
-import org.codeforafrica.citizenreporterandroid.SplashActivityPresenter;
-import org.codeforafrica.citizenreporterandroid.SplashActivityView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static org.junit.Assert.*;
+import org.codeforafrica.citizenreporterandroid.ui.splash.SplashActivityPresenter;
+import org.codeforafrica.citizenreporterandroid.ui.splash.SplashActivityView;
 
 /**
  * Created by Ahereza on 8/31/17.
@@ -19,23 +16,21 @@ import static org.junit.Assert.*;
 
 public class SplashActivityPresenterTest {
 
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+  @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Mock
-    SplashActivityView view;
+  @Mock SplashActivityView view;
 
-    SplashActivityPresenter presenter;
+  SplashActivityPresenter presenter;
 
-    @Before public void setUp() {
+  @Before public void setUp() {
 
-        presenter = new SplashActivityPresenter(view);
-    }
+    presenter = new SplashActivityPresenter(view);
+  }
 
-    @Test public void testPresenterStartsNextActivity() {
+  @Test public void testPresenterStartsNextActivity() {
 
-        presenter.startNextActivity();
+    presenter.startNextActivity();
 
-        Mockito.verify(view).goToNextActivity();
-    }
-
+    Mockito.verify(view).goToNextActivity();
+  }
 }
