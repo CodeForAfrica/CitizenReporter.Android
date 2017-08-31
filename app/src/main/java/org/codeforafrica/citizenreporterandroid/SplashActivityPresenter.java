@@ -5,6 +5,8 @@ package org.codeforafrica.citizenreporterandroid;
  */
 
 public class SplashActivityPresenter {
+    // TODO: 8/31/17 inject preferences so that we can test start mainactivity or onboarding
+    // activity independently
     private SplashActivityView view;
 
     public SplashActivityPresenter(SplashActivityView view) {

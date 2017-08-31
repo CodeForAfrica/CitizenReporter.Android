@@ -13,14 +13,16 @@ import com.github.paolorotolo.appintro.AppIntroFragment;
 
 import org.codeforafrica.citizenreporterandroid.auth.LoginActivity;
 
-public class OnboardingActivity extends AppIntro {
+public class OnboardingActivity extends AppIntro implements OnboardingActivityView{
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private OnboardingActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        presenter = new OnboardingActivityPresenter(this);
         editor = sharedPreferences.edit();
         addSlide(AppIntroFragment.newInstance("Welcome",
                 "Description", R.drawable.cfa_transparent_blue_back,
@@ -38,14 +40,13 @@ public class OnboardingActivity extends AppIntro {
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
         onboardingComplete();
-        startLoginActivity();
+        presenter.proceedToLogin();
     }
 
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
         onboardingComplete();
-        startLoginActivity();
     }
 
     public void onboardingComplete(){
@@ -53,9 +54,11 @@ public class OnboardingActivity extends AppIntro {
         editor.commit();
     }
 
-    public void startLoginActivity(){
+
+    @Override
+    public void startLoginActivity() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+        presenter.proceedToLogin();
     }
-
 }
