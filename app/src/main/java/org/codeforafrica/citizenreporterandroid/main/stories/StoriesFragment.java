@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,9 +85,38 @@ public class StoriesFragment extends Fragment {
             }
         }
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(createHelperCallBack());
+        itemTouchHelper.attachToRecyclerView(storiesRecyclerView);
+
 
 //        adapter.setStoryList(dataHelper.getAllStories());
 //        adapter.notifyDataSetChanged();
+    }
+
+    // Method that handles Swipe and Move events
+    private ItemTouchHelper.Callback createHelperCallBack() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                          RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                        deleteStory(viewHolder.getAdapterPosition());
+                    }
+                };
+        return simpleItemTouchCallback;
+    }
+
+    // Method that handles deleting of a story
+    private void deleteStory(final int position) {
+        stories.remove(position);
+        adapter.notifyItemRemoved(position);
+
     }
 
     @Override
