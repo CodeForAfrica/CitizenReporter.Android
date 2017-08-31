@@ -80,6 +80,7 @@
                         android:layout_marginEnd="4dp"
                         android:layout_marginStart="4dp"
                         app:srcCompat="@drawable/ic_file_upload_white_48dp" />
+
                 </LinearLayout>
 
 
@@ -99,6 +100,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:indeterminate="true"
+                    android:progress="1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/story_title"
@@ -158,6 +173,8 @@
                 android:orientation="vertical">
 
             </LinearLayout>
+
+
 
 
         </LinearLayout>

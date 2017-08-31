@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -25,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,17 +106,23 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     private LayoutInflater inflater;
     private String audio_path;
+    private ProgressBar progressBar;
+    int progressStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storyboard);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         dataHelper = new LocalDataHelper(this);
         ButterKnife.bind(this);
         String action = getIntent().getAction();
         inflater = LayoutInflater.from(Storyboard.this);
         local_media = new ArrayList<>();
         context = this;
+
+
 
 
         if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
@@ -404,6 +413,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         bottomSheetDialogFragment.show(getSupportFragmentManager());
     }
 
+
     public void addImageAttachment(Uri uri) {
         View view = inflater.inflate(R.layout.item_image, null);
         TextView filename = (TextView) view.findViewById(R.id.image_filename_tv);
@@ -464,11 +474,34 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         savePost(activeStory);
     }
 
-
+    //This method allows the progressbar to display properly onClick
     @OnClick(R.id.upload_button)
-    public void uploadStory() {
+    public void uploadStoryClicked() {
+        progressBar.setVisibility(View.VISIBLE);
+        Handler handler = new Handler();
+        handler.postDelayed(mUploadRunnable, 1000);
+
+    }
+
+    //Runnable executes the uploadStory() method
+    private Runnable mUploadRunnable = new Runnable(){
+
+        @Override
+        public void run() {
+            uploadStory(activeStory);
+        }
+    };
+
+
+    public void uploadStory(Story story){
+        Log.d("Upload story", "uploadStory() called with: story = [" + story + "]");
+
         APIInterface apiClient = APIClient.getApiClient();
-        NetworkHelper.uploadUserStory(Storyboard.this, apiClient, activeStory);
+        NetworkHelper.uploadUserStory(Storyboard.this, apiClient, story);
+        progressBar.setVisibility(View.INVISIBLE);
+        Toast.makeText(this, "story was uploaded successfully", Toast.LENGTH_SHORT).show();
+
+
     }
 
     public void savePost(Story story) {
