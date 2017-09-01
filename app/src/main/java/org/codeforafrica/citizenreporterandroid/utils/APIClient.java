@@ -9,13 +9,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
 
-    public static APIInterface getApiClient(){
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://a3ca48e8.ngrok.io/api/")
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-        APIInterface apiClient = retrofit.create(APIInterface.class);
-        return apiClient;
-    }
+  private static Retrofit retrofit;
 
+  public static APIInterface getApiClient() {
+    Retrofit.Builder builder =
+        new Retrofit.Builder().baseUrl("http://api.creporter.codeforafrica.org/api/")
+            //                .baseUrl("http://24f488d3.ngrok.io/api/")
+            .addConverterFactory(GsonConverterFactory.create());
+    retrofit = builder.build();
+    APIInterface apiClient = retrofit.create(APIInterface.class);
+    return apiClient;
+  }
+
+  public static <S> S createService(Class<S> serviceClass) {
+    return retrofit.create(serviceClass);
+  }
 }

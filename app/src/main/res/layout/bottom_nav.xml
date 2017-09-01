@@ -5,6 +5,31 @@
     android:orientation="horizontal">
 
     <LinearLayout
+        android:id="@+id/button_mic"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <View
+            android:id="@+id/camView02"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_record_voice_over_black_48dp" />
+
+        <View
+            android:id="@+id/camView1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/button_camera"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -56,14 +81,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/button_mic"
+        android:id="@+id/button_gallery"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center">
 
         <View
-            android:id="@+id/camView02"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -71,10 +95,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_record_voice_over_black_48dp" />
+            android:src="@drawable/ic_image_black_24dp" />
 
         <View
-            android:id="@+id/camView1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
