@@ -41,7 +41,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.R;
-import org.codeforafrica.citizenreporterandroid.utils.Constants;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 
 public class OverlayCameraActivity extends AppCompatActivity {

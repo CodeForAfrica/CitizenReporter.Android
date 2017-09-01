@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
-import org.codeforafrica.citizenreporterandroid.utils.Constants;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 
 /**
  * Created by Mugiwara_Munyi on 30/07/2017.

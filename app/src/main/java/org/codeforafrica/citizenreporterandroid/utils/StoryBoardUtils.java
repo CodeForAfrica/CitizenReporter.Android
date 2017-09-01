@@ -19,6 +19,7 @@ import cafe.adriel.androidaudiorecorder.model.AudioSource;
 import java.io.File;
 import java.io.IOException;
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 
 /**
  * Created by Ahereza on 8/10/17.

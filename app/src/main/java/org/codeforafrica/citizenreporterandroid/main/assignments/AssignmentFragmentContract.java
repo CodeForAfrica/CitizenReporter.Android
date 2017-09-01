@@ -19,7 +19,8 @@ public interface AssignmentFragmentContract {
   }
 
   interface Presenter {
-    void getAssignments();
+    void setView(AssignmentFragmentContract.View view);
+    void getAndDisplayAssignments();
     void pullToRefreshAssignments();
     void goToAssignmentDetail(Assignment assignment);
     void checkForInternet();

@@ -1,5 +1,6 @@
 package org.codeforafrica.citizenreporterandroid.utils;
 
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -11,13 +12,13 @@ public class APIClient {
 
   private static Retrofit retrofit;
 
-  public static APIInterface getApiClient() {
+  public static CReporterAPI getApiClient() {
     Retrofit.Builder builder =
-        new Retrofit.Builder().baseUrl("http://api.creporter.codeforafrica.org/api/")
+        new Retrofit.Builder().baseUrl(Constants.BASE_URL)
             //                .baseUrl("http://24f488d3.ngrok.io/api/")
             .addConverterFactory(GsonConverterFactory.create());
     retrofit = builder.build();
-    APIInterface apiClient = retrofit.create(APIInterface.class);
+    CReporterAPI apiClient = retrofit.create(CReporterAPI.class);
     return apiClient;
   }
 

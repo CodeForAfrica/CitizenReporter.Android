@@ -1,10 +1,14 @@
-package org.codeforafrica.citizenreporterandroid.utils;
+package org.codeforafrica.citizenreporterandroid.app;
 
 /**
  * Created by Ahereza on 7/31/17.
  */
 
 public class Constants {
+  public static final String BASE_URL = "http://api.creporter.codeforafrica.org/api/";
+
+  public static final String SHARED_PREF_FILENAME = "creporter_prefs";
+
   public static final String DB_NAME = "citizenReporterDB";
   public static final int DB_VERSION = 1;
 
@@ -43,13 +47,15 @@ public class Constants {
 
   // shared preferences
 
-  private static final String PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE";
-  private static final String PREF_KEY_CURRENT_USER_FB_ID = "PREF_KEY_CURRENT_USER_FB_ID";
-  private static final String PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME";
-  private static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL
+  public static final String PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE";
+  public static final String PREF_KEY_CURRENT_USER_FB_ID = "PREF_KEY_CURRENT_USER_FB_ID";
+  public static final String PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME";
+  public static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL
       = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL";
   public static final String FALLBACK_PROFILE_PIC_URl = "http://www.freeiconspng"
       + ".com/uploads/account-icon-21.png";
+
+  public static final String PREF_KEY_CURRENT_USER_ONBOARDED = "PREF_KEY_CURRENT_USER_ONBOARDED";
 
   // storyboard
 

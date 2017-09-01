@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import com.facebook.AccessToken;
-import org.codeforafrica.citizenreporterandroid.auth.LoginActivity;
+import org.codeforafrica.citizenreporterandroid.ui.auth.LoginActivity;
 
 public class BaseActivity extends AppCompatActivity {
 

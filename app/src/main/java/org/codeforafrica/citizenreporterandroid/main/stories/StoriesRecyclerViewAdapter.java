@@ -15,7 +15,7 @@ import java.util.List;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
-import org.codeforafrica.citizenreporterandroid.utils.Constants;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 
 /**
  * Created by Ahereza on 7/30/17.
