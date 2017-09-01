@@ -41,6 +41,16 @@ public class Constants {
 
   public static final String KEY_ASSIGNMENT_UPDATED = "updated";
 
+  // shared preferences
+
+  private static final String PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE";
+  private static final String PREF_KEY_CURRENT_USER_FB_ID = "PREF_KEY_CURRENT_USER_FB_ID";
+  private static final String PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME";
+  private static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL
+      = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL";
+  public static final String FALLBACK_PROFILE_PIC_URl = "http://www.freeiconspng"
+      + ".com/uploads/account-icon-21.png";
+
   // storyboard
 
   public static final int REQUEST_RECORD_AUDIO = 321;
