@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import org.codeforafrica.citizenreporterandroid.R;
-import org.codeforafrica.citizenreporterandroid.auth.LoginActivity;
+import org.codeforafrica.citizenreporterandroid.ui.auth.LoginActivity;
 
 public class OnboardingActivity extends AppIntro implements OnboardingActivityView {
   private SharedPreferences sharedPreferences;

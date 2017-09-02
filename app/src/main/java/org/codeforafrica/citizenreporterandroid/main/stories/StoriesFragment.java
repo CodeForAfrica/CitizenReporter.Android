@@ -15,10 +15,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.adapter.StoriesRecyclerViewAdapter;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
-import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
+import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
 public class StoriesFragment extends Fragment {
@@ -27,7 +28,7 @@ public class StoriesFragment extends Fragment {
   private StoriesRecyclerViewAdapter adapter;
   private LocalDataHelper dataHelper;
   private SharedPreferences preferences;
-  private APIInterface apiClient;
+  private CReporterAPI apiClient;
 
   public StoriesFragment() {
     // Required empty public constructor

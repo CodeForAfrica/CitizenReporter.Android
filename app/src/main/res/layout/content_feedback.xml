@@ -9,7 +9,7 @@
         android:id="@+id/ScrollView01"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="org.codeforafrica.citizenreporterandroid.feedback.FeedbackActivity"
+        tools:context=".ui.feedback.FeedbackActivity"
         android:backgroundTint="@color/colorBlack">
 
         <LinearLayout

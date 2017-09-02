@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid.main.adapter;
+package org.codeforafrica.citizenreporterandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -77,5 +77,15 @@ public class AssignmentsAdapter
 
   @Override public int getItemCount() {
     return assignmentsList.size();
+  }
+
+  public void notify(List<Assignment> list) {
+    if (list != null) {
+      list.clear();
+      list.addAll(list);
+    } else {
+      assignmentsList = list;
+    }
+    notifyDataSetChanged();
   }
 }

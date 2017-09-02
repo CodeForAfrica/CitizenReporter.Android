@@ -22,20 +22,20 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 import java.util.Objects;
-import org.codeforafrica.citizenreporterandroid.BaseActivity;
+import org.codeforafrica.citizenreporterandroid.ui.base.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
-import org.codeforafrica.citizenreporterandroid.SettingsFragment;
-import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentsFragment;
+import org.codeforafrica.citizenreporterandroid.ui.settings.SettingsFragment;
+import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragment;
 import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
-import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
+import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
 public class MainActivity extends BaseActivity {
 
   private static final int REQUEST_FINE_LOCATION = 12;
   private static final String TAG = "MainActivity";
-  private APIInterface apiClient;
+  private CReporterAPI apiClient;
   private String fb_id;
   private String profile_url;
   private SharedPreferences preferences;

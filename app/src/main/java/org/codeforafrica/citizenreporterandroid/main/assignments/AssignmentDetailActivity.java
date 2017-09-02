@@ -13,7 +13,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
-import org.codeforafrica.citizenreporterandroid.utils.Constants;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 
 /**
  * Created by Mugiwara_Munyi on 14/08/2017.

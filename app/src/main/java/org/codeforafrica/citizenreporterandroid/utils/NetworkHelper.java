@@ -16,8 +16,8 @@ import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
-import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
-import org.codeforafrica.citizenreporterandroid.main.stories.StoriesRecyclerViewAdapter;
+import org.codeforafrica.citizenreporterandroid.adapter.AssignmentsAdapter;
+import org.codeforafrica.citizenreporterandroid.adapter.StoriesRecyclerViewAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,7 +44,7 @@ public class NetworkHelper {
     return true;
   }
 
-  public static void registerUserDetails(final Context context, APIInterface apiClient, User user) {
+  public static void registerUserDetails(final Context context, CReporterAPI apiClient, User user) {
     Log.d("Username", user.getName());
     Call<User> userCall = apiClient.createUser(user);
     userCall.enqueue(new Callback<User>() {
@@ -66,7 +66,7 @@ public class NetworkHelper {
     });
   }
 
-  public static void uploadUserStory(final Context context, APIInterface apiClient,
+  public static void uploadUserStory(final Context context, CReporterAPI apiClient,
       final Story story) {
     Call<Story> storyUploadCall = apiClient.uploadStory(story);
     storyUploadCall.enqueue(new Callback<Story>() {
@@ -104,7 +104,7 @@ public class NetworkHelper {
    * @param adapter the adapter responsible for updating the recyclerview
    */
 
-  public static void getUserStories(final Context context, APIInterface apiClient, String fb_id,
+  public static void getUserStories(final Context context, CReporterAPI apiClient, String fb_id,
       final StoriesRecyclerViewAdapter adapter) {
 
     Call<List<Story>> storiesCall = apiClient.getUserStories(fb_id);
@@ -130,7 +130,7 @@ public class NetworkHelper {
     });
   }
 
-  public static void updateLocation(final Context context, APIInterface apiClient, String location,
+  public static void updateLocation(final Context context, CReporterAPI apiClient, String location,
       String fb_id) {
     Call<ResponseBody> updateLocationCall = apiClient.updateLocation(fb_id, location);
     updateLocationCall.enqueue(new Callback<ResponseBody>() {
@@ -146,7 +146,7 @@ public class NetworkHelper {
     });
   }
 
-  public static void updateFCM(final Context context, APIInterface apiClient, String fcm_token,
+  public static void updateFCM(final Context context, CReporterAPI apiClient, String fcm_token,
       String fb_id) {
     Call<ResponseBody> updateFCMCall = apiClient.updateFCM(fb_id, fcm_token);
     updateFCMCall.enqueue(new Callback<ResponseBody>() {
@@ -162,9 +162,9 @@ public class NetworkHelper {
     });
   }
 
-  public static void getAssignments(final Context context, APIInterface apiClient,
+  public static void getAssignments(final Context context, CReporterAPI apiClient,
       final AssignmentsAdapter adapter, final SwipeRefreshLayout refreshLayout) {
-    Log.d("API", "getAssignments: method called");
+    Log.d("API", "getAndDisplayAssignments: method called");
 
     Call<List<Assignment>> assignmentsCall = apiClient.getAssignments();
     assignmentsCall.enqueue(new Callback<List<Assignment>>() {

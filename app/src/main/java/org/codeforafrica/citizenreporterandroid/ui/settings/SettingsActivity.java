@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid;
+package org.codeforafrica.citizenreporterandroid.ui.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.facebook.login.LoginManager;
-import org.codeforafrica.citizenreporterandroid.auth.LoginActivity;
-import org.codeforafrica.citizenreporterandroid.feedback.FeedbackActivity;
+import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.SupportChannelActivity;
+import org.codeforafrica.citizenreporterandroid.ui.auth.LoginActivity;
+import org.codeforafrica.citizenreporterandroid.ui.about.AboutActivity;
+import org.codeforafrica.citizenreporterandroid.ui.feedback.FeedbackActivity;
 
 public class SettingsActivity extends AppCompatActivity {
 

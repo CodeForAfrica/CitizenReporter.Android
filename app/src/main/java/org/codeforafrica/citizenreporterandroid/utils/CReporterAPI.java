@@ -18,7 +18,7 @@ import retrofit2.http.Path;
  * Created by Ahereza on 8/1/17.
  */
 
-public interface APIInterface {
+public interface CReporterAPI {
   @GET("stories/user/{fb_id}/") Call<List<Story>> getUserStories(@Path("fb_id") String fb_id);
 
   @POST("users/register") Call<User> createUser(@Body User user);

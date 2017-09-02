@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid.auth;
+package org.codeforafrica.citizenreporterandroid.ui.auth;
 
 import android.Manifest;
 import android.content.Intent;
@@ -27,7 +27,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
-import org.codeforafrica.citizenreporterandroid.utils.APIInterface;
+import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
 
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.isNetworkAvailable;
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.registerUserDetails;
@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
   private Uri profile_pic;
   private SharedPreferences preferences;
   private SharedPreferences.Editor editor;
-  private APIInterface apiClient;
+  private CReporterAPI apiClient;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
