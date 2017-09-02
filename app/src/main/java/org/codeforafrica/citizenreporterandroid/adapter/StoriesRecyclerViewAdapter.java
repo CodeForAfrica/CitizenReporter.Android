@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid.main.stories;
+package org.codeforafrica.citizenreporterandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;

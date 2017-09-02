@@ -1,31 +1,23 @@
-package org.codeforafrica.citizenreporterandroid.main.assignments;
+package org.codeforafrica.citizenreporterandroid.ui.assignments;
 
-import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.util.List;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.adapter.AssignmentsAdapter;
 import org.codeforafrica.citizenreporterandroid.app.CitizenReporterApplication;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
-import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
-import org.codeforafrica.citizenreporterandroid.di.AppComponent;
-import org.codeforafrica.citizenreporterandroid.main.adapter.AssignmentsAdapter;
-import org.codeforafrica.citizenreporterandroid.utils.APIClient;
-import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
-import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
 public class AssignmentsFragment extends Fragment implements AssignmentFragmentContract.View {
 
@@ -45,7 +37,6 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
     // Required empty public constructor
   }
 
-
   public static AssignmentsFragment newInstance() {
     AssignmentsFragment fragment = new AssignmentsFragment();
     return fragment;
@@ -54,7 +45,6 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
   @Override public void onCreate(Bundle savedInstanceState) {
     ((CitizenReporterApplication) getActivity().getApplication()).getAppComponent().inject(this);
     super.onCreate(savedInstanceState);
-
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +70,8 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
 
     refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override public void onRefresh() {
+        refreshLayout.setRefreshing(false);
+        refreshLayout.setEnabled(false);
         presenter.pullToRefreshAssignments();
       }
     });
@@ -106,15 +98,4 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
   @Override public void showError() {
     error_layout.setVisibility(View.VISIBLE);
   }
-
-  @Override public void showNoInternetError() {
-
-  }
-
-  @Override public void showAssignmentDetails() {
-
-  }
 }
-
-
-

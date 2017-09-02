@@ -3,6 +3,7 @@ package org.codeforafrica.citizenreporterandroid.data.sources;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -311,5 +312,14 @@ public class LocalDataHelper extends SQLiteOpenHelper {
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(countQuery, null);
     return cursor.getCount();
+  }
+
+  public void deleteAllAssignments() {
+    SQLiteDatabase db = this.getWritableDatabase();
+    try {
+      db.execSQL("delete from "+ Constants.ASSIGNMENTS_TABLE_NAME);
+    } catch (SQLException e) {
+      Log.e("Delete all", "deleteAllAssignments: ", e);
+    }
   }
 }

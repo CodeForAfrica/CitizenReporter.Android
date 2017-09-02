@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid;
+package org.codeforafrica.citizenreporterandroid.ui.base;
 
 import android.content.Intent;
 import android.os.Bundle;

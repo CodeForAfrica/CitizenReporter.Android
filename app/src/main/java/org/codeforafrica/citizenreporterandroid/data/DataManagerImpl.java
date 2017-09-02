@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
+import java.util.Collections;
 import java.util.List;
+import javax.inject.Inject;
 import okhttp3.ResponseBody;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
@@ -31,8 +33,9 @@ public class DataManagerImpl implements DataManager {
   private final CReporterAPI api;
   private final SharedPreferences mPrefs;
   private Context context;
-  private LocalDataHelper db;
+  @Inject LocalDataHelper db;
 
+  @Inject
   public DataManagerImpl(CReporterAPI api, SharedPreferences mPrefs, Context context) {
     this.api = api;
     this.mPrefs = mPrefs;
@@ -82,11 +85,11 @@ public class DataManagerImpl implements DataManager {
   }
 
   @Override public List<Assignment> loadAssignmentsFromDb() {
-    return null;
+    return db.getAssignments();
   }
 
   @Override public List<Assignment> fetchAssignmentsAPI() {
-    return null;
+    return Collections.EMPTY_LIST;
   }
 
   @Override public void saveAssignmentsIntoDb(List<Assignment> assignments) {
@@ -94,7 +97,7 @@ public class DataManagerImpl implements DataManager {
   }
 
   @Override public void clearAssignmentsTable() {
-
+    db.deleteAllAssignments();
   }
 
   @Override public void registerUserDetails(User user) {
@@ -198,7 +201,10 @@ public class DataManagerImpl implements DataManager {
       public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
         if (response.isSuccessful()) {
           List<Assignment> assignments = response.body();
-          db.bulkSaveAssignments(assignments);
+          if (assignments != null && assignments.size() > 0) {
+            db.deleteAllAssignments();
+            db.bulkSaveAssignments(assignments);
+          }
         }
 
       }

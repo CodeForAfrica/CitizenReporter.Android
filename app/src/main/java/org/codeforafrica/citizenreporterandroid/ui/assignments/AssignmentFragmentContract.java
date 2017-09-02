@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid.main.assignments;
+package org.codeforafrica.citizenreporterandroid.ui.assignments;
 
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
@@ -14,15 +14,11 @@ public interface AssignmentFragmentContract {
     void displayAssignments(List<Assignment> assignmentList);
     void displayNoAssignments();
     void showError();
-    void showNoInternetError();
-    void showAssignmentDetails();
   }
 
   interface Presenter {
     void setView(AssignmentFragmentContract.View view);
     void getAndDisplayAssignments();
     void pullToRefreshAssignments();
-    void goToAssignmentDetail(Assignment assignment);
-    void checkForInternet();
   }
 }

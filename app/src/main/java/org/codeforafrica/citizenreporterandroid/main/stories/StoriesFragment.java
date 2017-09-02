@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.adapter.StoriesRecyclerViewAdapter;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
