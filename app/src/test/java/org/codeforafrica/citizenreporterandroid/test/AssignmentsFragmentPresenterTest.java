@@ -88,13 +88,4 @@ public class AssignmentsFragmentPresenterTest {
     verify(view).hideLoading();
   }
 
-  @Test public void shouldOpenAssignmentDetail() {
-    presenter = new AssignmentsFragmentPresenter(manager);
-    presenter.setView(view);
-    Assignment assignment = new Assignment();
-
-    presenter.goToAssignmentDetail(assignment);
-
-    verify(view).showAssignmentDetails();
-  }
 }
