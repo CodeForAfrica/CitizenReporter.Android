@@ -100,6 +100,10 @@ public class DataManagerImpl implements DataManager {
     db.deleteAllAssignments();
   }
 
+  @Override public List<Story> fetchStoriesFromDb() {
+    return db.getAllStories();
+  }
+
   @Override public void registerUserDetails(User user) {
     Call<User> userCall = api.createUser(user);
     userCall.enqueue(new Callback<User>() {

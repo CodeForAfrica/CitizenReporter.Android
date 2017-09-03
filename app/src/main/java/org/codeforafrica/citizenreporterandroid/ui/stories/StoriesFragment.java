@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid.main.stories;
+package org.codeforafrica.citizenreporterandroid.ui.stories;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

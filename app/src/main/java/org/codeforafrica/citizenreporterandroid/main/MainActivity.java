@@ -26,7 +26,7 @@ import org.codeforafrica.citizenreporterandroid.ui.base.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.ui.settings.SettingsFragment;
 import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragment;
-import org.codeforafrica.citizenreporterandroid.main.stories.StoriesFragment;
+import org.codeforafrica.citizenreporterandroid.ui.stories.StoriesFragment;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;

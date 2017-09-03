@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import org.codeforafrica.citizenreporterandroid.app.CitizenReporterApplication;
 import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragment;
 import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragmentPresenter;
+import org.codeforafrica.citizenreporterandroid.ui.stories.StoriesFragmentPresenter;
 
 /**
  * Created by Ahereza on 9/1/17.
@@ -16,4 +17,6 @@ public interface AppComponent {
   void inject(AssignmentsFragment fragment);
 
   void inject(AssignmentsFragmentPresenter presenter);
+
+  void inject(StoriesFragmentPresenter presenter);
 }
