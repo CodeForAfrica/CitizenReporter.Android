@@ -15,7 +15,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -31,7 +30,7 @@ public class StoriesFragmentPresenterTest {
 
   @Before public void setUp() {
     presenter = new StoriesFragmentPresenter(manager);
-    presenter.setView(view);
+    presenter.attachView(view);
   }
 
 
@@ -66,6 +65,7 @@ public class StoriesFragmentPresenterTest {
   }
 
   @Test public void deleteStory() throws Exception {
-
+    presenter.deleteStory(1);
+    verify(view).swipeToDelete();
   }
 }

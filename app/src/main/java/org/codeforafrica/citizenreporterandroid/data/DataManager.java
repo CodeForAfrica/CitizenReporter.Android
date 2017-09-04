@@ -21,4 +21,6 @@ public interface DataManager extends PrefsHelper, ApiHelper {
 
   List<Story> fetchStoriesFromDb();
 
+  void deleteStory(int storyID);
+
 }

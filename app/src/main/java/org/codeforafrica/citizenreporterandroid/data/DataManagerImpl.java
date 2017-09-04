@@ -104,6 +104,14 @@ public class DataManagerImpl implements DataManager {
     return db.getAllStories();
   }
 
+  @Override public void deleteStory(int storyID) {
+    try {
+      db.deleteStory(storyID);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   @Override public void registerUserDetails(User user) {
     Call<User> userCall = api.createUser(user);
     userCall.enqueue(new Callback<User>() {

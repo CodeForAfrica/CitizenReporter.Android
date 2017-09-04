@@ -1,10 +1,8 @@
 package org.codeforafrica.citizenreporterandroid.ui.stories;
 
-import android.content.SharedPreferences;
 import java.util.List;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.data.DataManager;
-import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 
 /**
@@ -24,7 +22,6 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
     List<Story> storyList = dataManager.fetchStoriesFromDb();
     checkNumberOfStories(storyList);
     view.hideLoading();
-
   }
 
   @Override public void getStoriesFromNetwork() {
@@ -36,12 +33,17 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
     view.hideLoading();
   }
 
-  @Override public void deleteStory() {
-
+  @Override public void deleteStory(int storyID) {
+    view.swipeToDelete();
+    dataManager.deleteStory(storyID);
   }
 
-  @Override public void setView(StoriesFragmentContract.View view) {
+  @Override public void attachView(StoriesFragmentContract.View view) {
     this.view = view;
+  }
+
+  @Override public void detachView() {
+    this.view = null;
   }
 
   private void checkNumberOfStories(List<Story> storyList) {

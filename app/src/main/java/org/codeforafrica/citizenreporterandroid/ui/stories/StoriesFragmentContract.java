@@ -18,7 +18,8 @@ public interface StoriesFragmentContract {
   interface Presenter{
     void getStoriesFromDb();
     void getStoriesFromNetwork();
-    void deleteStory();
-    void setView(View view);
+    void deleteStory(int storyID);
+    void attachView(View view);
+    void detachView();
   };
 }

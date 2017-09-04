@@ -93,8 +93,5 @@ public class AssignmentsFragmentPresenterTest {
     presenter.setView(view);
     Assignment assignment = new Assignment();
 
-    presenter.goToAssignmentDetail(assignment);
-
-    verify(view).showAssignmentDetails();
   }
 }
