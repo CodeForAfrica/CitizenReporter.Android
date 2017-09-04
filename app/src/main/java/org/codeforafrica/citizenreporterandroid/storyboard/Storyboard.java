@@ -39,6 +39,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.squareup.picasso.Picasso;
 
+import com.wang.avi.AVLoadingIndicatorView;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
@@ -106,14 +107,14 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     private LayoutInflater inflater;
     private String audio_path;
-    private ProgressBar progressBar;
+    private AVLoadingIndicatorView progressBar;
     int progressStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storyboard);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = (AVLoadingIndicatorView) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
         dataHelper = new LocalDataHelper(this);
         ButterKnife.bind(this);
@@ -477,9 +478,9 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     //This method allows the progressbar to display properly onClick
     @OnClick(R.id.upload_button)
     public void uploadStoryClicked() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.show();
         Handler handler = new Handler();
-        handler.postDelayed(mUploadRunnable, 1000);
+        handler.postDelayed(mUploadRunnable, 3000);
 
     }
 
@@ -498,7 +499,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
         APIInterface apiClient = APIClient.getApiClient();
         NetworkHelper.uploadUserStory(Storyboard.this, apiClient, story);
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.hide();
         Toast.makeText(this, "story was uploaded successfully", Toast.LENGTH_SHORT).show();
 
 
