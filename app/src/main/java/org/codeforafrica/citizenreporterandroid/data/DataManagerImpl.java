@@ -100,6 +100,18 @@ public class DataManagerImpl implements DataManager {
     db.deleteAllAssignments();
   }
 
+  @Override public List<Story> fetchStoriesFromDb() {
+    return db.getAllStories();
+  }
+
+  @Override public void deleteStory(int storyID) {
+    try {
+      db.deleteStory(storyID);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
   @Override public void registerUserDetails(User user) {
     Call<User> userCall = api.createUser(user);
     userCall.enqueue(new Callback<User>() {
@@ -204,6 +216,7 @@ public class DataManagerImpl implements DataManager {
           if (assignments != null && assignments.size() > 0) {
             db.deleteAllAssignments();
             db.bulkSaveAssignments(assignments);
+            return;
           }
         }
 

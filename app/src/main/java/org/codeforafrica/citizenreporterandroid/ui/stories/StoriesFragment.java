@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid.main.stories;
+package org.codeforafrica.citizenreporterandroid.ui.stories;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,24 +11,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.util.List;
+import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.adapter.StoriesRecyclerViewAdapter;
+import org.codeforafrica.citizenreporterandroid.app.CitizenReporterApplication;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
-public class StoriesFragment extends Fragment {
+public class StoriesFragment extends Fragment implements StoriesFragmentContract.View {
   @BindView(R.id.stories_recyclerview) RecyclerView storiesRecyclerView;
-  private List<Story> stories;
+  @BindView(R.id.stories_loading_progressbar) ProgressBar storiesProgressBar;
+  @BindView(R.id.stories_error_layout) LinearLayout errorLayout;
   private StoriesRecyclerViewAdapter adapter;
-  private LocalDataHelper dataHelper;
-  private SharedPreferences preferences;
-  private CReporterAPI apiClient;
+
+  @Inject StoriesFragmentPresenter presenter;
 
   public StoriesFragment() {
     // Required empty public constructor
@@ -41,46 +45,53 @@ public class StoriesFragment extends Fragment {
   }
 
   @Override public void onCreate(Bundle savedInstanceState) {
+    ((CitizenReporterApplication) getActivity().getApplication()).getAppComponent().inject(this);
     super.onCreate(savedInstanceState);
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_stories, container, false);
+    presenter.attachView(this);
     ButterKnife.bind(this, view);
     return view;
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     storiesRecyclerView.setHasFixedSize(true);
     storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-    dataHelper = new LocalDataHelper(getActivity());
-
-    stories = dataHelper.getAllStories();
-
-    adapter = new StoriesRecyclerViewAdapter(stories, getContext());
-
-    storiesRecyclerView.setAdapter(adapter);
-
-    if (dataHelper.getStoriesCount() == 0) {
-      apiClient = APIClient.getApiClient();
-      String fb_id = preferences.getString("fb_id", "");
-      if (fb_id != "") {
-        Log.d("API", "making network call get stories");
-        NetworkHelper.getUserStories(getActivity(), apiClient, fb_id, adapter);
-      }
-    }
-
-    //        adapter.setStoryList(dataHelper.getAllStories());
-    //        adapter.notifyDataSetChanged();
+    presenter.getStoriesFromDb();
   }
 
   @Override public void onResume() {
-    adapter.notify(dataHelper.getAllStories());
     super.onResume();
+    presenter.getStoriesFromDb();
+  }
+
+  @Override public void showLoading() {
+    storiesProgressBar.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void hideLoading() {
+    storiesProgressBar.setVisibility(View.GONE);
+  }
+
+  @Override public void displayStories(List<Story> stories) {
+    adapter = new StoriesRecyclerViewAdapter(stories, getContext());
+    storiesRecyclerView.setAdapter(adapter);
+  }
+
+  @Override public void displayNoStories() {
+    errorLayout.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void swipeToDelete() {
+
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    presenter.detachView();
   }
 }

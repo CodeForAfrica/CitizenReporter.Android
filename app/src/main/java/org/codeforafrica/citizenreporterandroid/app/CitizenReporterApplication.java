@@ -1,6 +1,8 @@
 package org.codeforafrica.citizenreporterandroid.app;
 
 import android.app.Application;
+import javax.inject.Inject;
+import org.codeforafrica.citizenreporterandroid.data.DataManager;
 import org.codeforafrica.citizenreporterandroid.di.AppComponent;
 import org.codeforafrica.citizenreporterandroid.di.AppModule;
 import org.codeforafrica.citizenreporterandroid.di.DaggerAppComponent;
@@ -11,6 +13,7 @@ import org.codeforafrica.citizenreporterandroid.di.DaggerAppComponent;
 
 public class CitizenReporterApplication extends Application {
   private AppComponent appComponent;
+  @Inject DataManager manager;
 
   public AppComponent getAppComponent() {
     return appComponent;
@@ -23,7 +26,7 @@ public class CitizenReporterApplication extends Application {
     appComponent = DaggerAppComponent.builder()
         .appModule(new AppModule(this))
         .build();
-
     appComponent.inject(this);
+    manager.getAssignments();
   }
 }
