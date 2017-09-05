@@ -500,7 +500,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         APIInterface apiClient = APIClient.getApiClient();
         NetworkHelper.uploadUserStory(Storyboard.this, apiClient, story);
         progressBar.hide();
-        Toast.makeText(this, "story was uploaded successfully", Toast.LENGTH_SHORT).show();
+
 
 
     }
