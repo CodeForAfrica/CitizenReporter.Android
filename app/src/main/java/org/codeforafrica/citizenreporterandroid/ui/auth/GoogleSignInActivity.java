@@ -33,6 +33,8 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
     private GoogleApiClient googleApiClient;
     private static final int REQUEST_CODE = 1;
 
+    private Button HomePage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,9 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
         SignIn.setOnClickListener(this);
         SignOut.setOnClickListener(this);
         user_profile.setVisibility(View.GONE);
+
+        HomePage = (Button)findViewById(R.id.home_button);
+        HomePage.setOnClickListener(this);
     }
 
     @Override
@@ -60,7 +65,10 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
             case R.id.sign_out:
                 onSignOut();
                 break;
-
+            case R.id.home_button:
+                Intent intent = new Intent(GoogleSignInActivity.this, LoginActivity.class);
+                startActivity(intent);
+                break;
         }
 
     }
@@ -114,9 +122,11 @@ public class GoogleSignInActivity extends AppCompatActivity implements View.OnCl
         if(isLogin) {
             user_profile.setVisibility(View.VISIBLE);
             SignIn.setVisibility(View.GONE);
+            HomePage.setVisibility(View.GONE);
         } else {
             user_profile.setVisibility(View.GONE);
             SignIn.setVisibility(View.VISIBLE);
+            HomePage.setVisibility(View.VISIBLE);
         }
     }
 }
