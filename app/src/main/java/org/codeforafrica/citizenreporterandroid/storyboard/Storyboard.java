@@ -10,6 +10,7 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
@@ -37,6 +38,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.squareup.picasso.Picasso;
+import com.wang.avi.AVLoadingIndicatorView;
 import gun0912.tedbottompicker.TedBottomPicker;
 import java.io.File;
 import java.util.ArrayList;
@@ -44,13 +46,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.storyboard.overlay.OverlayCameraActivity;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
-import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 import org.codeforafrica.citizenreporterandroid.utils.RequestCodes;
@@ -90,10 +92,14 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
           calendar.get(Calendar.DAY_OF_MONTH));
   private LayoutInflater inflater;
   private String audio_path;
+  private AVLoadingIndicatorView progressBar;
+  int progressStatus;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_storyboard);
+    progressBar = (AVLoadingIndicatorView) findViewById(R.id.loadingIndicator);
+    progressBar.setVisibility(View.INVISIBLE);
     dataHelper = new LocalDataHelper(this);
     ButterKnife.bind(this);
     String action = getIntent().getAction();
@@ -414,9 +420,27 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     savePost(activeStory);
   }
 
-  @OnClick(R.id.upload_button) public void uploadStory() {
+  //This method allows the progressbar to display properly onClick
+  @OnClick(R.id.upload_button) public void uploadStoryClicked() {
+    progressBar.show();
+    Handler handler = new Handler();
+    handler.postDelayed(mUploadRunnable, 3000);
+  }
+
+  //Runnable executes the uploadStory() method
+  private Runnable mUploadRunnable = new Runnable() {
+
+    @Override public void run() {
+      uploadStory(activeStory);
+    }
+  };
+
+  public void uploadStory(Story story) {
+    Log.d("Upload story", "uploadStory() called with: story = [" + story + "]");
+
     CReporterAPI apiClient = APIClient.getApiClient();
     NetworkHelper.uploadUserStory(Storyboard.this, apiClient, activeStory);
+    progressBar.hide();
   }
 
   public void savePost(Story story) {
