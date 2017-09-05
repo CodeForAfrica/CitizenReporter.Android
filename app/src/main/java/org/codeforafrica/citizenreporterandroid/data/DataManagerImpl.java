@@ -216,6 +216,7 @@ public class DataManagerImpl implements DataManager {
           if (assignments != null && assignments.size() > 0) {
             db.deleteAllAssignments();
             db.bulkSaveAssignments(assignments);
+            return;
           }
         }
 
