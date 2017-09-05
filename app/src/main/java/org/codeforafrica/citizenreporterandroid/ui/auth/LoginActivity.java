@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import butterknife.BindView;
+
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -21,13 +21,17 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
-import lolodev.permissionswrapper.wrapper.PermissionWrapper;
+import com.google.android.gms.common.SignInButton;
+
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
+
+import butterknife.BindView;
+import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
+import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.isNetworkAvailable;
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.registerUserDetails;
@@ -46,6 +50,8 @@ public class LoginActivity extends AppCompatActivity {
   private SharedPreferences.Editor editor;
   private CReporterAPI apiClient;
 
+  private SignInButton googleSignIn;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     callbackManager = CallbackManager.Factory.create();
@@ -60,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     loginButton = (LoginButton) findViewById(R.id.login_button);
     preferences = PreferenceManager.getDefaultSharedPreferences(this);
     editor = preferences.edit();
+    googleSignIn = (SignInButton)findViewById(R.id.google_button);
 
     new PermissionWrapper.Builder(this).addPermissions(new String[] {
         Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE
@@ -83,6 +90,15 @@ public class LoginActivity extends AppCompatActivity {
 
           }
         }).build().request();
+
+    googleSignIn.setOnClickListener(new View.OnClickListener() {
+
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(LoginActivity.this, GoogleSignInActivity.class);
+        startActivity(intent);
+      }
+    });
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
