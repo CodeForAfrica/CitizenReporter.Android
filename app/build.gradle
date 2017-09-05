@@ -80,4 +80,9 @@ dependencies {
   //Glide
   compile 'com.github.bumptech.glide:glide:3.8.0'
   compile 'gun0912.ted:tedbottompicker:1.0.12'
+
+  // Dependency for Google Play Services
+  compile 'com.google.android.gms:play-services-auth:11.0.4'
 }
+
+apply plugin: 'com.google.gms.google-services'
