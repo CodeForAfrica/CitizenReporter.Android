@@ -63,5 +63,8 @@
     <string name="sdcard_title">SD Card Required</string>
     <string name="sdcard_message">A mounted SD card is required to upload media</string>
     <string name="ok">Ok</string>
+  <string name="failed_to_get_assignments_error">Whoops!</string>
+    <string name="assignments_error_detail">Something went wrong</string>
+  <string name="stories_error_detail">You have not submitted any reports</string>
 
 </resources>

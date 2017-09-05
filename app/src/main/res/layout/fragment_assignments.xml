@@ -1,15 +1,66 @@
-<android.support.v4.widget.SwipeRefreshLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentFragment">
+    tools:context="org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragment">
 
+  <LinearLayout
+      android:id="@+id/assignments_error_layout"
+      android:visibility="gone"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_centerInParent="true">
 
-<android.support.v7.widget.RecyclerView
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:srcCompat="@mipmap/ic_cloud_error"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/failed_to_get_assignments_error"
+        android:textColor="@color/colorLightGray"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        />
+    <TextView
+        android:textColor="@color/colorLightGray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/assignments_error_detail"
+        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"
+        />
+  </LinearLayout>
+  <ProgressBar
+      android:id="@+id/assignmentsLoadingProgressBar"
+      android:visibility="gone"
+      android:layout_centerInParent="true"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      style="?android:attr/progressBarStyle"/>
+
+  <android.support.v4.widget.SwipeRefreshLayout
+      android:id="@+id/swipeRefreshLayout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/assignment_recycler"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</android.support.v4.widget.SwipeRefreshLayout>
+  </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+
+</RelativeLayout>

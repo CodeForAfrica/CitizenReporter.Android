@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid.feedback;
+package org.codeforafrica.citizenreporterandroid.ui.feedback;
 
 import android.content.Intent;
 import android.os.Build;

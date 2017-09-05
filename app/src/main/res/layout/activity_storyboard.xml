@@ -80,6 +80,7 @@
                         android:layout_marginEnd="4dp"
                         android:layout_marginStart="4dp"
                         app:srcCompat="@drawable/ic_file_upload_white_48dp" />
+
                 </LinearLayout>
 
 
@@ -99,6 +100,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/loadingIndicator"
+            style="@style/AVLoadingIndicatorView"
+            app:indicatorColor="@color/colorAccent"
+            app:indicatorName="LineScalePartyIndicator"
+            android:visibility="visible"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
 
             <EditText
                 android:id="@+id/story_title"
@@ -158,6 +172,8 @@
                 android:orientation="vertical">
 
             </LinearLayout>
+
+
 
 
         </LinearLayout>

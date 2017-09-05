@@ -3,6 +3,7 @@ package org.codeforafrica.citizenreporterandroid.data.sources;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -11,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
-import org.codeforafrica.citizenreporterandroid.utils.Constants;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 
 /**
  * Created by Mugiwara_Munyi on 30/07/2017.
@@ -311,5 +312,14 @@ public class LocalDataHelper extends SQLiteOpenHelper {
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(countQuery, null);
     return cursor.getCount();
+  }
+
+  public void deleteAllAssignments() {
+    SQLiteDatabase db = this.getWritableDatabase();
+    try {
+      db.execSQL("delete from "+ Constants.ASSIGNMENTS_TABLE_NAME);
+    } catch (SQLException e) {
+      Log.e("Delete all", "deleteAllAssignments: ", e);
+    }
   }
 }
