@@ -32,7 +32,6 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
   @Override public void pullToRefreshAssignments() {
     // query the data dataManager to get assignments from the server
     view.showLoading();
-    dataManager.getAssignments();
     List<Assignment> assignments = dataManager.loadAssignmentsFromDb();
     checkNumberOfAssignments(assignments);
     view.hideLoading();
