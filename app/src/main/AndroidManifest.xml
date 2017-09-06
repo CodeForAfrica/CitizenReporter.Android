@@ -106,7 +106,6 @@
             android:name=".storyboard.overlay.OverlayCameraActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.auth.GoogleSignInActivity"></activity>
     </application>
 
 </manifest>
