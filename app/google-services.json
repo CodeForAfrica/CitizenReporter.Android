@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "521154539919",
+    "project_id": "storied-shell-179008"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521154539919:android:a8e93ae3eeaa2c5a",
+        "android_client_info": {
+          "package_name": "org.codeforafrica.citizenreporterandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "521154539919-3ci7lp0sdq3vat4s0bvknuf5h4ek3scu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.codeforafrica.citizenreporterandroid",
+            "certificate_hash": "f1f4bcb74c5cc34072576973fb1adb693a36cff0"
+          }
+        },
+        {
+          "client_id": "521154539919-me2hs6njn2udvnlcusb5socsmod8gk0b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHAqTwHT4DfZH_e53Z8v8Miw3cMtZvoNw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
