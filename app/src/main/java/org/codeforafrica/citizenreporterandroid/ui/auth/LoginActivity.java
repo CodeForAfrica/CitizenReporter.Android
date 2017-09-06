@@ -10,8 +10,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -21,7 +26,15 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
@@ -36,7 +49,7 @@ import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.isNetworkAvailable;
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.registerUserDetails;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener {
 
   @BindView(R.id.login_button) LoginButton loginButton;
 
@@ -50,7 +63,14 @@ public class LoginActivity extends AppCompatActivity {
   private SharedPreferences.Editor editor;
   private CReporterAPI apiClient;
 
-  private SignInButton googleSignIn;
+  private LinearLayout google_user_profile;
+  private Button GoogleSignout;
+  private SignInButton GoogleSignin;
+  private TextView Name, Email;
+  private ImageView google_profile_pic;
+  private GoogleApiClient googleApiClient;
+  private static final int REQUEST_CODE = 1;
+
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -66,7 +86,19 @@ public class LoginActivity extends AppCompatActivity {
     loginButton = (LoginButton) findViewById(R.id.login_button);
     preferences = PreferenceManager.getDefaultSharedPreferences(this);
     editor = preferences.edit();
-    googleSignIn = (SignInButton)findViewById(R.id.google_button);
+
+    google_user_profile = (LinearLayout)findViewById(R.id.google_user_profile);
+    GoogleSignout = (Button)findViewById(R.id.google_sign_out);
+    GoogleSignin = (SignInButton)findViewById(R.id.google_sign_in);
+    Name = (TextView)findViewById(R.id.google_user_name);
+    Email = (TextView)findViewById(R.id.google_user_email);
+    google_profile_pic = (ImageView)findViewById(R.id.google_profile_pic);
+    GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+    googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions).build() ;
+
+    GoogleSignin.setOnClickListener(this);
+    GoogleSignout.setOnClickListener(this);
+    google_user_profile.setVisibility(View.GONE);
 
     new PermissionWrapper.Builder(this).addPermissions(new String[] {
         Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE
@@ -91,19 +123,16 @@ public class LoginActivity extends AppCompatActivity {
           }
         }).build().request();
 
-    googleSignIn.setOnClickListener(new View.OnClickListener() {
-
-      @Override
-      public void onClick(View view) {
-        Intent intent = new Intent(LoginActivity.this, GoogleSignInActivity.class);
-        startActivity(intent);
-      }
-    });
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     callbackManager.onActivityResult(requestCode, resultCode, data);
+
+    if(requestCode==REQUEST_CODE) {
+      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+      signInResult(result);
+    }
   }
 
   public void startLoginProcess() {
@@ -172,4 +201,64 @@ public class LoginActivity extends AppCompatActivity {
       startActivity(intent);
     }
   }
+
+  @Override
+  public void onClick(View view) {
+    switch (view.getId()) {
+      case R.id.google_sign_in:
+        googleSignIn();
+        break;
+      case R.id.google_sign_out:
+        googleSignOut();
+        break;
+    }
+  }
+
+  @Override
+  public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+  }
+
+  private void googleSignIn() {
+    Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+    startActivityForResult(intent, REQUEST_CODE );
+  }
+
+  private void googleSignOut() {
+    Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+      @Override
+      public void onResult(@NonNull Status status) {
+        updateGoogleProfile(false);
+      }
+    });
+  }
+
+  private void updateGoogleProfile (boolean isLogin) {
+    if(isLogin) {
+      google_user_profile.setVisibility(View.VISIBLE);
+      GoogleSignin.setVisibility(View.GONE);
+      loginButton.setVisibility(View.GONE);
+    } else {
+      google_user_profile.setVisibility(View.GONE);
+      GoogleSignin.setVisibility(View.VISIBLE);
+      loginButton.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private void signInResult(GoogleSignInResult result) {
+
+    if(result.isSuccess()) {
+      GoogleSignInAccount account = result.getSignInAccount();
+      String name = account.getDisplayName();
+      String email = account.getEmail();
+      String image_url = account.getPhotoUrl().toString();
+      Name.setText(name);
+      Email.setText(email);
+      Glide.with(this).load(image_url).into(google_profile_pic);
+      updateGoogleProfile(true);
+    } else {
+      updateGoogleProfile(false);
+    }
+  }
+
 }
