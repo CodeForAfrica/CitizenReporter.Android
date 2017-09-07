@@ -64,9 +64,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
   private CReporterAPI apiClient;
 
   private LinearLayout google_user_profile;
-  private Button GoogleSignout;
-  private SignInButton GoogleSignin;
-  private TextView Name, Email;
+  private Button googleSignout;
+  private SignInButton googleSignin;
+  private TextView user_name, user_email;
   private ImageView google_profile_pic;
   private GoogleApiClient googleApiClient;
   private static final int REQUEST_CODE = 1;
@@ -88,16 +88,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     editor = preferences.edit();
 
     google_user_profile = (LinearLayout)findViewById(R.id.google_user_profile);
-    GoogleSignout = (Button)findViewById(R.id.google_sign_out);
-    GoogleSignin = (SignInButton)findViewById(R.id.google_sign_in);
-    Name = (TextView)findViewById(R.id.google_user_name);
-    Email = (TextView)findViewById(R.id.google_user_email);
+    googleSignout = (Button)findViewById(R.id.google_sign_out);
+    googleSignin = (SignInButton)findViewById(R.id.google_sign_in);
+    user_name = (TextView)findViewById(R.id.google_user_name);
+    user_email = (TextView)findViewById(R.id.google_user_email);
     google_profile_pic = (ImageView)findViewById(R.id.google_profile_pic);
     GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
     googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions).build() ;
 
-    GoogleSignin.setOnClickListener(this);
-    GoogleSignout.setOnClickListener(this);
+    googleSignin.setOnClickListener(this);
+    googleSignout.setOnClickListener(this);
     google_user_profile.setVisibility(View.GONE);
 
     new PermissionWrapper.Builder(this).addPermissions(new String[] {
@@ -236,11 +236,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
   private void updateGoogleProfile (boolean isLogin) {
     if(isLogin) {
       google_user_profile.setVisibility(View.VISIBLE);
-      GoogleSignin.setVisibility(View.GONE);
+      googleSignin.setVisibility(View.GONE);
       loginButton.setVisibility(View.GONE);
     } else {
       google_user_profile.setVisibility(View.GONE);
-      GoogleSignin.setVisibility(View.VISIBLE);
+      googleSignin.setVisibility(View.VISIBLE);
       loginButton.setVisibility(View.VISIBLE);
     }
   }
@@ -252,8 +252,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
       String name = account.getDisplayName();
       String email = account.getEmail();
       String image_url = account.getPhotoUrl().toString();
-      Name.setText(name);
-      Email.setText(email);
+      user_name.setText(name);
+      user_email.setText(email);
       Glide.with(this).load(image_url).into(google_profile_pic);
       updateGoogleProfile(true);
     } else {
