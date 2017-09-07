@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,16 +34,25 @@ import butterknife.OnClick;
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Response;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.nbsp.materialfilepicker.MaterialFilePicker;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 import com.squareup.picasso.Picasso;
 import gun0912.tedbottompicker.TedBottomPicker;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
@@ -55,6 +65,8 @@ import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 import org.codeforafrica.citizenreporterandroid.utils.RequestCodes;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
+
+import static android.R.attr.action;
 
 public class Storyboard extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -189,7 +201,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     Log.d("STORYBOARD", "onResume: ");
   }
 
-  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+  @Override protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
     switch (requestCode) {
       case Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE:
         if (resultCode == RESULT_OK) {
@@ -266,8 +278,50 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
           addVideoAttachment(videoUri);
         }
         break;
+      case RequestCodes.UPLOAD_MEDIA:
+        final String storyID = Long.toString(activeStory.getRemote_id());
+
+        Thread t = new Thread(new Runnable() {
+          @Override public void run() {
+
+            File f = new File(data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH));
+            String content_type = getMimeType(f.getPath());
+            String file_path = f.getAbsolutePath();
+            OkHttpClient client = new OkHttpClient();
+            RequestBody file_body = RequestBody.create(MediaType.parse(content_type), f);
+
+            RequestBody request_body = new MultipartBody.Builder()
+                      .setType(MultipartBody.FORM)
+                      .addFormDataPart("type", content_type)
+                      .addFormDataPart("file", file_path.substring(file_path.lastIndexOf("/")+1)
+                          , file_body)
+                      .addFormDataPart("story", storyID)
+                      .build();
+            Request request = new Request.Builder()
+                .url(Constants.BASE_URL + "stories/media/")
+                .post(request_body)
+                .build();
+
+            try {
+              okhttp3.Response response = client.newCall(request).execute();
+
+            } catch (IOException e){
+              e.printStackTrace();
+            }
+
+
+
+
+
+          }
+        });
+        t.start();
+        break;
     }
+
+
   }
+
 
   @OnClick(R.id.storyboard_location) public void getLocation() {
     // set a country filter when deploying to specific countries
@@ -294,9 +348,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
       @Override public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-          case R.id.select_from_gallery:
-            openImagePicker();
-            return true;
 
           case R.id.capture_photo:
             startOverlayCamera(Storyboard.this, context, Constants.CAMERA_MODE);
@@ -336,30 +387,30 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     date.setText(string_date);
   }
 
-  public void openImagePicker() {
-    final Context context = this;
-    TedBottomPicker bottomSheetDialogFragment =
-        new TedBottomPicker.Builder(this).setOnMultiImageSelectedListener(
-            new TedBottomPicker.OnMultiImageSelectedListener() {
-              @Override public void onImagesSelected(ArrayList<Uri> uriList) {
-                for (Uri uri : uriList) {
-                  Log.d("IMAGE SELECTOR",
-                      "onImagesSelected: " + MediaUtils.getPathFromUri(context, uri));
-                  addImageAttachment(uri);
-
-                  local_media.add(MediaUtils.getPathFromUri(context, uri));
-                }
-              }
-            })
-            .setPeekHeight(500)
-            .showTitle(false)
-            .showCameraTile(false)
-            .setCompleteButtonText("Done")
-            .setEmptySelectionText("No Select")
-            .create();
-
-    bottomSheetDialogFragment.show(getSupportFragmentManager());
-  }
+  //public void openImagePicker() {
+  //  final Context context = this;
+  //  TedBottomPicker bottomSheetDialogFragment =
+  //      new TedBottomPicker.Builder(this).setOnMultiImageSelectedListener(
+  //          new TedBottomPicker.OnMultiImageSelectedListener() {
+  //            @Override public void onImagesSelected(ArrayList<Uri> uriList) {
+  //              for (Uri uri : uriList) {
+  //                Log.d("IMAGE SELECTOR",
+  //                    "onImagesSelected: " + MediaUtils.getPathFromUri(context, uri));
+  //                addImageAttachment(uri);
+  //
+  //                local_media.add(MediaUtils.getPathFromUri(context, uri));
+  //              }
+  //            }
+  //          })
+  //          .setPeekHeight(500)
+  //          .showTitle(false)
+  //          .showCameraTile(false)
+  //          .setCompleteButtonText("Done")
+  //          .setEmptySelectionText("No Select")
+  //          .create();
+  //
+  //  bottomSheetDialogFragment.show(getSupportFragmentManager());
+  //}
 
   public void addImageAttachment(Uri uri) {
     View view = inflater.inflate(R.layout.item_image, null);
@@ -410,13 +461,26 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     audio_path = StoryBoardUtils.recordAudio(Storyboard.this, environment);
   }
 
+
+  @OnClick(R.id.upload_media_button) public void uploadMedia(){
+          new MaterialFilePicker()
+              .withActivity(Storyboard.this)
+              .withRequestCode(2600)
+              .start();
+  }
   @OnClick(R.id.save_button) public void savedClicked() {
     savePost(activeStory);
   }
 
+
   @OnClick(R.id.upload_button) public void uploadStory() {
+
     CReporterAPI apiClient = APIClient.getApiClient();
     NetworkHelper.uploadUserStory(Storyboard.this, apiClient, activeStory);
+
+
+
+
   }
 
   public void savePost(Story story) {
@@ -440,6 +504,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
     Toast.makeText(this, "story has been saved", Toast.LENGTH_SHORT).show();
   }
+
 
   public void startOverlayCamera(final Activity activity, Context context, final int mode) {
 
@@ -485,4 +550,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
       addVideoAttachment(Uri.fromFile(f));
     }
   }
+  private String getMimeType(String path){
+
+    String extension = MimeTypeMap.getFileExtensionFromUrl(path);
+
+    return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+  }
+
 }
