@@ -75,10 +75,16 @@ public class NetworkHelper {
           switch (response.code()) {
             case 201:
               Toast.makeText(context, "Story Successfully Uploaded", Toast.LENGTH_SHORT).show();
+
+
               Log.d(TAG, "onResponse: " + response.body().toString());
               story.setUploaded(true);
+              story.setRemote_id(response.body().getRemote_id());
               LocalDataHelper dataHelper = new LocalDataHelper(context);
               dataHelper.updateStory(story);
+
+
+
               break;
             case 202:
               // server returns a 202 if the user already exists
@@ -194,6 +200,8 @@ public class NetworkHelper {
       }
     });
   }
+
+
 
   private void uploadFile(String filePath, int storyID) {
     // create upload service client
