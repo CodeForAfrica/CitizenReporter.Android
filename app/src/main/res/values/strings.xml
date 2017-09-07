@@ -56,9 +56,8 @@
     <string name="feedbackresponse">Would you like an email respose sent back?</string>
     <string name="feedbackbutton">Send Feedback</string>
     <string name="deadline">Deadline:</string>
-    <string name="add_from_gallery">Add from Gallery</string>
     <string name="add_photo">Capture Photo</string>
-    <string name="add_video">Add video</string>
+    <string name="add_video">Capture Video</string>
     <string name="record_audio">Record Audio</string>
     <string name="sdcard_title">SD Card Required</string>
     <string name="sdcard_message">A mounted SD card is required to upload media</string>
