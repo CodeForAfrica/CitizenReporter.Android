@@ -56,8 +56,8 @@ public class StoriesFragmentPresenterTest {
   @Test public void getStoriesFromNetwork() throws Exception {
     presenter.getStoriesFromNetwork();
     view.showLoading();
-    Mockito.when(manager.getCurrentUserFbID()).thenReturn(fb_id);
-    verify(manager).getCurrentUserFbID();
+    Mockito.when(manager.getCurrentUserUID()).thenReturn(fb_id);
+    verify(manager).getCurrentUserUID();
     //verify(manager).getUserStories(fb_id);
     verify(manager).fetchStoriesFromDb();
     verify(view).hideLoading();

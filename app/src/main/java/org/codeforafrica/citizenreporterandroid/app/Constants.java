@@ -6,6 +6,7 @@ package org.codeforafrica.citizenreporterandroid.app;
 
 public class Constants {
   public static final String BASE_URL = "http://api.creporter.codeforafrica.org/api/";
+  //public static final String BASE_URL = "http://a865dfff.ngrok.io/api/";
 
   public static final String SHARED_PREF_FILENAME = "creporter_prefs";
 
@@ -48,7 +49,7 @@ public class Constants {
   // shared preferences
 
   public static final String PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE";
-  public static final String PREF_KEY_CURRENT_USER_FB_ID = "PREF_KEY_CURRENT_USER_FB_ID";
+  public static final String PREF_KEY_CURRENT_USER_UID = "PREF_KEY_CURRENT_USER_UID";
   public static final String PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME";
   public static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL
       = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL";

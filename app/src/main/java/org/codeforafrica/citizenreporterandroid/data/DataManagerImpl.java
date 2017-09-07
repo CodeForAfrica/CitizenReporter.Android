@@ -2,7 +2,6 @@ package org.codeforafrica.citizenreporterandroid.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Toast;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static org.codeforafrica.citizenreporterandroid.app.Constants.FALLBACK_PROFILE_PIC_URl;
-import static org.codeforafrica.citizenreporterandroid.app.Constants.PREF_KEY_CURRENT_USER_FB_ID;
+import static org.codeforafrica.citizenreporterandroid.app.Constants.PREF_KEY_CURRENT_USER_UID;
 import static org.codeforafrica.citizenreporterandroid.app.Constants.PREF_KEY_CURRENT_USER_NAME;
 import static org.codeforafrica.citizenreporterandroid.app.Constants.PREF_KEY_CURRENT_USER_ONBOARDED;
 import static org.codeforafrica.citizenreporterandroid.app.Constants.PREF_KEY_CURRENT_USER_PROFILE_PIC_URL;
@@ -59,19 +58,19 @@ public class DataManagerImpl implements DataManager {
     mPrefs.edit().putString(PREF_KEY_CURRENT_USER_PROFILE_PIC_URL, profilePicUrl).apply();
   }
 
-  @Override public String getCurrentUserFbID() {
-    return mPrefs.getString(PREF_KEY_CURRENT_USER_FB_ID, "Unknown");
+  @Override public String getCurrentUserUID() {
+    return mPrefs.getString(PREF_KEY_CURRENT_USER_UID, "Unknown");
   }
 
-  @Override public void setCurrentUserFBID(String fbid) {
-    mPrefs.edit().putString(PREF_KEY_CURRENT_USER_FB_ID, fbid).apply();
+  @Override public void setCurrentUserUID(String uid) {
+    mPrefs.edit().putString(PREF_KEY_CURRENT_USER_UID, uid).apply();
   }
 
   @Override public boolean isCurrentUserLoggedIn() {
     return mPrefs.getBoolean(PREF_KEY_USER_LOGGED_IN_MODE, false);
   }
 
-  @Override public void setCurrentUserLoggedInMode() {
+  @Override public void setCurrentUserAsLoggedInMode() {
     mPrefs.edit().putBoolean(PREF_KEY_USER_LOGGED_IN_MODE, true).apply();
   }
 
@@ -82,6 +81,10 @@ public class DataManagerImpl implements DataManager {
   @Override public void setCurrentUserHasBeenOnboarded() {
     mPrefs.edit().putBoolean(PREF_KEY_CURRENT_USER_ONBOARDED, true).apply();
 
+  }
+
+  @Override public void setUserLoggedOut() {
+    mPrefs.edit().putBoolean(PREF_KEY_USER_LOGGED_IN_MODE, false).apply();
   }
 
   @Override public List<Assignment> loadAssignmentsFromDb() {

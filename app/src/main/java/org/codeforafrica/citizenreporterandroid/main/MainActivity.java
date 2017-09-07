@@ -22,6 +22,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 import java.util.Objects;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.ui.base.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.ui.settings.SettingsFragment;
@@ -53,7 +54,7 @@ public class MainActivity extends BaseActivity {
     apiClient = APIClient.getApiClient();
     preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
     fb_id = preferences.getString("fb_id", "");
-    profile_url = preferences.getString("profile_url",
+    profile_url = preferences.getString(Constants.PREF_KEY_CURRENT_USER_PROFILE_PIC_URL,
         "http://www.freeiconspng.com/uploads/account-icon-21.png");
     Picasso.with(this).load(profile_url).fit().into(profile_pic);
     getUserLocation();
