@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/select_from_gallery"
-        android:icon="@drawable/ic_image_black_24dp"
-        android:title="@string/add_from_gallery" />
 
     <item
         android:id="@+id/capture_photo"
