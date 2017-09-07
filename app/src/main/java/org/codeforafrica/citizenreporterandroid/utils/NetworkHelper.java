@@ -85,7 +85,7 @@ public class NetworkHelper {
               // server returns a 202 if the user already exists
               break;
             default:
-              Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
+              Log.d(TAG, "onResponse: 201");
           }
         }
       }
