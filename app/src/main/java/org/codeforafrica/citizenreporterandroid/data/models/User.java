@@ -6,13 +6,13 @@ package org.codeforafrica.citizenreporterandroid.data.models;
 
 public class User {
   private String name;
-  private String fb_id;
+  private String uid;
   private String fcm_token;
   private String profile_pic;
 
-  public User(String name, String fb_id, String profile_pic_url) {
+  public User(String name, String uid, String profile_pic_url) {
     this.name = name;
-    this.fb_id = fb_id;
+    this.uid = uid;
     this.profile_pic = profile_pic_url;
     this.fcm_token = "";
   }
@@ -25,12 +25,12 @@ public class User {
     this.name = name;
   }
 
-  public String getFb_id() {
-    return fb_id;
+  public String getUid() {
+    return uid;
   }
 
-  public void setFb_id(String fb_id) {
-    this.fb_id = fb_id;
+  public void setUid(String uid) {
+    this.uid = uid;
   }
 
   public String getFcm_token() {

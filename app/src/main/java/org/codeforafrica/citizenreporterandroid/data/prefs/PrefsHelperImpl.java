@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
 public class PrefsHelperImpl implements PrefsHelper {
 
   private static final String PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE";
-  private static final String PREF_KEY_CURRENT_USER_FB_ID = "PREF_KEY_CURRENT_USER_FB_ID";
+  private static final String PREF_KEY_CURRENT_USER_UID = "PREF_KEY_CURRENT_USER_UID";
   private static final String PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME";
   private static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL
       = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL";
@@ -45,19 +45,23 @@ public class PrefsHelperImpl implements PrefsHelper {
     mPrefs.edit().putString(PREF_KEY_CURRENT_USER_PROFILE_PIC_URL, profilePicUrl).apply();
   }
 
-  @Override public String getCurrentUserFbID() {
-    return mPrefs.getString(PREF_KEY_CURRENT_USER_FB_ID, "Unknown");
+  @Override public String getCurrentUserUID() {
+    return mPrefs.getString(PREF_KEY_CURRENT_USER_UID, "Unknown");
   }
 
-  @Override public void setCurrentUserFBID(String fbid) {
-    mPrefs.edit().putString(PREF_KEY_CURRENT_USER_FB_ID, fbid).apply();
+  @Override public void setCurrentUserUID(String uid) {
+    mPrefs.edit().putString(PREF_KEY_CURRENT_USER_UID, uid).apply();
   }
 
   @Override public boolean isCurrentUserLoggedIn() {
     return mPrefs.getBoolean(PREF_KEY_USER_LOGGED_IN_MODE, false);
   }
 
-  @Override public void setCurrentUserLoggedInMode() {
+  @Override public void setUserLoggedOut() {
+    mPrefs.edit().putBoolean(PREF_KEY_USER_LOGGED_IN_MODE, false).apply();
+  }
+
+  @Override public void setCurrentUserAsLoggedInMode() {
     mPrefs.edit().putBoolean(PREF_KEY_USER_LOGGED_IN_MODE, true).apply();
   }
 

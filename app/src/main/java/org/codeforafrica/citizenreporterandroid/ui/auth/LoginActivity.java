@@ -11,7 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import butterknife.BindView;
+
+import butterknife.OnClick;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -21,20 +22,37 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
-import lolodev.permissionswrapper.wrapper.PermissionWrapper;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.app.CitizenReporterApplication;
+import org.codeforafrica.citizenreporterandroid.data.DataManager;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
 
+import butterknife.BindView;
+import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
+import lolodev.permissionswrapper.wrapper.PermissionWrapper;
+
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.isNetworkAvailable;
 import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.registerUserDetails;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient
+    .OnConnectionFailedListener {
 
+  private static final String TAG = LoginActivity.class.getSimpleName();
   @BindView(R.id.login_button) LoginButton loginButton;
+  @BindView(R.id.google_sign_in) SignInButton googleButton;
+  @Inject DataManager manager;
 
   private CallbackManager callbackManager;
   private AccessTokenTracker mTokenTracker;
@@ -46,8 +64,13 @@ public class LoginActivity extends AppCompatActivity {
   private SharedPreferences.Editor editor;
   private CReporterAPI apiClient;
 
+  private GoogleApiClient googleApiClient;
+  private static final int REQUEST_CODE = 1;
+
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    ((CitizenReporterApplication) getApplication()).getAppComponent().inject(this);
     callbackManager = CallbackManager.Factory.create();
     mProfileTracker = new ProfileTracker() {
       @Override protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
@@ -56,10 +79,16 @@ public class LoginActivity extends AppCompatActivity {
     };
     mProfileTracker.startTracking();
 
+    apiClient = APIClient.getApiClient();
+
     setContentView(R.layout.activity_login);
     loginButton = (LoginButton) findViewById(R.id.login_button);
-    preferences = PreferenceManager.getDefaultSharedPreferences(this);
-    editor = preferences.edit();
+    googleButton = (SignInButton) findViewById(R.id.google_sign_in);
+
+    GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+    googleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions).build() ;
+
+
 
     new PermissionWrapper.Builder(this).addPermissions(new String[] {
         Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE
@@ -83,11 +112,24 @@ public class LoginActivity extends AppCompatActivity {
 
           }
         }).build().request();
+
+    googleButton.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        Log.d(TAG, "onClick: google clicked");
+        googleSignIn();
+      }
+    });
+
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     callbackManager.onActivityResult(requestCode, resultCode, data);
+
+    if(requestCode==REQUEST_CODE) {
+      GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+      signInResult(result);
+    }
   }
 
   public void startLoginProcess() {
@@ -136,16 +178,14 @@ public class LoginActivity extends AppCompatActivity {
       profile_pic = profile.getProfilePictureUri(400, 400);
       fb_id = profile.getId();
 
+
       String name = first_name + " " + last_name;
 
-      editor.putString("fb_id", fb_id);
-      editor.putString("profile_url", profile_pic.toString());
-      editor.putString("username", name);
-      editor.commit();
+      manager.setCurrentUserProfilePicUrl(profile_pic.toString());
+      manager.setCurrentUsername(name);
+      manager.setCurrentUserUID(fb_id);
 
       User newUser = new User(name, fb_id, profile_pic.toString());
-
-      apiClient = APIClient.getApiClient();
 
       registerUserDetails(LoginActivity.this, apiClient, newUser);
 
@@ -153,7 +193,56 @@ public class LoginActivity extends AppCompatActivity {
       Log.d("Last name", last_name);
       Log.d("FB_ID", fb_id);
       Log.d("Profile_pic", profile_pic.toString());
+      manager.setCurrentUserAsLoggedInMode();
       startActivity(intent);
     }
   }
+
+  @OnClick(R.id.google_sign_in)
+  public void clickGoogleSignIn() {
+    Log.d(TAG, "clickGoogleSignIn: Google button clicked");
+
+    googleSignIn();
+  }
+
+  @Override
+  public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+  }
+
+  private void googleSignIn() {
+    Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+    startActivityForResult(intent, REQUEST_CODE );
+  }
+
+  private void signInResult(GoogleSignInResult result) {
+
+    if(result.isSuccess()) {
+      GoogleSignInAccount account = result.getSignInAccount();
+      String name = account.getDisplayName();
+      String uid = account.getId();
+      String image_url = "http://www.freeiconspng.com/uploads/account-icon-21.png";
+      try {
+        image_url = account.getPhotoUrl().toString();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+      manager.setCurrentUsername(name);
+      manager.setCurrentUserProfilePicUrl(image_url);
+      manager.setCurrentUserUID(uid);
+
+      User user = new User(name, uid, image_url);
+      Log.d(TAG, "signInResult: User saved");
+
+      registerUserDetails(LoginActivity.this, apiClient, user);
+
+      manager.setCurrentUserAsLoggedInMode();
+
+      Intent intent = new Intent(this, MainActivity.class);
+      startActivity(intent);
+
+    }
+  }
+
 }

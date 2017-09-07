@@ -6,16 +6,25 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
+import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.SupportChannelActivity;
+import org.codeforafrica.citizenreporterandroid.app.CitizenReporterApplication;
+import org.codeforafrica.citizenreporterandroid.data.DataManager;
 import org.codeforafrica.citizenreporterandroid.ui.auth.LoginActivity;
 import org.codeforafrica.citizenreporterandroid.ui.about.AboutActivity;
 import org.codeforafrica.citizenreporterandroid.ui.feedback.FeedbackActivity;
 
 public class SettingsFragment extends Fragment {
+  private LoginButton fbLogoutBtn;
+  private Button googleSignOut;
+  @Inject DataManager manager;
 
   public SettingsFragment() {
     // Required empty public constructor
@@ -30,13 +39,31 @@ public class SettingsFragment extends Fragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    ((CitizenReporterApplication) getActivity().getApplication()).getAppComponent().inject(this);
   }
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
+    AccessToken token = AccessToken.getCurrentAccessToken();
+
     View view = inflater.inflate(R.layout.fragment_settings, container, false);
+    fbLogoutBtn = (LoginButton) view.findViewById(R.id.facebook_button_logout);
+    googleSignOut = (Button) view.findViewById(R.id.google_sign_out);
+    if (token == null) {
+      googleSignOut.setVisibility(View.VISIBLE);
+    } else {
+      fbLogoutBtn.setVisibility(View.VISIBLE);
+    }
+
     ButterKnife.bind(this, view);
     return view;
+  }
+
+  @OnClick(R.id.google_sign_out) public void googleSignOut() {
+    manager.setUserLoggedOut();
+    startActivity(new Intent(getActivity(), LoginActivity.class));
+    getActivity().finish();
+
   }
 
   @OnClick(R.id.support_menu_item) public void startSupportChannelActivity() {
@@ -53,6 +80,7 @@ public class SettingsFragment extends Fragment {
 
   @OnClick(R.id.facebook_button_logout) public void facebookLogout() {
     LoginManager.getInstance().logOut();
+    manager.setUserLoggedOut();
     startActivity(new Intent(getActivity(), LoginActivity.class));
     getActivity().finish();
   }

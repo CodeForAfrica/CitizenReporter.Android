@@ -26,7 +26,7 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
 
   @Override public void getStoriesFromNetwork() {
     view.showLoading();
-    String fb_id = dataManager.getCurrentUserFbID();
+    String fb_id = dataManager.getCurrentUserUID();
     dataManager.getUserStories(fb_id);
     List<Story> storyList = dataManager.fetchStoriesFromDb();
     checkNumberOfStories(storyList);

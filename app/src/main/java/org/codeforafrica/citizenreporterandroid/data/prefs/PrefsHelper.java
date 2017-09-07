@@ -14,13 +14,15 @@ public interface PrefsHelper {
 
   void setCurrentUserProfilePicUrl(String profilePicUrl);
 
-  String getCurrentUserFbID();
+  String getCurrentUserUID();
 
-  void setCurrentUserFBID(String fbid);
+  void setCurrentUserUID(String uid);
 
   boolean isCurrentUserLoggedIn();
 
-  void setCurrentUserLoggedInMode();
+  void setUserLoggedOut();
+
+  void setCurrentUserAsLoggedInMode();
 
   boolean hasCurrentUserBeenOnboarded();
 

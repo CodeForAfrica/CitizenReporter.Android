@@ -62,6 +62,7 @@ public class NetworkHelper {
 
       @Override public void onFailure(Call<User> call, Throwable t) {
         // TODO fail gracefully
+
       }
     });
   }
