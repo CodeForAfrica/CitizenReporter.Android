@@ -84,6 +84,9 @@ dependencies {
 
   // Dependency for Google Play Services
   compile 'com.google.android.gms:play-services-auth:11.0.4'
+
+  // Dependency for firebase messaging services
+  compile 'com.google.firebase:firebase-messaging:11.2.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
