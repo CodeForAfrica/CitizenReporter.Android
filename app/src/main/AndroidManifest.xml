@@ -106,6 +106,16 @@
         android:name=".storyboard.overlay.OverlayCameraActivity"
         android:screenOrientation="landscape"
         android:theme="@style/AppTheme.NoActionBar"></activity>
+    <service android:name=".main.assignments.MyFirebaseInstanceIdService">
+      <intent-filter>
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT"></action>
+      </intent-filter>
+    </service>
+    <service android:name=".main.assignments.MyFirebaseMessagingService">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"></action>
+      </intent-filter>
+    </service>
   </application>
 
 </manifest>
