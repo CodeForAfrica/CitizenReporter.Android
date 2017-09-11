@@ -2,24 +2,25 @@ package org.codeforafrica.citizenreporterandroid.data.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.Date;
 
 public class Assignment {
 
-  @SerializedName("id") @Expose private int id;
+  @SerializedName("id") @Expose private String id;
   @SerializedName("title") @Expose private String title;
   @SerializedName("description") @Expose private String description;
   @SerializedName("required_media") @Expose private String requiredMedia;
-  @SerializedName("featured_image") @Expose private Object featuredImage;
+  @SerializedName("featured_image") @Expose private String featuredImage;
   @SerializedName("number_of_responses") @Expose private int numberOfResponses;
   @SerializedName("deadline") @Expose private String deadline;
   @SerializedName("author") @Expose private String author;
   @SerializedName("assignment_location") @Expose private String assignmentLocation;
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -47,11 +48,11 @@ public class Assignment {
     this.requiredMedia = requiredMedia;
   }
 
-  public Object getFeaturedImage() {
+  public String getFeaturedImage() {
     return featuredImage;
   }
 
-  public void setFeaturedImage(Object featuredImage) {
+  public void setFeaturedImage(String featuredImage) {
     this.featuredImage = featuredImage;
   }
 

@@ -62,7 +62,7 @@ public class AssignmentsAdapter
     final Assignment assignment = assignmentsList.get(position);
 
     viewHolder.assignment_title.setText(assignment.getTitle());
-    viewHolder.assignment_deadline.setText(assignment.getDeadline());
+    viewHolder.assignment_deadline.setText(assignment.getDeadline().toString());
     viewHolder.assignment_location.setText(assignment.getAssignmentLocation());
     viewHolder.assignment_author.setText(assignment.getAuthor());
     Glide.with(mContext).load(assignment.getFeaturedImage()).into(viewHolder.featured_image);

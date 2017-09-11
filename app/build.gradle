@@ -47,6 +47,10 @@ dependencies {
     transitive = true;
   }
 
+  compile('com.parse:parsefacebookutils-v4-android:1.10.3@aar', {
+    exclude group: 'com.parse:parse-android:1.10.+'
+  })
+
   //Dependencies for ImageSlider
   compile 'com.android.support:appcompat-v7:25.3.1'
   compile 'com.google.android.gms:play-services-location:11.0.4'
@@ -89,6 +93,9 @@ dependencies {
 
   // Dependency for Google Play Services
   compile 'com.google.android.gms:play-services-auth:11.0.4'
+
+  compile 'com.parse:parse-android:1.15.7'
+
 
 }
 

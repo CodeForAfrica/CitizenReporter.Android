@@ -1,5 +1,12 @@
 package org.codeforafrica.citizenreporterandroid.ui.assignments;
 
+import android.util.Log;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.data.DataManager;
@@ -24,8 +31,16 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
   @Override public void getAndDisplayAssignments() {
     view.showLoading();
     List<Assignment> assignmentList = dataManager.loadAssignmentsFromDb();
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
+    query.findInBackground(new FindCallback<ParseObject>() {
+      @Override public void done(List<ParseObject> objects, ParseException e) {
+        List<Assignment> assignments = parseListAssignments(objects);
+        Log.d("Parse", "done: " + assignments.size());
+        checkNumberOfAssignments(assignments);
+      }
+    });
 
-    checkNumberOfAssignments(assignmentList);
+
     view.hideLoading();
   }
 
@@ -43,5 +58,28 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
     } else {
       view.displayNoAssignments();
     }
+  }
+
+  private Assignment parseObjectToAssignment(ParseObject assignmentObject) {
+    Assignment assignment = new Assignment();
+    assignment.setAuthor(assignmentObject.getString("author"));
+    assignment.setTitle(assignmentObject.getString("title"));
+    assignment.setDescription(assignmentObject.getString("description"));
+    assignment.setFeaturedImage(assignmentObject.getParseFile
+        ("featured_image").getUrl());
+    Log.d("Parse", "parseObjectToAssignment featuredImage: " + assignmentObject.getParseFile
+        ("featured_image").getUrl());
+    assignment.setDeadline(assignmentObject.getDate("deadline").toString());
+    assignment.setId(assignmentObject.getObjectId());
+
+    return assignment;
+  }
+
+  private List<Assignment> parseListAssignments(List<ParseObject> assignmentObjects) {
+    List<Assignment> assignmentList = new ArrayList<>();
+    for (ParseObject assignmentObject : assignmentObjects) {
+      assignmentList.add(parseObjectToAssignment(assignmentObject));
+    }
+    return assignmentList;
   }
 }
