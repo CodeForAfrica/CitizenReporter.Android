@@ -1,5 +1,11 @@
 package org.codeforafrica.citizenreporterandroid.ui.stories;
 
+import android.util.Log;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import java.util.List;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.data.DataManager;
@@ -17,19 +23,25 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
     this.dataManager = dataManager;
   }
 
-  @Override public void getStoriesFromDb() {
-    view.showLoading();
-    List<Story> storyList = dataManager.fetchStoriesFromDb();
-    checkNumberOfStories(storyList);
-    view.hideLoading();
-  }
 
-  @Override public void getStoriesFromNetwork() {
+
+  @Override public void loadStories() {
     view.showLoading();
-    String fb_id = dataManager.getCurrentUserUID();
-    dataManager.getUserStories(fb_id);
-    List<Story> storyList = dataManager.fetchStoriesFromDb();
-    checkNumberOfStories(storyList);
+    ParseUser user = ParseUser.getCurrentUser();
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+    query.whereEqualTo("author", user.getObjectId());
+
+    query.findInBackground(new FindCallback<ParseObject>() {
+      public void done(List<ParseObject> storyList, ParseException e) {
+        Log.d("Stories", "done: storyList " + storyList.size());
+        for (ParseObject parseObject : storyList) {
+          Log.d("Story", "Title: " + parseObject.getString("title"));
+          Log.d("Story", "Summary: " + parseObject.getString("summary"));
+          Log.d("Story", "Author: " + parseObject.getString("author"));
+        }
+        //checkNumberOfStories(storyList);
+      }
+    });
     view.hideLoading();
   }
 

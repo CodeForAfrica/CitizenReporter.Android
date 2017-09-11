@@ -27,7 +27,7 @@ public class BaseActivity extends AppCompatActivity {
    */
   public void checkUserLoggedIn() {
     user = ParseUser.getCurrentUser();
-    if (!user.isAuthenticated()) {
+    if (user ==null || !user.isAuthenticated()) {
       Log.d(TAG, "checkUserLoggedIn: not logged in");
       Intent intent = new Intent(this, LoginActivity.class);
       startActivity(intent);

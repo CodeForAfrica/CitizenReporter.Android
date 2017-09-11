@@ -16,8 +16,7 @@ public interface StoriesFragmentContract {
     void swipeToDelete();
   };
   interface Presenter{
-    void getStoriesFromDb();
-    void getStoriesFromNetwork();
+    void loadStories();
     void deleteStory(int storyID);
     void attachView(View view);
     void detachView();

@@ -61,12 +61,12 @@ public class StoriesFragment extends Fragment implements StoriesFragmentContract
     super.onViewCreated(view, savedInstanceState);
     storiesRecyclerView.setHasFixedSize(true);
     storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    presenter.getStoriesFromDb();
+    presenter.loadStories();
   }
 
   @Override public void onResume() {
     super.onResume();
-    presenter.getStoriesFromDb();
+    presenter.loadStories();
   }
 
   @Override public void showLoading() {
