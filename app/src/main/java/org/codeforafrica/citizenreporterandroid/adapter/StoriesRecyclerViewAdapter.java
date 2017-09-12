@@ -43,10 +43,10 @@ public class StoriesRecyclerViewAdapter
         this.storyList = storyList;
     }
 
-    public StoriesRecyclerViewAdapter(List<Story> storyList, Context context) {
+    public StoriesRecyclerViewAdapter(List<Story> storyList, Context context, List<Story> storiesPendingRemoval) {
         this.storyList = storyList;
         this.context = context;
-        this.storiesPendingRemoval = storyList;
+        this.storiesPendingRemoval = storiesPendingRemoval;
     }
 
     public class StoryHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
