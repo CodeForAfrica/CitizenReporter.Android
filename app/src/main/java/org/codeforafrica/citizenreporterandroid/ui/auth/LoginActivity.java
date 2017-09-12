@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import butterknife.BindView;
 import com.facebook.AccessTokenTracker;
@@ -20,7 +21,7 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+//import com.facebook.login.widget.LoginButton;
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 import org.codeforafrica.citizenreporterandroid.R;
@@ -34,7 +35,8 @@ import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.regis
 
 public class LoginActivity extends AppCompatActivity {
 
-  @BindView(R.id.login_button) LoginButton loginButton;
+//  @BindView(R.id.login_button) LoginButton loginButton;
+  @BindView(R.id.login_button) Button loginButton;
 
   private CallbackManager callbackManager;
   private AccessTokenTracker mTokenTracker;
@@ -57,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     mProfileTracker.startTracking();
 
     setContentView(R.layout.activity_login);
-    loginButton = (LoginButton) findViewById(R.id.login_button);
+    loginButton = (Button) findViewById(R.id.login_button);
     preferences = PreferenceManager.getDefaultSharedPreferences(this);
     editor = preferences.edit();
 
