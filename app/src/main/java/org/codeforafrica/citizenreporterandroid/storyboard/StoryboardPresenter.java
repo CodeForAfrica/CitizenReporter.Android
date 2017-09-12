@@ -59,12 +59,16 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void loadAttachments(JSONArray attachments) {
-    ArrayList<ParseFile> files = new ArrayList<ParseFile>();
+    // get parse files
 
-    if (attachments != null) {
+    // if file name ends in jpg or png or gif
+    // view.attachImage(file);
 
-    }
+    // if file is video
+    // view.attachVideo(file);
 
+    // if file is audio
+    // view.attachAudio(file)
   }
 
   public void setView(StoryboardContract.View view) {

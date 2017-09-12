@@ -18,6 +18,9 @@ public interface StoryboardContract {
     void loadNewReport(ParseObject story);
     void showStoryNotFoundError(String message);
     void displayAttachments(List<ParseFile> files);
+    void attachImage(ParseFile file);
+    void attachVideo(ParseFile file);
+    void attachAudio(ParseFile file);
 
 
   };
