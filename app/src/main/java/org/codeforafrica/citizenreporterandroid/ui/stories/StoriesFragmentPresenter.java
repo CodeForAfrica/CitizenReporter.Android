@@ -39,7 +39,7 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
           Log.d("Story", "Summary: " + parseObject.getString("summary"));
           Log.d("Story", "Author: " + parseObject.getString("author"));
         }
-        //checkNumberOfStories(storyList);
+        checkNumberOfStories(storyList);
       }
     });
     view.hideLoading();
@@ -58,7 +58,7 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
     this.view = null;
   }
 
-  private void checkNumberOfStories(List<Story> storyList) {
+  private void checkNumberOfStories(List<ParseObject> storyList) {
     if (storyList.size() > 0) {
       view.displayStories(storyList);
     } else {

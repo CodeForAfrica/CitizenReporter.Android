@@ -119,8 +119,8 @@ public class NetworkHelper {
             dataHelper.bulkSaveStories(stories);
             Log.d("API", "Stories count after api call " + String.valueOf(stories.size()));
             // update the adapter to display the new stories
-            adapter.setStoryList(dataHelper.getAllStories());
-            adapter.notifyDataSetChanged();
+            // adapter.setStoryList(dataHelper.getAllStories());
+            // adapter.notifyDataSetChanged();
           }
         }
       }

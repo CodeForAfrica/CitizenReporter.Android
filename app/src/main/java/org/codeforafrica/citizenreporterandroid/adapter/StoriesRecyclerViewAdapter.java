@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.parse.ParseObject;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
@@ -23,14 +24,14 @@ import org.codeforafrica.citizenreporterandroid.app.Constants;
 
 public class StoriesRecyclerViewAdapter
     extends RecyclerView.Adapter<StoriesRecyclerViewAdapter.StoryHolder> {
-  private List<Story> storyList;
+  private List<ParseObject> storyList;
   private Context context;
 
-  public void setStoryList(List<Story> storyList) {
+  public void setStoryList(List<ParseObject> storyList) {
     this.storyList = storyList;
   }
 
-  public StoriesRecyclerViewAdapter(List<Story> storyList, Context context) {
+  public StoriesRecyclerViewAdapter(List<ParseObject> storyList, Context context) {
     this.storyList = storyList;
     this.context = context;
   }
@@ -49,13 +50,13 @@ public class StoriesRecyclerViewAdapter
     @Override public void onClick(View v) {
       // get the position of thr row clicked
       int position = getAdapterPosition();
-      Story currentStory = storyList.get(position);
-      Toast.makeText(context, currentStory.getTitle(), Toast.LENGTH_SHORT).show();
+      ParseObject currentStory = storyList.get(position);
+      Toast.makeText(context, currentStory.getString("title"), Toast.LENGTH_SHORT).show();
 
       // TODO send story id then the story will be retrieved from the database
       Intent openStoryIntent = new Intent(context, Storyboard.class);
       openStoryIntent.setAction(Constants.ACTION_EDIT_VIEW_STORY);
-      openStoryIntent.putExtra("STORY_ID", currentStory.getLocal_id());
+      openStoryIntent.putExtra("STORY_ID", currentStory.getObjectId());
       context.startActivity(openStoryIntent);
     }
   }
@@ -67,17 +68,17 @@ public class StoriesRecyclerViewAdapter
   }
 
   @Override public void onBindViewHolder(StoryHolder holder, int position) {
-    Story story = storyList.get(position);
-    holder.story_title.setText(story.getTitle());
-    holder.story_date_saved.setText(story.getUpdated());
-    setUploadedDisplay(story, holder.uploaded);
+    ParseObject story = storyList.get(position);
+    holder.story_title.setText(story.getString("title"));
+    holder.story_date_saved.setText(story.getUpdatedAt().toString());
+    //setUploadedDisplay(story, holder.uploaded);
   }
 
   @Override public int getItemCount() {
     return storyList.size();
   }
 
-  public void notify(List<Story> list) {
+  public void notify(List<ParseObject> list) {
     if (storyList != null) {
       storyList.clear();
       storyList.addAll(list);

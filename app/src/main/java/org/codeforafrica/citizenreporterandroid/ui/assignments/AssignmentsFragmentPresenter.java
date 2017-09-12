@@ -32,6 +32,7 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
     view.showLoading();
     List<Assignment> assignmentList = dataManager.loadAssignmentsFromDb();
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
+    query.fromLocalDatastore();
     query.findInBackground(new FindCallback<ParseObject>() {
       @Override public void done(List<ParseObject> objects, ParseException e) {
         List<Assignment> assignments = parseListAssignments(objects);

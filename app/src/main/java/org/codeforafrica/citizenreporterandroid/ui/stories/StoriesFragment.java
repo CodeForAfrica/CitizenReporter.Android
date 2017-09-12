@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.parse.ParseObject;
 import java.util.List;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.R;
@@ -77,7 +78,7 @@ public class StoriesFragment extends Fragment implements StoriesFragmentContract
     storiesProgressBar.setVisibility(View.GONE);
   }
 
-  @Override public void displayStories(List<Story> stories) {
+  @Override public void displayStories(List<ParseObject> stories) {
     adapter = new StoriesRecyclerViewAdapter(stories, getContext());
     storiesRecyclerView.setAdapter(adapter);
   }
