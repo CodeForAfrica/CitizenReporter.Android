@@ -16,6 +16,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,6 +43,8 @@ public class StoriesFragment extends Fragment {
     private LocalDataHelper dataHelper;
     private SharedPreferences preferences;
     private CReporterAPI apiClient;
+
+    List<Story> storiesPendingRemoval;
 
     public StoriesFragment() {
         // Required empty public constructor
@@ -69,16 +74,8 @@ public class StoriesFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        storiesRecyclerView.setHasFixedSize(true);
-        storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        dataHelper = new LocalDataHelper(getActivity());
-
-        stories = dataHelper.getAllStories();
-
-        adapter = new StoriesRecyclerViewAdapter(stories, getContext());
-
-        storiesRecyclerView.setAdapter(adapter);
+        setHasOptionsMenu(true);
+        setUpRecyclerView();
 
         if (dataHelper.getStoriesCount() == 0) {
             apiClient = APIClient.getApiClient();
@@ -88,12 +85,22 @@ public class StoriesFragment extends Fragment {
                 NetworkHelper.getUserStories(getActivity(), apiClient, fb_id, adapter);
             }
 
-            setUpItemTouchHelper();
-            setUpAnimationDecoratorHelper();
         }
 
         //        adapter.setStoryList(dataHelper.getAllStories());
         //        adapter.notifyDataSetChanged();
+    }
+
+    private void setUpRecyclerView() {
+        storiesRecyclerView.setHasFixedSize(true);
+        storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        dataHelper = new LocalDataHelper(getActivity());
+        stories = dataHelper.getAllStories();
+        storiesPendingRemoval = dataHelper.getAllStories();
+        adapter = new StoriesRecyclerViewAdapter(stories, getContext(), storiesPendingRemoval);
+        storiesRecyclerView.setAdapter(adapter);
+        setUpItemTouchHelper();
+        setUpAnimationDecoratorHelper();
     }
 
     @Override
@@ -101,6 +108,23 @@ public class StoriesFragment extends Fragment {
         adapter.notify(dataHelper.getAllStories());
         super.onResume();
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_stories, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.undo_checkbox) {
+            item.setChecked(!item.isChecked());
+            ((StoriesRecyclerViewAdapter)storiesRecyclerView.getAdapter()).setUndoOn(item.isChecked());
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     private void setUpItemTouchHelper() {
 
