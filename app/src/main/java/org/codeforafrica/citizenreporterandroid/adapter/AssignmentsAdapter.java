@@ -3,6 +3,7 @@ package org.codeforafrica.citizenreporterandroid.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentDetai
 
 public class AssignmentsAdapter
     extends RecyclerView.Adapter<AssignmentsAdapter.AssignmentsViewHolder> {
+  private static final String TAG = AssignmentsAdapter.class.getSimpleName();
 
   public class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.assignment_title) TextView assignment_title;
@@ -70,6 +72,7 @@ public class AssignmentsAdapter
       @Override public void onClick(View view) {
         Intent intent = new Intent(mContext, AssignmentDetailActivity.class);
         intent.putExtra("assignment_id", assignment.getId());
+        Log.d(TAG, "onClick: assignmentID" + assignment.getId());
         mContext.startActivity(intent);
       }
     });
