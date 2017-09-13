@@ -16,11 +16,13 @@
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
         <View
             android:layout_width="match_parent"
@@ -40,19 +42,21 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:paddingEnd="10dp"
+                android:src="@drawable/icons8_support24" />
+
             <TextView
                 android:id="@+id/support_menu_item"
-                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="Support Channel"
                 android:textSize="16sp" />
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/right_caret" />
 
         </LinearLayout>
 
@@ -73,19 +77,21 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:paddingEnd="10dp"
+                android:src="@drawable/icons8_comments24" />
+
             <TextView
                 android:id="@+id/feedback_menu_item"
-                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="0.96"
                 android:text="Feedback"
                 android:textSize="16sp" />
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/right_caret" />
 
         </LinearLayout>
 
@@ -105,6 +111,12 @@
             android:paddingStart="8dp"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:paddingEnd="10dp"
+                android:src="@drawable/icons8about24" />
 
             <TextView
                 android:id="@+id/about_menu_item"
@@ -115,10 +127,7 @@
                 android:text="About"
                 android:textSize="16sp" />
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/right_caret" />
+
 
         </LinearLayout>
 
@@ -130,6 +139,25 @@
             android:background="@color/separator_gray"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="0dp" />
+        
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:textAllCaps="false"
+                android:background="@drawable/rounded_dark_button"
+                android:gravity="center" />
+
+        </LinearLayout>
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -149,7 +177,23 @@
                 app:layout_constraintRight_toRightOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
-
     </LinearLayout>
 
+    <!--<android.support.design.widget.BottomNavigationView-->
+        <!--android:id="@+id/bottom_navigation"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--app:itemBackground="@color/colorPrimary"-->
+        <!--app:itemIconTint="#ffffff"-->
+        <!--app:itemTextColor="#ffffff"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:menu="@menu/bottom_navigation_main"-->
+        <!--tools:layout_editor_absoluteX="8dp"-->
+        <!--tools:layout_editor_absoluteY="0dp" />-->
+
 </android.support.constraint.ConstraintLayout>
+
+
