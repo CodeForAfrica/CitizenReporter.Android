@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.adapter.StoriesRecyclerViewAdapter;
@@ -166,7 +167,12 @@ public class StoriesFragment extends Fragment {
                 if (undoOn) {
                     adapter.pendingRemoval(swipedPosition);
                 } else {
+                    Story story = adapter.getStoryList(swipedPosition);
+
                     adapter.remove(swipedPosition);
+                    Toast.makeText(getActivity(), "Delete successful", Toast.LENGTH_SHORT).show();
+
+                    dataHelper.deleteStory(story.getItem_index());
                 }
             }
 
