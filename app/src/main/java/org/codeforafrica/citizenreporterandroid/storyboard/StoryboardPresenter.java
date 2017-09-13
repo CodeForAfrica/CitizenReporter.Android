@@ -83,6 +83,10 @@ public class StoryboardPresenter implements Presenter {
     view.showLocationSearch();
   }
 
+  @Override public void getWhenItOccurred() {
+    view.showDatePickerDialog();
+  }
+
   public void setView(StoryboardContract.View view) {
     this.view = view;
   }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.android.datetimepicker.date.DatePickerDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -23,17 +24,26 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.json.JSONArray;
 
-public class Storyboard extends AppCompatActivity implements StoryboardContract.View {
+import static org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils.formatDate;
+
+public class Storyboard extends AppCompatActivity
+    implements StoryboardContract.View, DatePickerDialog.OnDateSetListener {
+
   private static final String TAG = Storyboard.class.getSimpleName();
   StoryboardContract.Presenter presenter;
   ParseObject activeStory;
   LayoutInflater inflater;
+  private final Calendar calendar = Calendar.getInstance();
+  private final DatePickerDialog datePickerDialog =
+      DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+          calendar.get(Calendar.DAY_OF_MONTH));
 
   @BindView(R.id.attachmentsLayout) LinearLayout attachmentsLayout;
 
@@ -74,18 +84,15 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
   @Override protected void onStop() {
     super.onStop();
     presenter.saveStory(activeStory);
-
   }
 
   @Override protected void onDestroy() {
     super.onDestroy();
     presenter.saveStory(activeStory);
-
   }
 
   @Override protected void onPause() {
     super.onPause();
-
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -99,16 +106,13 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
 
           // add location to current story
           activeStory.put("location", place.getName());
-
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
           Status status = PlaceAutocomplete.getStatus(this, data);
           Toast.makeText(this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
-
         } else if (resultCode == RESULT_CANCELED) {
           // The user canceled the operation.
           Toast.makeText(this, "Get Location operation has been cancelled", Toast.LENGTH_SHORT)
               .show();
-
         }
         break;
     }
@@ -136,14 +140,15 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
     JSONArray media =
         story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
 
-    Log.d(TAG, "loadSavedReport: " + title + " " + summary + " " + whoIsInvolved + " " + location_btn);
+    Log.d(TAG,
+        "loadSavedReport: " + title + " " + summary + " " + whoIsInvolved + " " + location_btn);
 
     // set text to appropriate views
 
     story_title.setText(title);
     story_summary.setText(summary);
     story_who.setText(whoIsInvolved);
-    date.setText(whenItOccurred.toString() == null ? "Date" : whenItOccurred.toString());
+    date.setText(whenItOccurred == null ? "Date" : formatDate(whenItOccurred));
     location_btn.setText(loc);
 
     presenter.loadAttachments(media);
@@ -217,7 +222,24 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
 
   }
 
+  @Override public void showDatePickerDialog() {
+    datePickerDialog.setYearRange(1985, 2028);
+    datePickerDialog.show(getFragmentManager(), "datepicker");
+  }
+
   @OnClick(R.id.storyboard_location) public void getLocation() {
     presenter.getLocation();
+  }
+
+  @OnClick(R.id.storybaord_date) public void setWhen() {
+    presenter.getWhenItOccurred();
+  }
+
+  @Override
+  public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+    Calendar newCalendar = Calendar.getInstance();
+    newCalendar.set(year, monthOfYear, dayOfMonth);
+    activeStory.put("when", newCalendar.getTime());
+    date.setText(formatDate(newCalendar.getTime()));
   }
 }

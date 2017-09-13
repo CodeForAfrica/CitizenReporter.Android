@@ -23,6 +23,7 @@ public interface StoryboardContract {
     void attachAudio(ParseFile file);
     void showLocationSearch();
     void updateStoryObject(ParseObject activeStory);
+    void showDatePickerDialog();
 
 
   };
@@ -33,7 +34,7 @@ public interface StoryboardContract {
     void uploadStory();
     void loadAttachments(JSONArray attachments);
     void getLocation();
-
+    void getWhenItOccurred();
   };
 
 }

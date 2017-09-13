@@ -18,6 +18,8 @@ import cafe.adriel.androidaudiorecorder.model.AudioSampleRate;
 import cafe.adriel.androidaudiorecorder.model.AudioSource;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 
@@ -173,5 +175,10 @@ public class StoryBoardUtils {
       }
     }
     return intent;
+  }
+
+  public static String formatDate(Date date) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM yyyy");
+    return dateFormat.format(date);
   }
 }
