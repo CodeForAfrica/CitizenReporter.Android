@@ -38,6 +38,7 @@ public class Constants {
   public static final String KEY_ASSIGNMENT_TITLE = "title";
   public static final String KEY_ASSIGNMENT_DESCRIPTION = "description";
   public static final String KEY_ASSIGNMENT_MEDIA = "requiredMedia";
+  public static final String KEY_ASSIGNMENT_FEATUREDIMAGE = "featuredImage";
   public static final String KEY_ASSIGNMENT_RESPONSES = "numberOfResponses";
   public static final String KEY_ASSIGNMENT_AUTHOR = "author";
   public static final String KEY_ASSIGNMENT_DEADLINE = "deadline";
