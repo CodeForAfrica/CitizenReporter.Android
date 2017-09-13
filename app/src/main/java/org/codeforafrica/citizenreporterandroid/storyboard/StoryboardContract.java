@@ -21,6 +21,8 @@ public interface StoryboardContract {
     void attachImage(ParseFile file);
     void attachVideo(ParseFile file);
     void attachAudio(ParseFile file);
+    void showLocationSearch();
+    void updateStoryObject(ParseObject activeStory);
 
 
   };
@@ -30,6 +32,8 @@ public interface StoryboardContract {
     void saveStory(ParseObject object);
     void uploadStory();
     void loadAttachments(JSONArray attachments);
+    void getLocation();
+
   };
 
 }

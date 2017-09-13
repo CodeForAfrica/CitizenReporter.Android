@@ -56,7 +56,10 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void saveStory(ParseObject story) {
-    story.pinInBackground();
+    if (story != null) {
+      view.updateStoryObject(story);
+      story.pinInBackground();
+    }
   }
 
   @Override public void uploadStory() {
@@ -74,6 +77,10 @@ public class StoryboardPresenter implements Presenter {
 
     // if file is audio
     // view.attachAudio(file)
+  }
+
+  @Override public void getLocation() {
+    view.showLocationSearch();
   }
 
   public void setView(StoryboardContract.View view) {

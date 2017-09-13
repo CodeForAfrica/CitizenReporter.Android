@@ -1,5 +1,6 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,8 +11,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
@@ -29,7 +37,7 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
 
   @BindView(R.id.attachmentsLayout) LinearLayout attachmentsLayout;
 
-  @BindView(R.id.storyboard_location) Button location;
+  @BindView(R.id.storyboard_location) Button location_btn;
 
   @BindView(R.id.storybaord_date) Button date;
 
@@ -65,11 +73,45 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
 
   @Override protected void onStop() {
     super.onStop();
+    presenter.saveStory(activeStory);
+
   }
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    //presenter.saveStory(activeStory);
+    presenter.saveStory(activeStory);
+
+  }
+
+  @Override protected void onPause() {
+    super.onPause();
+
+  }
+
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    switch (requestCode) {
+      case Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE:
+        if (resultCode == RESULT_OK) {
+          Place place = PlaceAutocomplete.getPlace(this, data);
+          // TODO check out LatLong Object
+          location_btn.setText(place.getName());
+
+          // add location to current story
+          activeStory.put("location", place.getName());
+
+        } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+          Status status = PlaceAutocomplete.getStatus(this, data);
+          Toast.makeText(this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+
+        } else if (resultCode == RESULT_CANCELED) {
+          // The user canceled the operation.
+          Toast.makeText(this, "Get Location operation has been cancelled", Toast.LENGTH_SHORT)
+              .show();
+
+        }
+        break;
+    }
   }
 
   @Override public void showLoading() {
@@ -94,15 +136,15 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
     JSONArray media =
         story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
 
-    Log.d(TAG, "loadSavedReport: " + title + " " + summary + " " + whoIsInvolved + " " + location);
+    Log.d(TAG, "loadSavedReport: " + title + " " + summary + " " + whoIsInvolved + " " + location_btn);
 
     // set text to appropriate views
 
     story_title.setText(title);
     story_summary.setText(summary);
     story_who.setText(whoIsInvolved);
-    date.setText(whenItOccurred.toString() == null ? "Date": whenItOccurred.toString());
-    location.setText(loc);
+    date.setText(whenItOccurred.toString() == null ? "Date" : whenItOccurred.toString());
+    location_btn.setText(loc);
 
     presenter.loadAttachments(media);
   }
@@ -147,5 +189,35 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
     filename.setText(file.getName());
 
     attachmentsLayout.addView(view);
+  }
+
+  @Override public void showLocationSearch() {
+    try {
+      Intent intent =
+          new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(this);
+      startActivityForResult(intent, Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE);
+    } catch (GooglePlayServicesRepairableException e) {
+      // TODO: Handle the error.
+
+    } catch (GooglePlayServicesNotAvailableException e) {
+      // TODO: Handle the error.
+    }
+  }
+
+  @Override public void updateStoryObject(ParseObject activeStory) {
+    //story_title.setText(title);
+    //story_summary.setText(summary);
+    //story_who.setText(whoIsInvolved);
+    //date.setText(whenItOccurred.toString() == null ? "Date" : whenItOccurred.toString());
+    //location_btn.setText(loc);
+    activeStory.put("title", story_title.getText().toString());
+    activeStory.put("summary", story_summary.getText().toString());
+    activeStory.put("who", story_who.getText().toString());
+    // TODO: 9/13/17 media and date
+
+  }
+
+  @OnClick(R.id.storyboard_location) public void getLocation() {
+    presenter.getLocation();
   }
 }
