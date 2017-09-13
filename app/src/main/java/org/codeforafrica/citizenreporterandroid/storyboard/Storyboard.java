@@ -27,9 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -37,24 +35,31 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.squareup.picasso.Picasso;
-import gun0912.tedbottompicker.TedBottomPicker;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.storyboard.overlay.OverlayCameraActivity;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
-import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 import org.codeforafrica.citizenreporterandroid.utils.RequestCodes;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import gun0912.tedbottompicker.TedBottomPicker;
 
 public class Storyboard extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -435,6 +440,10 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     story.setWho(story_who.getText().toString());
 
     story.setSummary(story_cause.getText().toString());
+
+   String uuid = UUID.randomUUID().toString().replace("-", "");
+
+    story.setItem_index(uuid);
 
     dataHelper.updateStory(story);
 
