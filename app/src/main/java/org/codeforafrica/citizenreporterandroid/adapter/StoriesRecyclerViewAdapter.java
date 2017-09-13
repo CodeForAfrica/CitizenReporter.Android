@@ -180,4 +180,8 @@ public class StoriesRecyclerViewAdapter
     public boolean isUndoOn() {
         return undoOn;
     }
+
+    public Story getStoryList(int position){
+        return storyList.get(position);
+    }
 }
