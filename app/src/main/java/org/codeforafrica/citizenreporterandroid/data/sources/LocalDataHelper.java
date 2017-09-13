@@ -36,6 +36,8 @@ public class LocalDataHelper extends SQLiteOpenHelper {
         + " TEXT,"
         + Constants.KEY_ASSIGNMENT_DESCRIPTION
         + " TEXT,"
+        + Constants.KEY_ASSIGNMENT_FEATUREDIMAGE
+        + " TEXT,"
         + Constants.KEY_ASSIGNMENT_MEDIA
         + " TEXT,"
         + Constants.KEY_ASSIGNMENT_RESPONSES
@@ -94,7 +96,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
     Cursor cursor = db.query(Constants.ASSIGNMENTS_TABLE_NAME,
 
         new String[] {
-            Constants.KEY_ASSIGNMENT_TITLE, Constants.KEY_ASSIGNMENT_DESCRIPTION,
+            Constants.KEY_ASSIGNMENT_TITLE, Constants.KEY_ASSIGNMENT_DESCRIPTION, Constants.KEY_ASSIGNMENT_FEATUREDIMAGE,
             Constants.KEY_ASSIGNMENT_MEDIA, Constants.KEY_ASSIGNMENT_RESPONSES,
             Constants.KEY_ASSIGNMENT_AUTHOR, Constants.KEY_ASSIGNMENT_DEADLINE,
             Constants.KEY_ASSIGNMENT_LOCATION, Constants.KEY_ASSIGNMENT_UPDATED
@@ -106,6 +108,8 @@ public class LocalDataHelper extends SQLiteOpenHelper {
             cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_TITLE)));
         assignment.setDescription(
             cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_DESCRIPTION)));
+        assignment.setFeaturedImage(
+                cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_FEATUREDIMAGE)));
         assignment.setRequiredMedia(
             cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_MEDIA)));
         assignment.setNumberOfResponses(
@@ -129,6 +133,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
     values.put(Constants.KEY_ASSIGNMENT_TITLE, assignment.getTitle());
     values.put(Constants.KEY_ASSIGNMENT_DESCRIPTION, assignment.getDescription());
     values.put(Constants.KEY_ASSIGNMENT_MEDIA, assignment.getRequiredMedia());
+    values.put(Constants.KEY_ASSIGNMENT_FEATUREDIMAGE, assignment.getFeaturedImage());
     values.put(Constants.KEY_ASSIGNMENT_RESPONSES, assignment.getNumberOfResponses());
     values.put(Constants.KEY_ASSIGNMENT_AUTHOR, assignment.getAuthor());
     values.put(Constants.KEY_ASSIGNMENT_DEADLINE, assignment.getDeadline());
@@ -161,6 +166,7 @@ public class LocalDataHelper extends SQLiteOpenHelper {
 
         new String[] {
             Constants.KEY_ASSIGNMENT_TITLE, Constants.KEY_ASSIGNMENT_DESCRIPTION,
+            Constants.KEY_ASSIGNMENT_FEATUREDIMAGE,
             Constants.KEY_ASSIGNMENT_MEDIA, Constants.KEY_ASSIGNMENT_RESPONSES,
             Constants.KEY_ASSIGNMENT_AUTHOR, Constants.KEY_ASSIGNMENT_DEADLINE,
             Constants.KEY_ASSIGNMENT_LOCATION, Constants.KEY_ASSIGNMENT_UPDATED
@@ -171,6 +177,8 @@ public class LocalDataHelper extends SQLiteOpenHelper {
     assignment.setTitle(cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_TITLE)));
     assignment.setDescription(
         cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_DESCRIPTION)));
+    assignment.setFeaturedImage(
+            cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_FEATUREDIMAGE)));
     assignment.setRequiredMedia(
         cursor.getString(cursor.getColumnIndex(Constants.KEY_ASSIGNMENT_MEDIA)));
     assignment.setNumberOfResponses(
