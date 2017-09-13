@@ -51,7 +51,7 @@ public class SettingsFragment extends Fragment {
     startActivity(new Intent(getActivity(), FeedbackActivity.class));
   }
 
-  @OnClick(R.id.facebook_button_logout) public void facebookLogout() {
+  @OnClick(R.id.facebook_logut) public void facebookLogout() {
     LoginManager.getInstance().logOut();
     startActivity(new Intent(getActivity(), LoginActivity.class));
     getActivity().finish();

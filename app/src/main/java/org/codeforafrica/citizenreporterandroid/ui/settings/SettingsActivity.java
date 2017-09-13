@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     startActivity(new Intent(this, FeedbackActivity.class));
   }
 
-  @OnClick(R.id.facebook_button_logout) public void facebookLogout() {
+  @OnClick(R.id.facebook_logut) public void facebookLogout() {
     LoginManager.getInstance().logOut();
     startActivity(new Intent(this, LoginActivity.class));
     finish();
