@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +29,20 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
   LayoutInflater inflater;
 
   @BindView(R.id.attachmentsLayout) LinearLayout attachmentsLayout;
+
+  @BindView(R.id.storyboard_location) Button location;
+
+  @BindView(R.id.storybaord_date) Button date;
+
+  @BindView(R.id.story_title) EditText story_title;
+
+  @BindView(R.id.story_cause) EditText story_summary;
+
+  @BindView(R.id.story_who_is_involved) EditText story_who;
+
+  @BindView(R.id.attachments_button) ImageView attachmentsMenuBtn;
+
+  @BindView(R.id.summary) EditText summary;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -75,10 +91,16 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
     String summary = story.getString("summary");
     String whoIsInvolved = story.getString("who");
     Date whenItOccurred = story.getDate("when");
-    String location = story.getString("location");
+    String loc = story.getString("location");
     JSONArray media = story.getJSONArray("media");
 
     // set text to appropriate views
+
+    story_title.setText(title);
+    story_summary.setText(summary);
+    story_who.setText(whoIsInvolved);
+    date.setText(whenItOccurred.toString());
+    location.setText(loc);
 
     presenter.loadAttachments(media);
 
