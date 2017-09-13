@@ -56,6 +56,7 @@
     <string name="feedbackresponse">Would you like an email respose sent back?</string>
     <string name="feedbackbutton">Send Feedback</string>
     <string name="deadline">Deadline:</string>
+    <string name="add_file">Add File</string>
     <string name="add_photo">Capture Photo</string>
     <string name="add_video">Capture Video</string>
     <string name="record_audio">Record Audio</string>

@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/add_file"
+        android:icon="@drawable/ic_image_black_24dp"
+        android:title="@string/add_file" />
+
+    <item
         android:id="@+id/capture_photo"
         android:icon="@drawable/ic_image_black_24dp"
         android:title="@string/add_photo" />
