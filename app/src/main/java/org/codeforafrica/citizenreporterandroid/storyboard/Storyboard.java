@@ -289,10 +289,10 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             addImageAttachment(file_uri);
           } else if (file_path.endsWith(".mp4")){
             addVideoAttachment(file_uri);
-          } else if (file_path.endsWith(".mp3")){
+          } else if (file_path.endsWith(".wav")){
             addAudioAttachment(file_uri);
           } else{
-            Toast.makeText(this, "Please attach either a .mp4, .mp3, or .jpg file.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please attach either a .mp4, .wav, or .jpg file.", Toast.LENGTH_SHORT).show();
           }
         }
         break;
@@ -477,7 +477,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
                   file_body)
               .addFormDataPart("story", storyID)
               .build();
-          Request request = new Request.Builder().url("https://882d0ed0.ngrok.io/api/" + "stories/media/")
+          Request request = new Request.Builder().url(Constants.BASE_URL + "stories/media/")
               .post(request_body)
               .build();
 
@@ -485,12 +485,14 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
             okhttp3.Response response = client.newCall(request).execute();
           } catch (IOException e) {
             e.printStackTrace();
+
           }
         }
 
         }
       });
     t.start();
+    Toast.makeText(this, "Files Successfully Uploaded!", Toast.LENGTH_SHORT);
 
 
   }
