@@ -201,7 +201,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     Log.d("STORYBOARD", "onResume: ");
   }
 
-  @Override protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     switch (requestCode) {
       case Constants.PLACE_AUTOCOMPLETE_REQUEST_CODE:
         if (resultCode == RESULT_OK) {
