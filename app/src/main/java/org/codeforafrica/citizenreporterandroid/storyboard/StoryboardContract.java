@@ -31,4 +31,5 @@ public interface StoryboardContract {
     void uploadStory();
     void loadAttachments(JSONArray attachments);
   };
+
 }

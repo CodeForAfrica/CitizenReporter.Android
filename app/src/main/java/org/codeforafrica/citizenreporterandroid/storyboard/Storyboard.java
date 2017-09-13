@@ -1,6 +1,5 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
-import android.graphics.drawable.AnimatedStateListDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -52,12 +51,12 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
     String action = getIntent().getAction();
     if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
       String storyID = getIntent().getStringExtra("STORY_ID");
+      Log.i(TAG, "onCreate: edit story");
       presenter.openSavedStory(storyID);
     } else {
       String assignmentID = getIntent().getStringExtra("assignmentID");
       presenter.createNewStory(assignmentID);
     }
-
   }
 
   @Override protected void onStart() {
@@ -70,7 +69,7 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    presenter.saveStory(activeStory);
+    //presenter.saveStory(activeStory);
   }
 
   @Override public void showLoading() {
@@ -87,29 +86,30 @@ public class Storyboard extends AppCompatActivity implements StoryboardContract.
 
   @Override public void loadSavedReport(ParseObject story) {
     activeStory = story;
-    String title = story.getString("title");
-    String summary = story.getString("summary");
-    String whoIsInvolved = story.getString("who");
+    String title = story.getString("title") != null ? story.getString("title") : "";
+    String summary = story.getString("summary") != null ? story.getString("summary") : "";
+    String whoIsInvolved = story.getString("who") != null ? story.getString("who") : "";
     Date whenItOccurred = story.getDate("when");
-    String loc = story.getString("location");
-    JSONArray media = story.getJSONArray("media");
+    String loc = story.getString("location") != null ? story.getString("location") : "";
+    JSONArray media =
+        story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
+
+    Log.d(TAG, "loadSavedReport: " + title + " " + summary + " " + whoIsInvolved + " " + location);
 
     // set text to appropriate views
 
     story_title.setText(title);
     story_summary.setText(summary);
     story_who.setText(whoIsInvolved);
-    date.setText(whenItOccurred.toString());
+    date.setText(whenItOccurred.toString() == null ? "Date": whenItOccurred.toString());
     location.setText(loc);
 
     presenter.loadAttachments(media);
-
   }
 
   @Override public void loadNewReport(ParseObject story) {
     Log.d(TAG, "loadNewReport: Log new report " + story.getObjectId());
     activeStory = story;
-
   }
 
   @Override public void showStoryNotFoundError(String message) {

@@ -18,6 +18,7 @@ import org.json.JSONException;
  */
 
 public class StoryboardPresenter implements Presenter {
+  private static final String TAG = StoryboardPresenter.class.getSimpleName();
 
   StoryboardContract.View view;
 
@@ -26,15 +27,19 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void openSavedStory(String storyID) {
+    Log.d(TAG, "done: Loading saved report");
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
     query.fromLocalDatastore();
+    Log.d(TAG, "done: Query time");
     query.getInBackground(storyID, new GetCallback<ParseObject>() {
       public void done(ParseObject object, ParseException e) {
+        Log.d(TAG, "done: got");
         if (e == null) {
+          Log.d(TAG, "done: Loading saved report");
           view.loadSavedReport(object);
         } else {
           // something went wrong
-          Log.d("score", "Error: " + e.getMessage());
+          Log.d(TAG, "Error: " + e.getMessage());
           view.showStoryNotFoundError(e.getLocalizedMessage());
         }
       }

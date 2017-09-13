@@ -34,12 +34,15 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
     query.findInBackground(new FindCallback<ParseObject>() {
       public void done(List<ParseObject> storyList, ParseException e) {
         Log.d("Stories", "done: storyList " + storyList.size());
+
         for (ParseObject parseObject : storyList) {
           Log.d("Story", "Title: " + parseObject.getString("title"));
+          Log.d("Story", "id: " + parseObject.getObjectId());
           Log.d("Story", "Summary: " + parseObject.getString("summary"));
           Log.d("Story", "Author: " + parseObject.getString("author"));
         }
         checkNumberOfStories(storyList);
+        ParseObject.pinAllInBackground(storyList);
       }
     });
     view.hideLoading();
@@ -59,7 +62,7 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
   }
 
   private void checkNumberOfStories(List<ParseObject> storyList) {
-    if (storyList.size() > 0) {
+    if (storyList != null && storyList.size() > 0) {
       view.displayStories(storyList);
     } else {
       view.displayNoStories();
