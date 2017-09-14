@@ -8,16 +8,14 @@
     android:layout_marginLeft="0dp"
     android:layout_marginTop="0dp"
     android:layout_marginBottom="0dp"
-    card_view:cardUseCompatPadding="true">
+    card_view:cardPreventCornerOverlap="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingBottom="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp">
+        android:paddingTop="8dp" >
 
         <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
