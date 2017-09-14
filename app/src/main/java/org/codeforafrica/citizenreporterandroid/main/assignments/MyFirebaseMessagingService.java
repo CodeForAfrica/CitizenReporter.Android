@@ -45,10 +45,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationBuilder.addAction(action);
         notificationBuilder.setContentIntent(pendingIntent);
 
-
-
-//        notificationBuilder.addAction(R.drawable.ic_archive_black_24dp, null, null);
-
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
 
