@@ -177,8 +177,4 @@ public class StoryBoardUtils {
     return intent;
   }
 
-  public static String formatDate(Date date) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM yyyy");
-    return dateFormat.format(date);
-  }
 }

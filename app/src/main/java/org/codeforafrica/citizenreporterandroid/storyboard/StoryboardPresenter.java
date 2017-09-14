@@ -87,6 +87,10 @@ public class StoryboardPresenter implements Presenter {
     view.showDatePickerDialog();
   }
 
+  @Override public void startRecorder() {
+    view.showRecorder();
+  }
+
   public void setView(StoryboardContract.View view) {
     this.view = view;
   }

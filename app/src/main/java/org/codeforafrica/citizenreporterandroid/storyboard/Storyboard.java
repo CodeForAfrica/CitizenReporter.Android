@@ -1,7 +1,10 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +18,10 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cafe.adriel.androidaudiorecorder.AndroidAudioRecorder;
+import cafe.adriel.androidaudiorecorder.model.AudioChannel;
+import cafe.adriel.androidaudiorecorder.model.AudioSampleRate;
+import cafe.adriel.androidaudiorecorder.model.AudioSource;
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -24,14 +31,19 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
+import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 import org.json.JSONArray;
 
-import static org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils.formatDate;
+import static org.codeforafrica.citizenreporterandroid.utils.TimeUtils.formatDate;
 
 public class Storyboard extends AppCompatActivity
     implements StoryboardContract.View, DatePickerDialog.OnDateSetListener {
@@ -40,6 +52,8 @@ public class Storyboard extends AppCompatActivity
   StoryboardContract.Presenter presenter;
   ParseObject activeStory;
   LayoutInflater inflater;
+  List<ParseFile> queuedFiles = new ArrayList<>();
+  private String audio_path;
   private final Calendar calendar = Calendar.getInstance();
   private final DatePickerDialog datePickerDialog =
       DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
@@ -61,6 +75,7 @@ public class Storyboard extends AppCompatActivity
 
   @BindView(R.id.summary) EditText summary;
 
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_storyboard);
@@ -75,6 +90,9 @@ public class Storyboard extends AppCompatActivity
       String assignmentID = getIntent().getStringExtra("assignmentID");
       presenter.createNewStory(assignmentID);
     }
+
+    StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
+    StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
   }
 
   @Override protected void onStart() {
@@ -113,6 +131,28 @@ public class Storyboard extends AppCompatActivity
           // The user canceled the operation.
           Toast.makeText(this, "Get Location operation has been cancelled", Toast.LENGTH_SHORT)
               .show();
+        }
+        break;
+
+      case Constants.REQUEST_RECORD_AUDIO:
+        if (resultCode == RESULT_OK) {
+          if (audio_path != null) {
+            File f = new File(audio_path);
+            try {
+              byte[] audio_data = FileUtils.readFileToByteArray(f);
+              ParseFile file = new ParseFile("audio.wav", audio_data);
+              // upload file
+              Log.i(TAG, "onActivityResult: " + file.getName());
+
+              // TODO: 9/14/17 upload file and add it to JSONArray 
+
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          }
+
+        } else if (resultCode == RESULT_CANCELED) {
+          Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
         }
         break;
     }
@@ -210,11 +250,6 @@ public class Storyboard extends AppCompatActivity
   }
 
   @Override public void updateStoryObject(ParseObject activeStory) {
-    //story_title.setText(title);
-    //story_summary.setText(summary);
-    //story_who.setText(whoIsInvolved);
-    //date.setText(whenItOccurred.toString() == null ? "Date" : whenItOccurred.toString());
-    //location_btn.setText(loc);
     activeStory.put("title", story_title.getText().toString());
     activeStory.put("summary", story_summary.getText().toString());
     activeStory.put("who", story_who.getText().toString());
@@ -227,12 +262,36 @@ public class Storyboard extends AppCompatActivity
     datePickerDialog.show(getFragmentManager(), "datepicker");
   }
 
+  @Override public void showRecorder() {
+    String audio_filename =
+        Constants.RECORDING_PREFIX + String.valueOf(System.currentTimeMillis()) + ".wav";
+    audio_path = Environment.getExternalStorageDirectory().getPath() + audio_filename;
+
+    AndroidAudioRecorder.with(Storyboard.this)
+        // Required
+        .setFilePath(audio_path)
+        .setColor(ContextCompat.getColor(Storyboard.this, R.color.cfAfrica_red))
+        .setRequestCode(Constants.REQUEST_RECORD_AUDIO)
+
+        // Optional
+        .setSource(AudioSource.MIC)
+        .setChannel(AudioChannel.STEREO)
+        .setSampleRate(AudioSampleRate.HZ_48000)
+        .setAutoStart(false)
+        .setKeepDisplayOn(true)
+
+        // Start recording
+        .record();
+
+  }
+
   @OnClick(R.id.storyboard_location) public void getLocation() {
     presenter.getLocation();
   }
 
   @OnClick(R.id.storybaord_date) public void setWhen() {
-    presenter.getWhenItOccurred();
+    // presenter.getWhenItOccurred();
+    presenter.startRecorder();
   }
 
   @Override

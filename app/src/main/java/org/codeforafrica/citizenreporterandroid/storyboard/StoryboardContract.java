@@ -24,6 +24,7 @@ public interface StoryboardContract {
     void showLocationSearch();
     void updateStoryObject(ParseObject activeStory);
     void showDatePickerDialog();
+    void showRecorder();
 
 
   };
@@ -35,6 +36,7 @@ public interface StoryboardContract {
     void loadAttachments(JSONArray attachments);
     void getLocation();
     void getWhenItOccurred();
+    void startRecorder();
   };
 
 }
