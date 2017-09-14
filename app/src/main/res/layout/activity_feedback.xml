@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.feedback.FeedbackActivity">
 
-
     <include layout="@layout/content_feedback" />
 
 </android.support.design.widget.CoordinatorLayout>

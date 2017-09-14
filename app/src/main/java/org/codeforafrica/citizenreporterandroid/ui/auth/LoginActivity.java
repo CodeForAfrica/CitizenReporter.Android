@@ -10,9 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -21,7 +21,7 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-//import com.facebook.login.widget.LoginButton;
+import com.facebook.login.widget.LoginButton;
 import lolodev.permissionswrapper.callback.OnRequestPermissionsCallBack;
 import lolodev.permissionswrapper.wrapper.PermissionWrapper;
 import org.codeforafrica.citizenreporterandroid.R;
@@ -35,8 +35,7 @@ import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.regis
 
 public class LoginActivity extends AppCompatActivity {
 
-//  @BindView(R.id.login_button) LoginButton loginButton;
-  @BindView(R.id.login_button) Button loginButton;
+  @BindView(R.id.login_button) LoginButton loginButton;
 
   private CallbackManager callbackManager;
   private AccessTokenTracker mTokenTracker;
@@ -59,32 +58,32 @@ public class LoginActivity extends AppCompatActivity {
     mProfileTracker.startTracking();
 
     setContentView(R.layout.activity_login);
-    loginButton = (Button) findViewById(R.id.login_button);
+    loginButton = (LoginButton) findViewById(R.id.login_button);
     preferences = PreferenceManager.getDefaultSharedPreferences(this);
     editor = preferences.edit();
 
     new PermissionWrapper.Builder(this).addPermissions(new String[] {
-        Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE
+            Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE
     })
-        //enable rationale message with a custom message
-        .addPermissionRationale("You need internet to log in and also query ")
-        //show settings dialog,in this case with default message base on requested permission/s
-        .addPermissionsGoSettings(true)
-        //enable callback to know what option was choose
-        .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
-          @Override public void onGrant() {
-            if (isNetworkAvailable(LoginActivity.this)) {
-              startLoginProcess();
-            } else {
-              Toast.makeText(LoginActivity.this, "You currently do not have internet access",
-                  Toast.LENGTH_LONG).show();
-            }
-          }
+            //enable rationale message with a custom message
+            .addPermissionRationale("You need internet to log in and also query ")
+            //show settings dialog,in this case with default message base on requested permission/s
+            .addPermissionsGoSettings(true)
+            //enable callback to know what option was choose
+            .addRequestPermissionsCallBack(new OnRequestPermissionsCallBack() {
+              @Override public void onGrant() {
+                if (isNetworkAvailable(LoginActivity.this)) {
+                  startLoginProcess();
+                } else {
+                  Toast.makeText(LoginActivity.this, "You currently do not have internet access",
+                          Toast.LENGTH_LONG).show();
+                }
+              }
 
-          @Override public void onDenied(String permission) {
+              @Override public void onDenied(String permission) {
 
-          }
-        }).build().request();
+              }
+            }).build().request();
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -94,29 +93,29 @@ public class LoginActivity extends AppCompatActivity {
 
   public void startLoginProcess() {
     LoginManager.getInstance()
-        .registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-          @Override public void onSuccess(LoginResult loginResult) {
-            loginButton.setVisibility(View.GONE);
-            Log.d("Facebook Login", "AccessToken: " + loginResult.getAccessToken().getToken());
-            Profile prof = Profile.getCurrentProfile();
-            updateProfile(prof);
+            .registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+              @Override public void onSuccess(LoginResult loginResult) {
+                loginButton.setVisibility(View.GONE);
+                Log.d("Facebook Login", "AccessToken: " + loginResult.getAccessToken().getToken());
+                Profile prof = Profile.getCurrentProfile();
+                updateProfile(prof);
 
-            mProfileTracker = new ProfileTracker() {
-              @Override
-              protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
-                updateProfile(newProfile);
+                mProfileTracker = new ProfileTracker() {
+                  @Override
+                  protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                    updateProfile(newProfile);
+                  }
+                };
               }
-            };
-          }
 
-          @Override public void onCancel() {
-            Toast.makeText(LoginActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
-          }
+              @Override public void onCancel() {
+                Toast.makeText(LoginActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
+              }
 
-          @Override public void onError(FacebookException error) {
+              @Override public void onError(FacebookException error) {
 
-          }
-        });
+              }
+            });
   }
 
   @Override protected void onResume() {
@@ -124,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
   }
 
   @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-      @NonNull int[] grantResults) {
+                                                   @NonNull int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 
@@ -158,4 +157,5 @@ public class LoginActivity extends AppCompatActivity {
       startActivity(intent);
     }
   }
+
 }
