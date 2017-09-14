@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -48,6 +51,7 @@ public class AssignmentDetailActivity extends Activity {
     } else {
       assignment = dataHelper.getAssignment(assignmentID);
       assignment_detail_title.setText(assignment.getTitle());
+      Glide.with(this).load(assignment.getFeaturedImage()).into(featured_image);
       assignment_detail_deadline.setText(assignment.getDeadline());
       assignment_detail_text.setText(assignment.getDescription());
       assignment_detail_author.setText(assignment.getAuthor());
