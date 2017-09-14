@@ -1,8 +1,8 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/assignment_card"
     android:layout_width="match_parent"
-
     android:layout_height="wrap_content"
     android:layout_marginRight="0dp"
     android:layout_marginLeft="0dp"
@@ -135,15 +135,6 @@
             </LinearLayout>
 
         </RelativeLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/assignment_details"
-            android:text="@string/view_assignment_detail"
-            android:textSize="18sp"
-            android:textColor="#ffffff"
-            android:background="#29db61" />
 
 
     </LinearLayout>

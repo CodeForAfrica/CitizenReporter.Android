@@ -2,6 +2,7 @@ package org.codeforafrica.citizenreporterandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,8 @@ public class AssignmentsAdapter
     @BindView(R.id.assignment_location) TextView assignment_location;
     @BindView(R.id.assignment_author) TextView assignment_author;
     @BindView(R.id.assignment_image) ImageView featured_image;
-    @BindView(R.id.assignment_details) Button assignment_details;
+    @BindView(R.id.assignment_card)
+    CardView assignment_details;
 
     public AssignmentsViewHolder(View view) {
       super(view);
