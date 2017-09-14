@@ -1,6 +1,7 @@
 package org.codeforafrica.citizenreporterandroid.main.assignments;
 
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -22,7 +23,7 @@ import org.codeforafrica.citizenreporterandroid.app.Constants;
  * Created by Mugiwara_Munyi on 14/08/2017.
  */
 
-public class AssignmentDetailActivity extends Activity {
+public class AssignmentDetailActivity extends AppCompatActivity {
   @BindView(R.id.assignment_detail_title) TextView assignment_detail_title;
 
   @BindView(R.id.featuredImageView) ImageView featured_image;
@@ -30,8 +31,6 @@ public class AssignmentDetailActivity extends Activity {
   @BindView(R.id.assignment_detail_deadline) TextView assignment_detail_deadline;
 
   @BindView(R.id.assignment_detail_text) TextView assignment_detail_text;
-
-  @BindView(R.id.assignment_detail_location) TextView assignment_detail_location;
 
   @BindView(R.id.assignment_detail_author) TextView assignment_detail_author;
 
@@ -55,7 +54,6 @@ public class AssignmentDetailActivity extends Activity {
       assignment_detail_deadline.setText(assignment.getDeadline());
       assignment_detail_text.setText(assignment.getDescription());
       assignment_detail_author.setText(assignment.getAuthor());
-      assignment_detail_location.setText(assignment.getAssignmentLocation());
     }
   }
 
