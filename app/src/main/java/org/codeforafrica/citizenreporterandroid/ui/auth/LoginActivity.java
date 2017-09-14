@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,6 +37,8 @@ import static org.codeforafrica.citizenreporterandroid.utils.NetworkHelper.regis
 public class LoginActivity extends AppCompatActivity {
 
   @BindView(R.id.login_button) LoginButton loginButton;
+//  @BindView(R.id.facebook_login_button)
+//  Button customFacebookLoginButton;
 
   private CallbackManager callbackManager;
   private AccessTokenTracker mTokenTracker;
@@ -84,6 +87,16 @@ public class LoginActivity extends AppCompatActivity {
 
               }
             }).build().request();
+
+    Button btn = (Button) findViewById(R.id.facebook_login_button);
+
+    btn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        loginButton.performClick();
+      }
+    });
+
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -157,5 +170,14 @@ public class LoginActivity extends AppCompatActivity {
       startActivity(intent);
     }
   }
+
+//  @OnClick(R.id.facebook_login_button) public void loginWithFacebook() {
+//    loginButton.performClick();
+//  }
+
+//  @OnClick(R.id.facebook_login_button)
+//  public void onClick() {
+//    loginButton.performClick();
+//  }
 
 }

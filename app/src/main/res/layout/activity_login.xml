@@ -29,6 +29,7 @@
             android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="8dp"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <Button
@@ -36,13 +37,14 @@
             style="@style/AppIntroButtonStyleCompat"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:paddingStart="15dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/email_sign_in_button"
-            android:drawableLeft="@drawable/icons8_message_48"
+            android:drawableLeft="@drawable/icons8_message_24"
             android:text="JOIN WITH EMAIL"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintHorizontal_bias="0.0"
