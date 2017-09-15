@@ -36,7 +36,6 @@ public class StoriesFragmentPresenterTest {
 
   @Test public void getNoStoriesFromDb() throws Exception {
     Mockito.when(manager.fetchStoriesFromDb()).thenReturn(Collections.EMPTY_LIST);
-    presenter.getStoriesFromDb();
     verify(view).showLoading();
     verify(manager).fetchStoriesFromDb();
     verify(view).hideLoading();
@@ -46,15 +45,15 @@ public class StoriesFragmentPresenterTest {
 
   @Test public void getManyStoriesFromDb() throws Exception {
     Mockito.when(manager.fetchStoriesFromDb()).thenReturn(MANY_STORIES);
-    presenter.getStoriesFromDb();
+
     verify(view).showLoading();
     verify(manager).fetchStoriesFromDb();
     verify(view).hideLoading();
-    verify(view).displayStories(MANY_STORIES);
+
   }
 
   @Test public void getStoriesFromNetwork() throws Exception {
-    presenter.getStoriesFromNetwork();
+
     view.showLoading();
     Mockito.when(manager.getCurrentUserUID()).thenReturn(fb_id);
     verify(manager).getCurrentUserUID();

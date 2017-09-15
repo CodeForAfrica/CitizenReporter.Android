@@ -13,41 +13,98 @@
 
     <!-- Login progress -->
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Sign in"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.136" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.393" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
+        <Button
+            android:id="@+id/email_login_button"
+            style="@style/AppIntroButtonStyleCompat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/email_sign_in_button"
+            android:drawableLeft="@drawable/icons8_message_24"
+            android:text="JOIN WITH EMAIL"
+            android:textColor="@color/email_green"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/google_login_button"
+            style="@style/AppIntroButtonStyleCompat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/google_sign_in_button"
+            android:text="SIGN IN WITH GOOGLE"
+            android:paddingStart="20dp"
+            android:drawableLeft="@drawable/ic_google_filled_30"
+            android:textSize="14sp"
+            android:textColor="@color/google_red"
+            app:layout_constraintBottom_toTopOf="@+id/email_login_button"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/email_login_button"
+            app:layout_constraintRight_toRightOf="@+id/email_login_button" />
+
+        <Button
+            android:id="@+id/facebook_login_button"
+            style="@style/AppIntroButtonStyleCompat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/facebook_sign_in_button"
+            android:drawableStart="@drawable/ic_facebook_filled_30"
+            android:paddingStart="20dp"
+            android:textColor="@color/facebook_blue"
+            android:textSize="14sp"
+            android:text="SIGN IN WITH FACEBOOK"
+            app:layout_constraintBottom_toTopOf="@+id/google_login_button"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/google_login_button"
+            app:layout_constraintRight_toRightOf="@+id/google_login_button" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_weight="0.76"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Already have an account?"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Sign in"
+                android:textAlignment="textStart" />
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
 </LinearLayout>

@@ -6,11 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
 import butterknife.BindView;
-import butterknife.OnClick;
 import com.facebook.Profile;
-import com.facebook.login.widget.LoginButton;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -29,7 +27,7 @@ import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 public class LoginActivity extends AppCompatActivity {
 
   private static final String TAG = LoginActivity.class.getSimpleName();
-  @BindView(R.id.login_button) LoginButton loginButton;
+  @BindView(R.id.facebook_login_button) Button facebookLoginButton;
   @Inject DataManager manager;
 
   Profile profile;
@@ -42,9 +40,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     setContentView(R.layout.activity_login);
-    loginButton = (LoginButton) findViewById(R.id.login_button);
+    facebookLoginButton = (Button) findViewById(R.id.facebook_login_button);
 
-    loginButton.setOnClickListener(new View.OnClickListener() {
+    facebookLoginButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         v.setVisibility(View.INVISIBLE);
         ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, permissions,
