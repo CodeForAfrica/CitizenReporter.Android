@@ -16,12 +16,19 @@ import cafe.adriel.androidaudiorecorder.AndroidAudioRecorder;
 import cafe.adriel.androidaudiorecorder.model.AudioChannel;
 import cafe.adriel.androidaudiorecorder.model.AudioSampleRate;
 import cafe.adriel.androidaudiorecorder.model.AudioSource;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
+
+import static org.apache.commons.io.IOUtils.toByteArray;
 
 /**
  * Created by Ahereza on 8/10/17.
@@ -175,6 +182,25 @@ public class StoryBoardUtils {
       }
     }
     return intent;
+  }
+
+  public static byte[] getFileBytes(File file) {
+    byte[] bytes = null;
+    try {
+      FileInputStream fis = new FileInputStream(file);
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      byte[] buf = new byte[(int) file.length()];
+
+      for (int readNum; (readNum = fis.read(buf)) != -1;) {
+        bos.write(buf, 0, readNum); // no doubt here is 0
+        System.out.println("read " + readNum + " bytes,");
+      }
+      bytes = bos.toByteArray();
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
+
+    return bytes;
   }
 
 }

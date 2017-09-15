@@ -18,13 +18,14 @@ public interface StoryboardContract {
     void loadNewReport(ParseObject story);
     void showStoryNotFoundError(String message);
     void displayAttachments(List<ParseFile> files);
-    void attachImage(ParseFile file);
-    void attachVideo(ParseFile file);
-    void attachAudio(ParseFile file);
+    void showImageAttachment(ParseFile file);
+    void showVideoAttachment(ParseFile file);
+    void showAudioAttachment(ParseFile file);
     void showLocationSearch();
     void updateStoryObject(ParseObject activeStory);
     void showDatePickerDialog();
     void showRecorder();
+    void readyStoryForUpload();
 
 
   };
@@ -32,11 +33,14 @@ public interface StoryboardContract {
     void openSavedStory(String storyID);
     void createNewStory(String assignmentID);
     void saveStory(ParseObject object);
-    void uploadStory();
-    void loadAttachments(JSONArray attachments);
+    void uploadStory(ParseObject story);
+    void loadAllAttachments(JSONArray attachments);
     void getLocation();
     void getWhenItOccurred();
     void startRecorder();
+    void attachVideo(ParseFile file);
+    void attachAudio(ParseFile file);
+    void attachImage(ParseFile file);
   };
 
 }

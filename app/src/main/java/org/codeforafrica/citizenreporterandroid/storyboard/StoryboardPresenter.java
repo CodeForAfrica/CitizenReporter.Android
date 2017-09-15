@@ -7,6 +7,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.storyboard.StoryboardContract.Presenter;
@@ -62,21 +63,29 @@ public class StoryboardPresenter implements Presenter {
     }
   }
 
-  @Override public void uploadStory() {
-
+  @Override public void uploadStory(final ParseObject story) {
+    view.readyStoryForUpload();
+    if (story.getBoolean("uploaded") != true) {
+      // upload the story if its uploaded flag is not true
+      story.saveInBackground(new SaveCallback() {
+        @Override public void done(ParseException e) {
+          story.put("uploaded", true);
+        }
+      });
+    }
   }
 
-  @Override public void loadAttachments(JSONArray attachments) {
+  @Override public void loadAllAttachments(JSONArray attachments) {
     // get parse files
 
     // if file name ends in jpg or png or gif
-    // view.attachImage(file);
+    // view.showImageAttachment(file);
 
     // if file is video
-    // view.attachVideo(file);
+    // view.showVideoAttachment(file);
 
     // if file is audio
-    // view.attachAudio(file)
+    // view.showAudioAttachment(file)
   }
 
   @Override public void getLocation() {
@@ -89,6 +98,18 @@ public class StoryboardPresenter implements Presenter {
 
   @Override public void startRecorder() {
     view.showRecorder();
+  }
+
+  @Override public void attachVideo(ParseFile file) {
+    view.showVideoAttachment(file);
+  }
+
+  @Override public void attachAudio(ParseFile file) {
+    view.showAudioAttachment(file);
+  }
+
+  @Override public void attachImage(ParseFile file) {
+    view.showImageAttachment(file);
   }
 
   public void setView(StoryboardContract.View view) {

@@ -28,12 +28,13 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +53,7 @@ public class Storyboard extends AppCompatActivity
   StoryboardContract.Presenter presenter;
   ParseObject activeStory;
   LayoutInflater inflater;
-  List<ParseFile> queuedFiles = new ArrayList<>();
+  JSONArray media;
   private String audio_path;
   private final Calendar calendar = Calendar.getInstance();
   private final DatePickerDialog datePickerDialog =
@@ -81,6 +82,7 @@ public class Storyboard extends AppCompatActivity
     setContentView(R.layout.activity_storyboard);
     ButterKnife.bind(Storyboard.this);
     presenter = new StoryboardPresenter(this);
+    inflater = LayoutInflater.from(Storyboard.this);
     String action = getIntent().getAction();
     if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
       String storyID = getIntent().getStringExtra("STORY_ID");
@@ -138,13 +140,34 @@ public class Storyboard extends AppCompatActivity
         if (resultCode == RESULT_OK) {
           if (audio_path != null) {
             File f = new File(audio_path);
+
             try {
               byte[] audio_data = FileUtils.readFileToByteArray(f);
-              ParseFile file = new ParseFile("audio.wav", audio_data);
+              final ParseFile file = new ParseFile(f.getName(), audio_data);
+              byte[] datad = "Working at Parse is great!".getBytes();
+              final ParseFile dummy = new ParseFile("resume.txt", datad);
+              Log.i(TAG, "onActivityResult: text" + datad.toString());
+              Log.i(TAG, "onActivityResult: audio" + datad.toString());
+              presenter.attachAudio(file);
+              file.saveInBackground(new SaveCallback() {
+                @Override public void done(ParseException e) {
+                  if (e == null) {
+                    Log.i(TAG, "done: uploading file");
+                    //media.put(file);
+                    Log.i(TAG, "onActivityResult URL: " + file.getUrl());
+                  } else {
+                    Log.d(TAG, "Error: " + e.getLocalizedMessage());
+                    Log.d(TAG, "Error: " + e.toString());
+                    Log.e(TAG, "done: ", e.fillInStackTrace());
+                  }
+
+
+                }
+              });
               // upload file
               Log.i(TAG, "onActivityResult: " + file.getName());
 
-              // TODO: 9/14/17 upload file and add it to JSONArray 
+              // TODO: 9/14/17 upload file and add it to JSONArray
 
             } catch (IOException e) {
               e.printStackTrace();
@@ -177,7 +200,7 @@ public class Storyboard extends AppCompatActivity
     String whoIsInvolved = story.getString("who") != null ? story.getString("who") : "";
     Date whenItOccurred = story.getDate("when");
     String loc = story.getString("location") != null ? story.getString("location") : "";
-    JSONArray media =
+    media =
         story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
 
     Log.d(TAG,
@@ -191,12 +214,14 @@ public class Storyboard extends AppCompatActivity
     date.setText(whenItOccurred == null ? "Date" : formatDate(whenItOccurred));
     location_btn.setText(loc);
 
-    presenter.loadAttachments(media);
+    presenter.loadAllAttachments(media);
   }
 
   @Override public void loadNewReport(ParseObject story) {
     Log.d(TAG, "loadNewReport: Log new report " + story.getObjectId());
     activeStory = story;
+    // if creating a new story, initialize an empty media jsonarray
+    media = new JSONArray();
   }
 
   @Override public void showStoryNotFoundError(String message) {
@@ -208,7 +233,7 @@ public class Storyboard extends AppCompatActivity
 
   }
 
-  @Override public void attachImage(ParseFile file) {
+  @Override public void showImageAttachment(ParseFile file) {
     View view = inflater.inflate(R.layout.item_image, null);
     TextView filename = (TextView) view.findViewById(R.id.image_filename_tv);
     ImageView image = (ImageView) view.findViewById(R.id.attached_image);
@@ -218,7 +243,7 @@ public class Storyboard extends AppCompatActivity
     attachmentsLayout.addView(view);
   }
 
-  @Override public void attachVideo(ParseFile file) {
+  @Override public void showVideoAttachment(ParseFile file) {
     View view = inflater.inflate(R.layout.item_video, null);
     TextView filename = (TextView) view.findViewById(R.id.video_filename_tv);
 
@@ -227,7 +252,7 @@ public class Storyboard extends AppCompatActivity
     attachmentsLayout.addView(view);
   }
 
-  @Override public void attachAudio(ParseFile file) {
+  @Override public void showAudioAttachment(ParseFile file) {
     View view = inflater.inflate(R.layout.item_audio, null);
     TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
 
@@ -253,7 +278,7 @@ public class Storyboard extends AppCompatActivity
     activeStory.put("title", story_title.getText().toString());
     activeStory.put("summary", story_summary.getText().toString());
     activeStory.put("who", story_who.getText().toString());
-    // TODO: 9/13/17 media and date
+    activeStory.put("media", media);
 
   }
 
@@ -283,6 +308,10 @@ public class Storyboard extends AppCompatActivity
         // Start recording
         .record();
 
+  }
+
+  @Override public void readyStoryForUpload() {
+    activeStory.put("media", media);
   }
 
   @OnClick(R.id.storyboard_location) public void getLocation() {
