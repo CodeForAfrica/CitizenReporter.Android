@@ -8,6 +8,7 @@ import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import java.util.List;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.data.DataManager;
@@ -53,6 +54,16 @@ public class CitizenReporterApplication extends Application {
         }
 
         ParseObject.pinAllInBackground(objects);
+      }
+    });
+
+    ParseUser user = ParseUser.getCurrentUser();
+    ParseQuery<ParseObject> storiesQuery = ParseQuery.getQuery("Story");
+    storiesQuery.whereEqualTo("author", user.getObjectId());
+    storiesQuery.findInBackground(new FindCallback<ParseObject>() {
+      public void done(List<ParseObject> storyList, ParseException e) {
+        Log.d("Stories", "done: storyList " + storyList.size());
+        ParseObject.pinAllInBackground(storyList);
       }
     });
     manager.getAssignments();

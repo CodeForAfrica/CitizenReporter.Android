@@ -51,12 +51,11 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
-import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragment;
-import org.codeforafrica.citizenreporterandroid.ui.settings.SettingsFragment;
-import org.codeforafrica.citizenreporterandroid.ui.stories.StoriesFragment;
+import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import static org.codeforafrica.citizenreporterandroid.utils.TimeUtils.formatDate;
 import static org.codeforafrica.citizenreporterandroid.utils.TimeUtils.getShortDateFormat;
@@ -83,17 +82,12 @@ public class Storyboard extends AppCompatActivity
 
   @BindView(R.id.story_title) EditText story_title;
 
-  @BindView(R.id.story_cause) EditText story_summary;
 
   @BindView(R.id.story_who_is_involved) EditText story_who;
 
-  @BindView(R.id.summary) EditText summary;
+  @BindView(R.id.summary) EditText story_summary;
 
   @BindView(R.id.storybard_bottom_navigation) BottomNavigationView bottomNavigationView;
-
-  //BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
-
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -115,23 +109,23 @@ public class Storyboard extends AppCompatActivity
     StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
     StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-    bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-      @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-          case R.id.record_audio:
-            presenter.startRecorder();
-            break;
-          case R.id.capture_image:
+    bottomNavigationView.setOnNavigationItemSelectedListener(
+        new BottomNavigationView.OnNavigationItemSelectedListener() {
+          @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+              case R.id.record_audio:
+                presenter.startRecorder();
+                break;
+              case R.id.capture_image:
 
-            break;
-          case R.id.open_gallery:
-            presenter.getPicturesFromGallery();
-            break;
-        }
-        return true;
-      }
-    });
-
+                break;
+              case R.id.open_gallery:
+                presenter.getPicturesFromGallery();
+                break;
+            }
+            return true;
+          }
+        });
   }
 
   @Override protected void onStart() {
@@ -158,9 +152,9 @@ public class Storyboard extends AppCompatActivity
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId())
-    {
+    switch (item.getItemId()) {
       case R.id.upload:
+        Log.d(TAG, "onOptionsItemSelected: Clicked uploaded");
         presenter.uploadStory(activeStory);
         return true;
 
@@ -198,7 +192,7 @@ public class Storyboard extends AppCompatActivity
             try {
               byte[] audio_data = FileUtils.readFileToByteArray(f);
               final ParseFile file = new ParseFile(f.getName(), audio_data);
-              presenter.attachAudio(file);
+              presenter.attachAudio(file.getName());
               file.saveInBackground(new SaveCallback() {
                 @Override public void done(ParseException e) {
                   if (e == null) {
@@ -207,7 +201,6 @@ public class Storyboard extends AppCompatActivity
                     Log.i(TAG, "onActivityResult URL: " + file.getUrl());
                   } else {
                     Log.d(TAG, "Error: " + e.getLocalizedMessage());
-
                   }
                 }
               });
@@ -220,7 +213,6 @@ public class Storyboard extends AppCompatActivity
               e.printStackTrace();
             }
           }
-
         } else if (resultCode == RESULT_CANCELED) {
           Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
         }
@@ -247,8 +239,8 @@ public class Storyboard extends AppCompatActivity
     String whoIsInvolved = story.getString("who") != null ? story.getString("who") : "";
     Date whenItOccurred = story.getDate("when");
     String loc = story.getString("location") != null ? story.getString("location") : "";
-    media =
-        story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
+    media = story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
+    Log.d(TAG, "loadSavedReport: media" + media.length());
 
     Log.d(TAG,
         "loadSavedReport: " + title + " " + summary + " " + whoIsInvolved + " " + location_btn);
@@ -261,7 +253,11 @@ public class Storyboard extends AppCompatActivity
     date.setText(whenItOccurred == null ? "Date" : getShortDateFormat(whenItOccurred));
     location_btn.setText(loc);
 
-    presenter.loadAllAttachments(media);
+    try {
+      presenter.loadAllAttachments(media);
+    } catch (JSONException e) {
+      Log.e(TAG, "loadSavedReport: JSON Array media", e.fillInStackTrace());
+    }
   }
 
   @Override public void loadNewReport(ParseObject story) {
@@ -280,31 +276,41 @@ public class Storyboard extends AppCompatActivity
 
   }
 
-  @Override public void showImageAttachment(ParseFile file) {
+  @Override public void showImageAttachment(String name, String url) {
     View view = inflater.inflate(R.layout.item_image, null);
     TextView filename = (TextView) view.findViewById(R.id.image_filename_tv);
     ImageView image = (ImageView) view.findViewById(R.id.attached_image);
 
-    filename.setText(file.getName());
-    Picasso.with(Storyboard.this).load(file.getUrl()).into(image);
+    filename.setText(name);
+    Picasso.with(Storyboard.this).load(url).into(image);
     attachmentsLayout.addView(view);
   }
 
-  @Override public void showVideoAttachment(ParseFile file) {
+  @Override public void showVideoAttachment(String name) {
     View view = inflater.inflate(R.layout.item_video, null);
     TextView filename = (TextView) view.findViewById(R.id.video_filename_tv);
 
-    filename.setText(file.getName());
+    filename.setText(name);
 
     attachmentsLayout.addView(view);
   }
 
-  @Override public void showAudioAttachment(ParseFile file) {
+  @Override public void showAudioAttachment(String name) {
     Log.i(TAG, "showAudioAttachment: ");
     View view = inflater.inflate(R.layout.item_audio, null);
     TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
 
-    filename.setText(file.getName());
+    filename.setText(name);
+
+    attachmentsLayout.addView(view);
+  }
+
+  @Override public void showUnknownAttachment(String name) {
+    Log.i(TAG, "showAudioAttachment: ");
+    View view = inflater.inflate(R.layout.item_unkown, null);
+    TextView filename = (TextView) view.findViewById(R.id.unknown_filename_tv);
+
+    filename.setText(name);
 
     attachmentsLayout.addView(view);
   }
@@ -327,7 +333,6 @@ public class Storyboard extends AppCompatActivity
     activeStory.put("summary", story_summary.getText().toString());
     activeStory.put("who", story_who.getText().toString());
     activeStory.put("media", media);
-
   }
 
   @Override public void showDatePickerDialog() {
@@ -355,7 +360,6 @@ public class Storyboard extends AppCompatActivity
 
         // Start recording
         .record();
-
   }
 
   @Override public void readyStoryForUpload() {
@@ -378,8 +382,9 @@ public class Storyboard extends AppCompatActivity
                     imageParseFile.saveInBackground(new SaveCallback() {
                       @Override public void done(ParseException e) {
                         if (e == null) {
-                          presenter.attachImage(imageParseFile);
+                          presenter.attachImage(imageParseFile.getName(), imageParseFile.getUrl());
                           media.put(imageParseFile);
+                          Log.i(TAG, "onActivityResult URL: " + imageParseFile.getUrl());
                         }
                       }
                     });
@@ -397,6 +402,13 @@ public class Storyboard extends AppCompatActivity
             .create();
 
     bottomSheetDialogFragment.show(getSupportFragmentManager());
+  }
+
+  @Override public void finishUploading() {
+    Intent intent = new Intent(Storyboard.this, MainActivity.class);
+    intent.putExtra("Source", "uploaded");
+    startActivity(intent);
+    finish();
   }
 
   @OnClick(R.id.storyboard_location) public void getLocation() {
@@ -436,6 +448,4 @@ public class Storyboard extends AppCompatActivity
       Log.e("BNVHelper", "Unable to change value of shift mode", e);
     }
   }
-
-
 }

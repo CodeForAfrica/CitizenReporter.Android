@@ -1,6 +1,7 @@
 package org.codeforafrica.citizenreporterandroid.main;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -53,6 +54,14 @@ public class MainActivity extends BaseActivity {
     setContentView(R.layout.activity_main);
 
     ButterKnife.bind(this);
+
+    Intent intent = getIntent();
+    String from_storyboard = intent.getStringExtra("Source");
+    if (from_storyboard == "uploaded") {
+      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+      transaction.replace(R.id.frame_layout, StoriesFragment.newInstance());
+      transaction.commit();
+    }
 
 
     apiClient = APIClient.getApiClient();
