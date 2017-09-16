@@ -7,19 +7,18 @@
     <item
         android:id="@+id/assignments_item"
         android:enabled="true"
-        android:icon="@drawable/ic_ic_assignment"
+        android:icon="@drawable/ic_assignments_white_32"
         android:title="Assignments" />
 
     <item
         android:id="@+id/stories_item"
         android:enabled="true"
-        android:icon="@drawable/ic_ic_stories"
+        android:icon="@drawable/ic_my_reports_white_32"
         android:title="Stories" />
 
     <item
         android:id="@+id/settings_item"
         android:enabled="true"
-        android:icon="@drawable/ic_ic_settings"
+        android:icon="@drawable/ic_settings_white_32"
         android:title="Settings" />
-
 </menu>

@@ -7,6 +7,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
+import java.lang.reflect.Field;
 import java.util.Objects;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.ui.base.BaseActivity;
@@ -50,6 +53,7 @@ public class MainActivity extends BaseActivity {
     setContentView(R.layout.activity_main);
 
     ButterKnife.bind(this);
+
 
     apiClient = APIClient.getApiClient();
     preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -142,4 +146,5 @@ public class MainActivity extends BaseActivity {
       super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
   }
+
 }

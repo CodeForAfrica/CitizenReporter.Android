@@ -27,14 +27,6 @@
             android:textColor="@color/story_title"
             android:textSize="18sp" />
 
-        <ImageView
-            android:id="@+id/story_uploaded"
-            android:visibility="invisible"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_gravity="center_vertical"
-            card_view:srcCompat="@drawable/ic_done_white" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -51,7 +43,7 @@
             android:layout_height="12dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="4dp"
-            card_view:srcCompat="@drawable/ic_calendar_1st_100" />
+            card_view:srcCompat="@drawable/ic_calendar_1st_20" />
 
         <TextView
             android:id="@+id/story_date_saved"
@@ -62,11 +54,11 @@
             android:textSize="10sp" />
 
         <ImageView
+            android:id="@+id/story_uploaded"
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="4dp"
-            card_view:srcCompat="@drawable/ic_upload_to_cloud_100" />
+            android:layout_marginRight="4dp" />
 
     </LinearLayout>
 

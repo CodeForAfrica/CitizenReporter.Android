@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +12,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,10 +48,14 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
+import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragment;
+import org.codeforafrica.citizenreporterandroid.ui.settings.SettingsFragment;
+import org.codeforafrica.citizenreporterandroid.ui.stories.StoriesFragment;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 import org.json.JSONArray;
 
 import static org.codeforafrica.citizenreporterandroid.utils.TimeUtils.formatDate;
+import static org.codeforafrica.citizenreporterandroid.utils.TimeUtils.getShortDateFormat;
 
 public class Storyboard extends AppCompatActivity
     implements StoryboardContract.View, DatePickerDialog.OnDateSetListener {
@@ -78,7 +85,9 @@ public class Storyboard extends AppCompatActivity
 
   @BindView(R.id.summary) EditText summary;
 
-  BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+  @BindView(R.id.storybard_bottom_navigation) BottomNavigationView bottomNavigationView;
+
+  //BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
 
 
@@ -86,6 +95,7 @@ public class Storyboard extends AppCompatActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_storyboard);
     ButterKnife.bind(Storyboard.this);
+    disableShiftMode(bottomNavigationView);
     presenter = new StoryboardPresenter(this);
     inflater = LayoutInflater.from(Storyboard.this);
     String action = getIntent().getAction();
@@ -100,6 +110,22 @@ public class Storyboard extends AppCompatActivity
 
     StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
     StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+    bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+      @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+          case R.id.record_audio:
+            presenter.startRecorder();
+            break;
+          case R.id.capture_image:
+
+            break;
+          case R.id.open_gallery:
+
+            break;
+        }
+      }
+    });
   }
 
   @Override protected void onStart() {
@@ -118,6 +144,22 @@ public class Storyboard extends AppCompatActivity
 
   @Override protected void onPause() {
     super.onPause();
+  }
+
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.upload_menu, menu);
+    return true;
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId())
+    {
+      case R.id.upload:
+        presenter.uploadStory(activeStory);
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -216,7 +258,7 @@ public class Storyboard extends AppCompatActivity
     story_title.setText(title);
     story_summary.setText(summary);
     story_who.setText(whoIsInvolved);
-    date.setText(whenItOccurred == null ? "Date" : formatDate(whenItOccurred));
+    date.setText(whenItOccurred == null ? "Date" : getShortDateFormat(whenItOccurred));
     location_btn.setText(loc);
 
     presenter.loadAllAttachments(media);
@@ -324,8 +366,7 @@ public class Storyboard extends AppCompatActivity
   }
 
   @OnClick(R.id.storybaord_date) public void setWhen() {
-    // presenter.getWhenItOccurred();
-    presenter.startRecorder();
+    presenter.getWhenItOccurred();
   }
 
   @Override
@@ -357,4 +398,6 @@ public class Storyboard extends AppCompatActivity
       Log.e("BNVHelper", "Unable to change value of shift mode", e);
     }
   }
+
+
 }

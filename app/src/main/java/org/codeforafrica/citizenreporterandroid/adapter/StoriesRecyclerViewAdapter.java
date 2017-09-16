@@ -17,6 +17,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
+import org.codeforafrica.citizenreporterandroid.utils.TimeUtils;
 
 /**
  * Created by Ahereza on 7/30/17.
@@ -70,8 +71,8 @@ public class StoriesRecyclerViewAdapter
   @Override public void onBindViewHolder(StoryHolder holder, int position) {
     ParseObject story = storyList.get(position);
     holder.story_title.setText(story.getString("title"));
-    holder.story_date_saved.setText(story.getUpdatedAt().toString());
-    //setUploadedDisplay(story, holder.uploaded);
+    holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getUpdatedAt()));
+    setUploadedDisplay(story, holder.uploaded);
   }
 
   @Override public int getItemCount() {
@@ -88,9 +89,11 @@ public class StoriesRecyclerViewAdapter
     notifyDataSetChanged();
   }
 
-  public void setUploadedDisplay(Story story, View uploadedView) {
-    if (story.isUploaded()) {
-      uploadedView.setVisibility(View.VISIBLE);
+  public void setUploadedDisplay(ParseObject story, ImageView uploadedView) {
+    if (story.getBoolean("uploaded")) {
+      uploadedView.setImageResource(R.drawable.ic_cloud_checked_20);
+    } else {
+      uploadedView.setImageResource(R.drawable.ic_upload_to_cloud_20);
     }
   }
 }
