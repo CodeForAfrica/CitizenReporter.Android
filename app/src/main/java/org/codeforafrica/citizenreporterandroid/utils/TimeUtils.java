@@ -12,4 +12,9 @@ public class TimeUtils {
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE d MMMM yyyy");
     return dateFormat.format(date);
   }
+
+  public static String getShortDateFormat(Date date) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM yyyy");
+    return dateFormat.format(date);
+  }
 }

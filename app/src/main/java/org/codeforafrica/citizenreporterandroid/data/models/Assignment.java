@@ -12,7 +12,7 @@ public class Assignment {
   @SerializedName("required_media") @Expose private String requiredMedia;
   @SerializedName("featured_image") @Expose private String featuredImage;
   @SerializedName("number_of_responses") @Expose private int numberOfResponses;
-  @SerializedName("deadline") @Expose private String deadline;
+  @SerializedName("deadline") @Expose private Date deadline;
   @SerializedName("author") @Expose private String author;
   @SerializedName("assignment_location") @Expose private String assignmentLocation;
 
@@ -64,11 +64,11 @@ public class Assignment {
     this.numberOfResponses = numberOfResponses;
   }
 
-  public String getDeadline() {
+  public Date getDeadline() {
     return deadline;
   }
 
-  public void setDeadline(String deadline) {
+  public void setDeadline(Date deadline) {
     this.deadline = deadline;
   }
 

@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -35,6 +38,7 @@ import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -72,9 +76,10 @@ public class Storyboard extends AppCompatActivity
 
   @BindView(R.id.story_who_is_involved) EditText story_who;
 
-  @BindView(R.id.attachments_button) ImageView attachmentsMenuBtn;
-
   @BindView(R.id.summary) EditText summary;
+
+  BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
 
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -329,5 +334,27 @@ public class Storyboard extends AppCompatActivity
     newCalendar.set(year, monthOfYear, dayOfMonth);
     activeStory.put("when", newCalendar.getTime());
     date.setText(formatDate(newCalendar.getTime()));
+  }
+
+  public static void disableShiftMode(BottomNavigationView view) {
+    BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
+    try {
+      Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
+      shiftingMode.setAccessible(true);
+      shiftingMode.setBoolean(menuView, false);
+      shiftingMode.setAccessible(false);
+      for (int i = 0; i < menuView.getChildCount(); i++) {
+        BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
+        //noinspection RestrictedApi
+        item.setShiftingMode(false);
+        // set once again checked value, so view will be updated
+        //noinspection RestrictedApi
+        item.setChecked(item.getItemData().isChecked());
+      }
+    } catch (NoSuchFieldException e) {
+      Log.e("BNVHelper", "Unable to get shift mode field", e);
+    } catch (IllegalAccessException e) {
+      Log.e("BNVHelper", "Unable to change value of shift mode", e);
+    }
   }
 }

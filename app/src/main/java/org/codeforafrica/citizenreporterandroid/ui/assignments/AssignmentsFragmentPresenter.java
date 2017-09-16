@@ -30,7 +30,6 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
 
   @Override public void getAndDisplayAssignments() {
     view.showLoading();
-    List<Assignment> assignmentList = dataManager.loadAssignmentsFromDb();
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
     query.fromLocalDatastore();
     query.findInBackground(new FindCallback<ParseObject>() {
@@ -48,8 +47,14 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
   @Override public void pullToRefreshAssignments() {
     // query the data dataManager to get assignments from the server
     view.showLoading();
-    List<Assignment> assignments = dataManager.loadAssignmentsFromDb();
-    checkNumberOfAssignments(assignments);
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
+    query.findInBackground(new FindCallback<ParseObject>() {
+      @Override public void done(List<ParseObject> objects, ParseException e) {
+        ParseObject.pinAllInBackground(objects);
+        view.hideLoading();
+        getAndDisplayAssignments();
+      }
+    });
     view.hideLoading();
   }
 
@@ -66,11 +71,12 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
     assignment.setAuthor(assignmentObject.getString("author"));
     assignment.setTitle(assignmentObject.getString("title"));
     assignment.setDescription(assignmentObject.getString("description"));
+    assignment.setAssignmentLocation(assignmentObject.getString("location"));
     assignment.setFeaturedImage(assignmentObject.getParseFile
         ("featured_image").getUrl());
     Log.d("Parse", "parseObjectToAssignment featuredImage: " + assignmentObject.getParseFile
         ("featured_image").getUrl());
-    assignment.setDeadline(assignmentObject.getDate("deadline").toString());
+    assignment.setDeadline(assignmentObject.getDate("deadline"));
     assignment.setId(assignmentObject.getObjectId());
 
     return assignment;
