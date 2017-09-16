@@ -16,7 +16,7 @@ public interface StoryboardContract {
     void hideLoading();
     void showUploadingProgress();
     void loadSavedReport(ParseObject story);
-    void loadNewReport(ParseObject story);
+    void loadNewReport(String assignmentID);
     void showStoryNotFoundError(String message);
     void displayAttachments(List<ParseFile> files);
     void showImageAttachment(String name, String url);
@@ -47,6 +47,7 @@ public interface StoryboardContract {
     void attachAudio(String name);
     void attachImage(String name, String url);
     void getPicturesFromGallery();
+
   };
 
 }

@@ -57,15 +57,14 @@ public class CitizenReporterApplication extends Application {
       }
     });
 
-    ParseUser user = ParseUser.getCurrentUser();
     ParseQuery<ParseObject> storiesQuery = ParseQuery.getQuery("Story");
-    storiesQuery.whereEqualTo("author", user.getObjectId());
     storiesQuery.findInBackground(new FindCallback<ParseObject>() {
       public void done(List<ParseObject> storyList, ParseException e) {
         Log.d("Stories", "done: storyList " + storyList.size());
         ParseObject.pinAllInBackground(storyList);
       }
     });
+
     manager.getAssignments();
   }
 }

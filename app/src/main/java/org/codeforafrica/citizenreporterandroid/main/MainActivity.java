@@ -58,6 +58,7 @@ public class MainActivity extends BaseActivity {
     Intent intent = getIntent();
     String from_storyboard = intent.getStringExtra("Source");
     if (from_storyboard == "uploaded") {
+      Log.d(TAG, "onCreate: has uploaded extra");
       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
       transaction.replace(R.id.frame_layout, StoriesFragment.newInstance());
       transaction.commit();

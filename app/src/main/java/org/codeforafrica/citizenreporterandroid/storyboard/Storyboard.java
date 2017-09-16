@@ -38,6 +38,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 import gun0912.tedbottompicker.TedBottomPicker;
@@ -48,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
@@ -260,11 +262,40 @@ public class Storyboard extends AppCompatActivity
     }
   }
 
-  @Override public void loadNewReport(ParseObject story) {
-    Log.d(TAG, "loadNewReport: Log new report " + story.getObjectId());
-    activeStory = story;
-    // if creating a new story, initialize an empty media jsonarray
-    media = new JSONArray();
+  @Override public void loadNewReport(String assignmentID) {
+    ParseUser user = ParseUser.getCurrentUser();
+    activeStory = new ParseObject("Story");
+    activeStory.put("createdAt", new Date());
+    String uniqueID = UUID.randomUUID().toString();
+    // put a dummy local that will be removed right before the story is uploaded
+    activeStory.put("localID", uniqueID);
+    activeStory.put("uploaded", false);
+    activeStory.put("assignment", assignmentID);
+    activeStory.put("author", user.getObjectId());
+
+    Log.i(TAG, "loadNewReport: Assignment " + activeStory.getString("assignment"));
+    Log.i(TAG, "loadNewReport: uploaded " + activeStory.getBoolean("uploaded"));
+    Log.i(TAG, "loadNewReport: author " + activeStory.getString("author"));
+
+    try {
+      activeStory.pin();
+      Log.i(TAG, "loadNewReport: ID " + activeStory.getString("localID"));
+      Log.d(TAG, "after loadNewReport: assignment" + assignmentID);
+      Log.i(TAG, "after loadNewReport: Assignment " + activeStory.getString("assignment"));
+      Log.i(TAG, "after loadNewReport: uploaded " + activeStory.getBoolean("uploaded"));
+
+
+      // if creating a new story, initialize an empty media json array
+      media = new JSONArray();
+
+    } catch (ParseException e) {
+      e.printStackTrace();
+      Log.e(TAG, "loadNewReport: Error pinning", e.fillInStackTrace());
+      Toast.makeText(this, "Error occured when creating the Report", Toast.LENGTH_LONG).show();
+      Intent intent = new Intent(Storyboard.this, MainActivity.class);
+      startActivity(intent);
+      finish();
+    }
   }
 
   @Override public void showStoryNotFoundError(String message) {
@@ -333,6 +364,7 @@ public class Storyboard extends AppCompatActivity
     activeStory.put("summary", story_summary.getText().toString());
     activeStory.put("who", story_who.getText().toString());
     activeStory.put("media", media);
+    activeStory.put("updatedAt", new Date());
   }
 
   @Override public void showDatePickerDialog() {
@@ -364,6 +396,7 @@ public class Storyboard extends AppCompatActivity
 
   @Override public void readyStoryForUpload() {
     activeStory.put("media", media);
+    presenter.saveStory(activeStory);
   }
 
   @Override public void showImagePicker() {

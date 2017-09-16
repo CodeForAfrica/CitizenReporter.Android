@@ -12,6 +12,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.parse.ParseObject;
+import java.util.Date;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
@@ -57,7 +58,7 @@ public class StoriesRecyclerViewAdapter
       // TODO send story id then the story will be retrieved from the database
       Intent openStoryIntent = new Intent(context, Storyboard.class);
       openStoryIntent.setAction(Constants.ACTION_EDIT_VIEW_STORY);
-      openStoryIntent.putExtra("STORY_ID", currentStory.getObjectId());
+      openStoryIntent.putExtra("STORY_ID", currentStory.getString("localID"));
       context.startActivity(openStoryIntent);
     }
   }
@@ -71,7 +72,7 @@ public class StoriesRecyclerViewAdapter
   @Override public void onBindViewHolder(StoryHolder holder, int position) {
     ParseObject story = storyList.get(position);
     holder.story_title.setText(story.getString("title"));
-    holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getUpdatedAt()));
+    holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getDate("updatedAt")));
     setUploadedDisplay(story, holder.uploaded);
   }
 

@@ -9,17 +9,17 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.bumptech.glide.Glide;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
-import org.codeforafrica.citizenreporterandroid.app.Constants;
+import org.codeforafrica.citizenreporterandroid.utils.TimeUtils;
 
 /**
  * Created by Mugiwara_Munyi on 14/08/2017.
@@ -34,8 +34,6 @@ public class AssignmentDetailActivity extends Activity {
 
   @BindView(R.id.assignment_detail_text) TextView assignment_detail_text;
 
-  @BindView(R.id.assignment_detail_location) TextView assignment_detail_location;
-
   @BindView(R.id.assignment_detail_author) TextView assignment_detail_author;
 
   private LocalDataHelper dataHelper;
@@ -49,7 +47,6 @@ public class AssignmentDetailActivity extends Activity {
     dataHelper = new LocalDataHelper(this);
     ButterKnife.bind(this);
 
-
     assignmentID = getIntent().getStringExtra("assignment_id");
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
     query.fromLocalDatastore();
@@ -57,17 +54,17 @@ public class AssignmentDetailActivity extends Activity {
       public void done(ParseObject assignmentObject, ParseException e) {
         if (e == null) {
           assignment_detail_title.setText(assignmentObject.getString("title"));
-          assignment_detail_deadline.setText(assignmentObject.getDate("deadline").toString());
+          assignment_detail_deadline.setText(
+              TimeUtils.getShortDateFormat(assignmentObject.getDate("deadline")));
           assignment_detail_text.setText(assignmentObject.getString("description"));
           assignment_detail_author.setText(assignmentObject.getString("author"));
-          assignment_detail_location.setText(assignmentObject.getString("location"));
-          Picasso.with(AssignmentDetailActivity.this).load(assignmentObject.getString
-              ("featured_image")).centerCrop().
-              into(featured_image);
+          Picasso.with(AssignmentDetailActivity.this)
+              .load(assignmentObject.getParseFile("featured_image").getUrl())
+              .into(featured_image);
         } else {
           // something went wrong
-          Toast.makeText(AssignmentDetailActivity.this, "This assignment was not found", Toast
-              .LENGTH_SHORT).show();
+          Toast.makeText(AssignmentDetailActivity.this, "This assignment was not found",
+              Toast.LENGTH_SHORT).show();
         }
       }
     });

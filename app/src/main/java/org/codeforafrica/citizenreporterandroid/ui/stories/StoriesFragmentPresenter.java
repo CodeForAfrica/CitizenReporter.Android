@@ -29,6 +29,7 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
     view.showLoading();
     ParseUser user = ParseUser.getCurrentUser();
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+    query.whereEqualTo("author", user.getObjectId());
     query.fromLocalDatastore();
     query.findInBackground(new FindCallback<ParseObject>() {
       public void done(List<ParseObject> storyList, ParseException e) {

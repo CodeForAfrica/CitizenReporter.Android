@@ -1,12 +1,14 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.util.Log;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import java.util.List;
 import org.codeforafrica.citizenreporterandroid.storyboard.StoryboardContract.Presenter;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,12 +32,16 @@ public class StoryboardPresenter implements Presenter {
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
     query.fromLocalDatastore();
     Log.d(TAG, "done: Query time");
-    query.getInBackground(storyID, new GetCallback<ParseObject>() {
-      public void done(ParseObject object, ParseException e) {
+    query.whereEqualTo("localID", storyID);
+    query.setLimit(1);
+    query.findInBackground(new FindCallback<ParseObject>() {
+      @Override public void done(List<ParseObject> objects, ParseException e) {
         Log.d(TAG, "done: got");
-        if (e == null) {
+        if (e == null && objects.size() > 0) {
           Log.d(TAG, "done: Loading saved report");
-          view.loadSavedReport(object);
+          ParseObject story = objects.get(0);
+          story.fetchInBackground();
+          view.loadSavedReport(story);
         } else {
           // something went wrong
           Log.d(TAG, "Error: " + e.getMessage());
@@ -46,11 +52,7 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void createNewStory(String assignmentID) {
-    ParseObject newStory = new ParseObject("Story");
-    newStory.put("uploaded", false);
-    newStory.put("assignment", assignmentID);
-    newStory.pinInBackground();
-    view.loadNewReport(newStory);
+    view.loadNewReport(assignmentID);
   }
 
   @Override public void saveStory(ParseObject story) {
@@ -63,9 +65,8 @@ public class StoryboardPresenter implements Presenter {
   @Override public void uploadStory(final ParseObject story) {
     view.showLoading();
     Log.d(TAG, "uploadStory: Start uploading");
-    story.put("uploaded", false);
     view.readyStoryForUpload();
-    story.put("uploaded", true);
+    story.put("uploaded", "true");
     Log.d(TAG, "uploadStory: " + story.getBoolean("uploaded"));
     if (!story.getBoolean("uploaded")) {
       story.saveInBackground(new SaveCallback() {
