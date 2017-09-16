@@ -26,6 +26,7 @@ public interface StoryboardContract {
     void showDatePickerDialog();
     void showRecorder();
     void readyStoryForUpload();
+    void showImagePicker();
 
 
   };
@@ -41,6 +42,7 @@ public interface StoryboardContract {
     void attachVideo(ParseFile file);
     void attachAudio(ParseFile file);
     void attachImage(ParseFile file);
+    void getPicturesFromGallery();
   };
 
 }

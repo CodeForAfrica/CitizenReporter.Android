@@ -2,6 +2,7 @@ package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -39,9 +40,11 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
+import gun0912.tedbottompicker.TedBottomPicker;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +54,7 @@ import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragment;
 import org.codeforafrica.citizenreporterandroid.ui.settings.SettingsFragment;
 import org.codeforafrica.citizenreporterandroid.ui.stories.StoriesFragment;
+import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 import org.json.JSONArray;
 
@@ -121,11 +125,13 @@ public class Storyboard extends AppCompatActivity
 
             break;
           case R.id.open_gallery:
-
+            presenter.getPicturesFromGallery();
             break;
         }
+        return true;
       }
     });
+
   }
 
   @Override protected void onStart() {
@@ -156,6 +162,7 @@ public class Storyboard extends AppCompatActivity
     {
       case R.id.upload:
         presenter.uploadStory(activeStory);
+        return true;
 
       default:
         return super.onOptionsItemSelected(item);
@@ -191,24 +198,17 @@ public class Storyboard extends AppCompatActivity
             try {
               byte[] audio_data = FileUtils.readFileToByteArray(f);
               final ParseFile file = new ParseFile(f.getName(), audio_data);
-              byte[] datad = "Working at Parse is great!".getBytes();
-              final ParseFile dummy = new ParseFile("resume.txt", datad);
-              Log.i(TAG, "onActivityResult: text" + datad.toString());
-              Log.i(TAG, "onActivityResult: audio" + datad.toString());
               presenter.attachAudio(file);
               file.saveInBackground(new SaveCallback() {
                 @Override public void done(ParseException e) {
                   if (e == null) {
                     Log.i(TAG, "done: uploading file");
-                    //media.put(file);
+                    media.put(file);
                     Log.i(TAG, "onActivityResult URL: " + file.getUrl());
                   } else {
                     Log.d(TAG, "Error: " + e.getLocalizedMessage());
-                    Log.d(TAG, "Error: " + e.toString());
-                    Log.e(TAG, "done: ", e.fillInStackTrace());
+
                   }
-
-
                 }
               });
               // upload file
@@ -300,6 +300,7 @@ public class Storyboard extends AppCompatActivity
   }
 
   @Override public void showAudioAttachment(ParseFile file) {
+    Log.i(TAG, "showAudioAttachment: ");
     View view = inflater.inflate(R.layout.item_audio, null);
     TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
 
@@ -359,6 +360,43 @@ public class Storyboard extends AppCompatActivity
 
   @Override public void readyStoryForUpload() {
     activeStory.put("media", media);
+  }
+
+  @Override public void showImagePicker() {
+    Log.i(TAG, "showImagePicker: done");
+    TedBottomPicker bottomSheetDialogFragment =
+        new TedBottomPicker.Builder(this).setOnMultiImageSelectedListener(
+            new TedBottomPicker.OnMultiImageSelectedListener() {
+              @Override public void onImagesSelected(ArrayList<Uri> uriList) {
+                for (Uri uri : uriList) {
+                  Log.d("IMAGE SELECTOR",
+                      "onImagesSelected: " + MediaUtils.getPathFromUri(Storyboard.this, uri));
+                  File imageFile = new File(uri.getPath());
+                  try {
+                    byte[] imageData = FileUtils.readFileToByteArray(imageFile);
+                    final ParseFile imageParseFile = new ParseFile(imageFile.getName(), imageData);
+                    imageParseFile.saveInBackground(new SaveCallback() {
+                      @Override public void done(ParseException e) {
+                        if (e == null) {
+                          presenter.attachImage(imageParseFile);
+                          media.put(imageParseFile);
+                        }
+                      }
+                    });
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                }
+              }
+            })
+            .setPeekHeight(500)
+            .showTitle(false)
+            .showCameraTile(false)
+            .setCompleteButtonText("Done")
+            .setEmptySelectionText("No Select")
+            .create();
+
+    bottomSheetDialogFragment.show(getSupportFragmentManager());
   }
 
   @OnClick(R.id.storyboard_location) public void getLocation() {

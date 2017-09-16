@@ -112,6 +112,10 @@ public class StoryboardPresenter implements Presenter {
     view.showImageAttachment(file);
   }
 
+  @Override public void getPicturesFromGallery() {
+    view.showImagePicker();
+  }
+
   public void setView(StoryboardContract.View view) {
     this.view = view;
   }
