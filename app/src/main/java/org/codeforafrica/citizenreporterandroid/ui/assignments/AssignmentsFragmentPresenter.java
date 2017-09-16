@@ -7,6 +7,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.data.DataManager;
@@ -29,9 +30,12 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
   }
 
   @Override public void getAndDisplayAssignments() {
+    Date currentTime = new Date();
     view.showLoading();
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
     query.fromLocalDatastore();
+    query.whereGreaterThan("deadline", currentTime);
+    query.addDescendingOrder("createdAt");
     query.findInBackground(new FindCallback<ParseObject>() {
       @Override public void done(List<ParseObject> objects, ParseException e) {
         List<Assignment> assignments = parseListAssignments(objects);
