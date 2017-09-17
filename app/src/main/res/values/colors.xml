@@ -26,4 +26,5 @@
     <color name="google_red">#FF0000</color>
     <color name="media_picker">#F6F6F6</color>
     <color name="email_green">#00FF00</color>
+    <color name="black_overlay">#66000000</color>
 </resources>

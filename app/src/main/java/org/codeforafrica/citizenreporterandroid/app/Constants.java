@@ -71,6 +71,8 @@ public class Constants {
   public static final String ACTION_EDIT_VIEW_STORY = "EDIT_VIEW_STORY";
   public static final String ACTION_NEW_STORY = "NEW_STORY";
 
+  public static final int CUSTOM_CAMERA_REQUEST_CODE = 9432;
+
   // mode constants
 
   public static final int CAMERA_MODE = 673;

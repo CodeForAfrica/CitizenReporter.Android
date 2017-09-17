@@ -70,6 +70,10 @@
     <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
     <string name="assignments_description">Once signed in, you\'ll be presented with a customised list of active assignments appropriate to your location of specialisation</string>
     <string name="capture_media_desc">You can add media by clicking on any of the media capture buttons at the bottom of the screen</string>
+    <string name="desc_take_picture">Button to take a picture</string>
+    <string name="overlay_img_desc">This is the overlay image</string>
+    <string name="swipe_text">Swipe to change scenes</string>
 
+    <string name="title_activity_view_image">View Image</string>
 
 </resources>

@@ -30,6 +30,7 @@ public interface StoryboardContract {
     void readyStoryForUpload();
     void showImagePicker();
     void finishUploading();
+    void sendCameraIntent();
 
 
   };
@@ -47,6 +48,7 @@ public interface StoryboardContract {
     void attachAudio(String name);
     void attachImage(String name, String url);
     void getPicturesFromGallery();
+    void startCameraCapture();
 
   };
 

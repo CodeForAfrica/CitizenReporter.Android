@@ -54,6 +54,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
+import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
@@ -84,7 +85,6 @@ public class Storyboard extends AppCompatActivity
   @BindView(R.id.storybaord_date) Button date;
 
   @BindView(R.id.story_title) EditText story_title;
-
 
   @BindView(R.id.story_who_is_involved) EditText story_who;
 
@@ -120,7 +120,7 @@ public class Storyboard extends AppCompatActivity
                 presenter.startRecorder();
                 break;
               case R.id.capture_image:
-
+                presenter.startCameraCapture();
                 break;
               case R.id.open_gallery:
                 presenter.getPicturesFromGallery();
@@ -209,9 +209,6 @@ public class Storyboard extends AppCompatActivity
               });
               // upload file
               Log.i(TAG, "onActivityResult: " + file.getName());
-
-              // TODO: 9/14/17 upload file and add it to JSONArray
-
             } catch (IOException e) {
               e.printStackTrace();
             }
@@ -220,6 +217,53 @@ public class Storyboard extends AppCompatActivity
           Toast.makeText(this, "Audio was not recorded", Toast.LENGTH_SHORT).show();
         }
         break;
+
+      case Constants.CUSTOM_CAMERA_REQUEST_CODE:
+        if (resultCode == RESULT_OK) {
+          if (data.getStringExtra("imagePath") != null) {
+            File imageFile = new File(data.getStringExtra("imagePath"));
+            try {
+              byte[] imageData = FileUtils.readFileToByteArray(imageFile);
+              final ParseFile imageParseFile = new ParseFile(imageFile.getName(), imageData);
+              imageParseFile.saveInBackground(new SaveCallback() {
+                @Override public void done(ParseException e) {
+                  if (e == null) {
+                    presenter.attachImage(imageParseFile.getName(), imageParseFile.getUrl());
+                    media.put(imageParseFile);
+                    Log.i(TAG, "onActivityResult URL: image " + imageParseFile.getUrl());
+                  }
+                }
+              });
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+
+          } else if (data.getStringExtra("videoPath") != null) {
+            File videoFile = new File(data.getStringExtra("videoPath"));
+            try {
+              byte[] video_data = FileUtils.readFileToByteArray(videoFile);
+              final ParseFile file = new ParseFile(videoFile.getName(), video_data);
+              presenter.attachVideo(file.getName());
+              file.saveInBackground(new SaveCallback() {
+                @Override public void done(ParseException e) {
+                  if (e == null) {
+                    Log.i(TAG, "done: uploading video file");
+                    media.put(file);
+                    Log.i(TAG, "onActivityResult video URL: " + file.getUrl());
+                  } else {
+                    Log.d(TAG, "Error: video " + e.getLocalizedMessage());
+                  }
+                }
+              });
+              // upload file
+              Log.i(TAG, "onActivityResult: video " + file.getName());
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          } else {
+            Log.d(TAG, "onActivityResult: nothing came from the camera");
+          }
+        }
     }
   }
 
@@ -299,10 +343,8 @@ public class Storyboard extends AppCompatActivity
       Log.i(TAG, "after loadNewReport: Assignment " + activeStory.getString("assignment"));
       Log.i(TAG, "after loadNewReport: uploaded " + activeStory.getBoolean("uploaded"));
 
-
       // if creating a new story, initialize an empty media json array
       media = new JSONArray();
-
     } catch (ParseException e) {
       e.printStackTrace();
       Log.e(TAG, "loadNewReport: Error pinning", e.fillInStackTrace());
@@ -459,6 +501,12 @@ public class Storyboard extends AppCompatActivity
     finish();
   }
 
+  @Override public void sendCameraIntent() {
+    Intent intent = new Intent(Storyboard.this, CameraActivity.class);
+    startActivityForResult(intent, Constants.CUSTOM_CAMERA_REQUEST_CODE);
+
+  }
+
   @OnClick(R.id.storyboard_location) public void getLocation() {
     presenter.getLocation();
   }
@@ -472,7 +520,7 @@ public class Storyboard extends AppCompatActivity
     Calendar newCalendar = Calendar.getInstance();
     newCalendar.set(year, monthOfYear, dayOfMonth);
     activeStory.put("when", newCalendar.getTime());
-    date.setText(formatDate(newCalendar.getTime()));
+    date.setText(getShortDateFormat(newCalendar.getTime()));
   }
 
   public static void disableShiftMode(BottomNavigationView view) {

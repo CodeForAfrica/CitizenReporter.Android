@@ -66,10 +66,10 @@ public class StoryboardPresenter implements Presenter {
     view.showLoading();
     Log.d(TAG, "uploadStory: Start uploading");
     view.readyStoryForUpload();
-    story.put("uploaded", "true");
     Log.d(TAG, "uploadStory: " + story.getBoolean("uploaded"));
     if (!story.getBoolean("uploaded")) {
-      story.saveInBackground(new SaveCallback() {
+      story.put("uploaded", true);
+      story.saveEventually(new SaveCallback() {
         @Override public void done(ParseException e) {
           if (e == null) {
 
@@ -146,6 +146,11 @@ public class StoryboardPresenter implements Presenter {
 
   @Override public void getPicturesFromGallery() {
     view.showImagePicker();
+  }
+
+  @Override public void startCameraCapture() {
+    Log.d(TAG, "startCameraCapture: Start camera capture");
+    view.sendCameraIntent();
   }
 
   public void setView(StoryboardContract.View view) {
