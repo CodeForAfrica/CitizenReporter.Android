@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
@@ -87,19 +88,10 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
   private Boolean isSaved = false;
   private String mMediaCaptureString;
 
-  private final DatePickerDialog datePickerDialog =
-      DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-          calendar.get(Calendar.DAY_OF_MONTH));
-  private LayoutInflater inflater;
-  private String audio_path;
-  private AVLoadingIndicatorView progressBar;
-  int progressStatus;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_storyboard);
-    progressBar = (AVLoadingIndicatorView) findViewById(R.id.loadingIndicator);
-    progressBar.setVisibility(View.INVISIBLE);
     dataHelper = new LocalDataHelper(this);
     ButterKnife.bind(this);
     String action = getIntent().getAction();
@@ -180,20 +172,13 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     super.onStop();
   }
 
-  @Override protected void onDestroy() {
-    super.onDestroy();
-    if (!isSaved && activeStory.getTitle().isEmpty()) {
-      activeStory.setTitle("Draft");
-      savePost(activeStory);
-    } else {
-      savePost(activeStory);
-    }
-  }
-
-  @Override protected void onResume() {
-    super.onResume();
-    Log.d("STORYBOARD", "onResume: ");
-  }
+  private final DatePickerDialog datePickerDialog =
+      DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+          calendar.get(Calendar.DAY_OF_MONTH));
+  private LayoutInflater inflater;
+  private String audio_path;
+  private AVLoadingIndicatorView progressBar;
+  int progressStatus;
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     switch (requestCode) {
@@ -274,6 +259,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
         break;
     }
   }
+
 
   @OnClick(R.id.storyboard_location) public void getLocation() {
     // set a country filter when deploying to specific countries
@@ -443,6 +429,11 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     progressBar.hide();
   }
 
+  @OnClick(R.id.upload_button) public void uploadStory() {
+    CReporterAPI apiClient = APIClient.getApiClient();
+    NetworkHelper.uploadUserStory(Storyboard.this, apiClient, activeStory);
+  }
+
   public void savePost(Story story) {
     Log.d("Save story", "savePost() called with: story = [" + story + "]");
     // first lets add the media
@@ -459,6 +450,10 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     story.setWho(story_who.getText().toString());
 
     story.setSummary(story_cause.getText().toString());
+
+    String uuid = UUID.randomUUID().toString().replace("-", "");
+
+    story.setItem_index(uuid);
 
     dataHelper.updateStory(story);
 
@@ -510,3 +505,5 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     }
   }
 }
+
+
