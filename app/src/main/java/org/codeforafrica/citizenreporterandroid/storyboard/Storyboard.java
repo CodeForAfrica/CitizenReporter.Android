@@ -101,6 +101,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
   private LayoutInflater inflater;
   private String audio_path;
   private static List<String> uris;
+  private static File dir;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -112,6 +113,9 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     local_media = new ArrayList<>();
     context = this;
     uris = new ArrayList<String>();
+    dir = Environment.getExternalStoragePublicDirectory(
+        Environment.DIRECTORY_PICTURES);
+
 
     if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
       long storyID = getIntent().getLongExtra("STORY_ID", -1);
@@ -432,15 +436,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     uris.add(uri.toString());
   }
 
-  public String getFileSize(Uri uri) {
-    File f = new File(uri.getPath());
-    double size = f.length() / (1024 * 1024);
-    if (size > 1.0) {
-      return String.valueOf(Math.round(size * 100 * 1024) / 100D) + "KB";
-    } else {
-      return String.valueOf(Math.round(size * 100) / 100D) + "KB";
-    }
-  }
+
 
   private void startRecording() {
     // ask for permissions
@@ -450,7 +446,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
   @OnClick(R.id.upload_media_button) public void uploadMedia(){
 
     final String storyID = Long.toString(activeStory.getRemote_id());
-    System.out.println(storyID);
 
 
     Thread t = new Thread(new Runnable() {
@@ -470,7 +465,6 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
           OkHttpClient client = builder.build();
 
           RequestBody file_body = RequestBody.create(MediaType.parse(content_type), f);
-          System.out.println(uris);
           RequestBody request_body = new MultipartBody.Builder().setType(MultipartBody.FORM)
               .addFormDataPart("type", content_type)
               .addFormDataPart("file", file_path.substring(file_path.lastIndexOf("/") + 1),
@@ -568,6 +562,14 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
   }
 
   private void displaySavedMedia(String path) {
+    if(path.endsWith(".mp4")){
+      File path_dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+    } else if(path.endsWith(".jpg")){
+      File path_dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+    } else if(path.endsWith(".wav")){
+      File path_dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
+    }
+
     File f = new File(path);
     String mimetype = StoryBoardUtils.getMimeType(path);
     if (mimetype.contains("audio")) {
@@ -577,6 +579,15 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
       addImageAttachment(Uri.fromFile(f));
     } else if (mimetype.contains("video")) {
       addVideoAttachment(Uri.fromFile(f));
+    }
+  }
+  public String getFileSize(Uri uri) {
+    File f = new File(uri.getPath());
+    double size = f.length() / (1024 * 1024);
+    if (size > 1.0) {
+      return String.valueOf(Math.round(size * 100 * 1024) / 100D) + "KB";
+    } else {
+      return String.valueOf(Math.round(size * 100) / 100D) + "KB";
     }
   }
 }
