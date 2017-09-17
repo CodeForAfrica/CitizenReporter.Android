@@ -33,5 +33,6 @@ public class BaseActivity extends AppCompatActivity {
       startActivity(intent);
       finish();
     }
+    Log.d(TAG, "checkUserLoggedIn: logged in");
   }
 }

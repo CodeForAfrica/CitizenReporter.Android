@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.codeforafrica.citizenreporterandroid">
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".app.CitizenReporterApplication"
@@ -24,40 +24,40 @@
         tools:replace="android:icon">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY" />
+            android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY"/>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="@string/facebook_app_id"/>
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="org.codeforafrica.citizenreporterandroid" />
+            android:value="org.codeforafrica.citizenreporterandroid"/>
 
         <activity
             android:name=".ui.auth.LoginActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".main.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.base.BaseActivity" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.base.BaseActivity"/>
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".main.MainActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.about.AboutActivity"
             android:label="@string/title_activity_about"
@@ -65,7 +65,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity" />
+                android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity"/>
         </activity>
         <activity
             android:name=".SupportChannelActivity"
@@ -74,7 +74,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity" />
+                android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity"/>
         </activity>
         <activity
             android:name=".ui.feedback.FeedbackActivity"
@@ -83,30 +83,30 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity" />
+                android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity"/>
         </activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="c99a6a9a2e47604595017b4d8c8e7db46db93b9e" />
+            android:value="c99a6a9a2e47604595017b4d8c8e7db46db93b9e"/>
 
         <activity
             android:name=".storyboard.Storyboard"
             android:label="@string/title_activity_storyboard"
-            android:windowSoftInputMode="adjustNothing"
             android:parentActivityName=".main.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustNothing">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity" />
+                android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity"/>
         </activity>
         <activity
             android:name=".main.assignments.AssignmentDetailActivity"
-            android:label="AssignmentDetail" />
+            android:label="AssignmentDetail"/>
         <activity
             android:name=".storyboard.overlay.OverlayCameraActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".camera.CameraActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -119,6 +119,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_view_image"
             android:theme="@style/FullscreenTheme">
+        </activity>
+        <activity android:name=".ui.auth.signin.SignInActivity">
+        </activity>
+        <activity android:name=".ui.auth.signup.SignUpActivity">
         </activity>
     </application>
 

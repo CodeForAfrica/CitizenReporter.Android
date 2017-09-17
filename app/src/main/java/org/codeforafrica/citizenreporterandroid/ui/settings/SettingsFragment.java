@@ -12,6 +12,7 @@ import butterknife.OnClick;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
+import com.parse.ParseUser;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.SupportChannelActivity;
@@ -80,6 +81,7 @@ public class SettingsFragment extends Fragment {
   @OnClick(R.id.button_logout) public void facebookLogout() {
     LoginManager.getInstance().logOut();
     manager.setUserLoggedOut();
+    ParseUser.logOut();
     startActivity(new Intent(getActivity(), LoginActivity.class));
     getActivity().finish();
   }

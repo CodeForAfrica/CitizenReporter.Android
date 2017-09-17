@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.facebook.Profile;
 
 import com.parse.LogInCallback;
@@ -22,7 +24,8 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.CitizenReporterApplication;
 import org.codeforafrica.citizenreporterandroid.data.DataManager;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
-
+import org.codeforafrica.citizenreporterandroid.ui.auth.signin.SignInActivity;
+import org.codeforafrica.citizenreporterandroid.ui.auth.signup.SignUpActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     setContentView(R.layout.activity_login);
+    ButterKnife.bind(this);
     facebookLoginButton = (Button) findViewById(R.id.facebook_login_button);
 
     facebookLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +91,17 @@ public class LoginActivity extends AppCompatActivity {
   @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
       @NonNull int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+  }
+
+  @OnClick(R.id.email_login_button)
+  public void goToSignUp() {
+    Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+    startActivity(intent);
+  }
+
+  @OnClick(R.id.signin_with_password) public void goToSignInWithPassword() {
+    Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
+    startActivity(intent);
   }
 
 }
