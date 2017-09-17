@@ -9,7 +9,7 @@ public class Assignment {
   @SerializedName("title") @Expose private String title;
   @SerializedName("description") @Expose private String description;
   @SerializedName("required_media") @Expose private String requiredMedia;
-  @SerializedName("featured_image") @Expose private Object featuredImage;
+  @SerializedName("featured_image") @Expose private String featuredImage;
   @SerializedName("number_of_responses") @Expose private int numberOfResponses;
   @SerializedName("deadline") @Expose private String deadline;
   @SerializedName("author") @Expose private String author;
@@ -47,11 +47,11 @@ public class Assignment {
     this.requiredMedia = requiredMedia;
   }
 
-  public Object getFeaturedImage() {
+  public String getFeaturedImage() {
     return featuredImage;
   }
 
-  public void setFeaturedImage(Object featuredImage) {
+  public void setFeaturedImage(String featuredImage) {
     this.featuredImage = featuredImage;
   }
 

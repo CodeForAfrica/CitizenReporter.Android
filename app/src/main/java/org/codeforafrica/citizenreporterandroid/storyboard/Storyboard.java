@@ -70,7 +70,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
   @BindView(R.id.story_who_is_involved) EditText story_who;
 
-  @BindView(R.id.attachments_button) ImageView attachmentsMenuBtn;
+//  @BindView(R.id.attachments_button) ImageView attachmentsMenuBtn;
 
   @BindView(R.id.summary) EditText summary;
 
@@ -78,7 +78,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
   private LocalDataHelper dataHelper;
   private Environment environment;
-  private PopupMenu popupMenu;
+//  private PopupMenu popupMenu;
   private Story activeStory;
   private SharedPreferences preferences;
   private List<String> local_media;
@@ -98,8 +98,8 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_storyboard);
-    progressBar = (AVLoadingIndicatorView) findViewById(R.id.loadingIndicator);
-    progressBar.setVisibility(View.INVISIBLE);
+//    progressBar = (AVLoadingIndicatorView) findViewById(R.id.loadingIndicator);
+//    progressBar.setVisibility(View.INVISIBLE);
     dataHelper = new LocalDataHelper(this);
     ButterKnife.bind(this);
     String action = getIntent().getAction();
@@ -153,8 +153,10 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
       }
     }
 
+    /*
     popupMenu = new PopupMenu(this, attachmentsMenuBtn);
     popupMenu.inflate(R.menu.attachments_menu);
+    */
 
     StoryBoardUtils.requestPermission(this, Manifest.permission.RECORD_AUDIO);
     StoryBoardUtils.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -296,6 +298,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     datePickerDialog.show(getFragmentManager(), "datepicker");
   }
 
+  /* Open attachments code. Commented out to be used later
   @OnClick(R.id.attachments_button) public void openAttachmentsMenu() {
     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
       @Override public boolean onMenuItemClick(MenuItem item) {
@@ -322,6 +325,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     });
     popupMenu.show();
   }
+  */
 
   public void attachAuthorCred(Story story) {
     preferences = PreferenceManager.getDefaultSharedPreferences(Storyboard.this);
@@ -416,16 +420,19 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
     audio_path = StoryBoardUtils.recordAudio(Storyboard.this, environment);
   }
 
+  /*
+
   @OnClick(R.id.save_button) public void savedClicked() {
     savePost(activeStory);
   }
 
   //This method allows the progressbar to display properly onClick
   @OnClick(R.id.upload_button) public void uploadStoryClicked() {
-    progressBar.show();
+//    progressBar.show();
     Handler handler = new Handler();
     handler.postDelayed(mUploadRunnable, 3000);
   }
+  */
 
   //Runnable executes the uploadStory() method
   private Runnable mUploadRunnable = new Runnable() {
@@ -440,7 +447,7 @@ public class Storyboard extends AppCompatActivity implements DatePickerDialog.On
 
     CReporterAPI apiClient = APIClient.getApiClient();
     NetworkHelper.uploadUserStory(Storyboard.this, apiClient, activeStory);
-    progressBar.hide();
+//    progressBar.hide();
   }
 
   public void savePost(Story story) {

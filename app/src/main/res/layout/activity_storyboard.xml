@@ -1,117 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="org.codeforafrica.citizenreporterandroid.storyboard.Storyboard">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/appbar_padding_top"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_navigate_before_white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Storyboard"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:orientation="horizontal">
-
-
-                    <ImageView
-                        android:id="@+id/attachments_button"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
-                        app:srcCompat="@drawable/ic_attachment_white_48dp" />
-
-                    <ImageView
-                        android:id="@+id/save_button"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
-                        app:srcCompat="@drawable/ic_save_white_48dp" />
-
-                    <ImageView
-                        android:id="@+id/upload_button"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
-                        app:srcCompat="@drawable/ic_file_upload_white_48dp" />
-
-                </LinearLayout>
-
-
-            </RelativeLayout>
-
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
-
+    android:paddingTop="10dp">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:padding="8dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
 
         <LinearLayout
+            android:id="@+id/input_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/loadingIndicator"
-            style="@style/AVLoadingIndicatorView"
-            app:indicatorColor="@color/colorAccent"
-            app:indicatorName="LineScalePartyIndicator"
-            android:visibility="visible"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <EditText
@@ -138,44 +51,80 @@
                 android:hint="Who is involved?"
                 android:inputType="textPersonName" />
 
-            <Button
-                android:id="@+id/storybaord_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
-                android:text="Date"
-                android:textAlignment="textStart" />
 
-            <Button
-                android:id="@+id/storyboard_location"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
-                android:text="Location"
-                android:textAlignment="textStart"
-                android:textSize="14sp" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <Button
+                    android:id="@+id/storyboard_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_dark_button"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/icons8_gps"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:text="Location"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/storybaord_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_dark_button"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/icons8_calendar_24"
+                    android:paddingEnd="40dp"
+                    android:paddingLeft="50dp"
+                    android:paddingStart="10dp"
+                    android:text="Date"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
 
             <EditText
                 android:id="@+id/summary"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:backgroundTint="@android:color/transparent"
-                android:ems="10"
+                android:layout_height="match_parent"
+                android:ems="8"
                 android:hint="Provide a brief, precise summary of your story"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:minLines="4"
+                android:layout_marginTop="0dp"
+                android:padding="0dp" />
 
             <LinearLayout
                 android:id="@+id/attachmentsLayout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             </LinearLayout>
 
-
-
-
         </LinearLayout>
+
     </ScrollView>
-</LinearLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="#fff"
+        app:itemTextColor="#fff"
+        app:menu="@menu/storyboard_bottom_nav" />
+
+</RelativeLayout>

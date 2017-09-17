@@ -14,7 +14,7 @@
         android:id="@+id/stories_item"
         android:enabled="true"
         android:icon="@drawable/ic_ic_stories"
-        android:title="Stories" />
+        android:title="My Reports" />
 
     <item
         android:id="@+id/settings_item"
