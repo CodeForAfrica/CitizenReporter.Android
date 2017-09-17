@@ -30,6 +30,7 @@ public class Constants {
   public static final String KEY_UPLOADED = "uploaded";
   public static final String KEY_UPDATED = "updated";
   public static final String KEY_WHERE = "location";
+  public static final String ITEM_INDEX = "position";
 
   //Assignment table
   public static final String ASSIGNMENTS_TABLE_NAME = "assignments";

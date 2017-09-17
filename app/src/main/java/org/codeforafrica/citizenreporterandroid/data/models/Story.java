@@ -15,6 +15,7 @@ public class Story {
   @SerializedName("id") private long remote_id;
 
   @SerializedName("local_id") private long local_id;
+  @SerializedName("item_index") private String item_index;
   @SerializedName("assignmentId") private int assignmentId;
   @SerializedName("title") private String title;
   @SerializedName("summary") private String summary;
@@ -173,5 +174,13 @@ public class Story {
 
   public void setRemote_id(long remote_id) {
     this.remote_id = remote_id;
+  }
+
+  public String getItem_index() {
+    return item_index;
+  }
+
+  public void setItem_index(String item_index) {
+    this.item_index = item_index;
   }
 }
