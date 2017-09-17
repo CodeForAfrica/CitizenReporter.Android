@@ -23,8 +23,6 @@ import org.codeforafrica.citizenreporterandroid.ui.about.AboutActivity;
 import org.codeforafrica.citizenreporterandroid.ui.feedback.FeedbackActivity;
 
 public class SettingsFragment extends Fragment {
-  private Button fbLogoutBtn;
-  private Button googleSignOut;
   @Inject DataManager manager;
 
   public SettingsFragment() {
@@ -48,12 +46,6 @@ public class SettingsFragment extends Fragment {
     AccessToken token = AccessToken.getCurrentAccessToken();
 
     View view = inflater.inflate(R.layout.fragment_settings, container, false);
-    fbLogoutBtn = (Button) view.findViewById(R.id.button_logout);
-    if (token == null) {
-      googleSignOut.setVisibility(View.VISIBLE);
-    } else {
-      fbLogoutBtn.setVisibility(View.VISIBLE);
-    }
 
     ButterKnife.bind(this, view);
     return view;

@@ -52,8 +52,8 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
     progressBar.setVisibility(View.GONE);
   }
 
-  @Override public void showValidationErrors() {
-    passwordLayout.setError(getString(R.string.sigin_in_error));
+  @Override public void showValidationErrors(String error) {
+    passwordLayout.setError(error);
   }
 
   @Override public void goToMainActivity() {

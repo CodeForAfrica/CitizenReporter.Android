@@ -21,7 +21,7 @@ public class SignInPresenter implements SignInContract.Presenter {
           view.goToMainActivity();
         } else {
           Log.e(TAG, "done: ", e.fillInStackTrace());
-          view.showValidationErrors();
+          view.showValidationErrors(e.getLocalizedMessage());
         }
       }
     });

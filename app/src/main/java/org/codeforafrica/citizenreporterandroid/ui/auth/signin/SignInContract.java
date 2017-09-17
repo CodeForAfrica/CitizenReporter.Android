@@ -8,7 +8,7 @@ public interface SignInContract {
   interface View {
     void showLoading();
     void hideLoading();
-    void showValidationErrors();
+    void showValidationErrors(String error);
     void goToMainActivity();
   };
 

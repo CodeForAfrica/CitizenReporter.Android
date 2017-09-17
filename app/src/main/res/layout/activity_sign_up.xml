@@ -11,15 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.codeforafrica.citizenreporterandroid.ui.auth.signup.SignUpActivity">
 
-  <!-- Login progress -->
-  <ProgressBar
-      android:id="@+id/login_progress"
-      style="?android:attr/progressBarStyleLarge"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="8dp"
-      android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/email_login_form"
         android:layout_width="match_parent"
@@ -32,7 +23,6 @@
           android:layout_height="fill_parent" >
 
         <TextView
-            android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="26sp"
@@ -41,7 +31,7 @@
             android:layout_alignParentTop="true" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/sign_up_done_button"
             android:layout_width="wrap_content"
             android:text="Done"
             android:background="@drawable/rounded_dark_button"
@@ -63,7 +53,7 @@
           android:layout_height="wrap_content">
 
         <AutoCompleteTextView
-            android:id="@+id/name"
+            android:id="@+id/sign_up_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="First and last"
@@ -85,7 +75,7 @@
           android:layout_height="wrap_content">
 
         <AutoCompleteTextView
-            android:id="@+id/email_address"
+            android:id="@+id/sign_up_email_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="hello@email.com"
@@ -103,11 +93,12 @@
           android:text="Password" />
 
       <android.support.design.widget.TextInputLayout
+          android:id="@+id/sign_up_password_layout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/sign_up_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeActionId="@+id/login"
@@ -118,6 +109,15 @@
 
       </android.support.design.widget.TextInputLayout>
 
+      <!-- Login progress -->
+      <ProgressBar
+          android:id="@+id/sign_up_progress"
+          android:layout_gravity="center_horizontal"
+          style="?android:attr/progressBarStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:visibility="visible" />
 
     </LinearLayout>
 </LinearLayout>
