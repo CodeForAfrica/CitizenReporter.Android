@@ -21,14 +21,14 @@ public class OnboardingActivity extends AppIntro implements OnboardingActivityVi
     presenter = new OnboardingActivityPresenter(this);
     editor = sharedPreferences.edit();
     addSlide(
-        AppIntroFragment.newInstance("Welcome", "Description", R.drawable.cfa_transparent_blue_back,
+        AppIntroFragment.newInstance("View Current Assignments",
+            getString(R.string.assignments_description),
+            R.drawable.view_assignments,
             getResources().getColor(R.color.cfAfrica_blue)));
     addSlide(
-        AppIntroFragment.newInstance("Welcome", "Description", R.drawable.cfa_transparent_blue_back,
-            getResources().getColor(R.color.cfAfrica_blue)));
-    addSlide(
-        AppIntroFragment.newInstance("Welcome", "Description", R.drawable.cfa_transparent_blue_back,
-            getResources().getColor(R.color.cfAfrica_blue)));
+        AppIntroFragment.newInstance("Capture Media", getString(R.string.capture_media_desc), R.drawable
+                .fill_questionaire,
+            getResources().getColor(R.color.cfAfrica_red)));
   }
 
   @Override public void onSkipPressed(Fragment currentFragment) {

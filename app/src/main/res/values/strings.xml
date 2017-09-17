@@ -68,6 +68,8 @@
   <string name="stories_error_detail">You have not submitted any reports</string>
 
     <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
+    <string name="assignments_description">Once signed in, you\'ll be presented with a customised list of active assignments appropriate to your location of specialisation</string>
+    <string name="capture_media_desc">You can add media by clicking on any of the media capture buttons at the bottom of the screen</string>
 
 
 </resources>
