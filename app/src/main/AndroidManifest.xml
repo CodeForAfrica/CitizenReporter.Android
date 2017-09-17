@@ -90,22 +90,33 @@
             android:name="io.fabric.ApiKey"
             android:value="c99a6a9a2e47604595017b4d8c8e7db46db93b9e" />
 
-        <activity
-            android:name=".storyboard.Storyboard"
-            android:label="@string/title_activity_storyboard"
-            android:parentActivityName=".main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity" />
-        </activity>
-        <activity
-            android:name=".main.assignments.AssignmentDetailActivity"
-            android:label="AssignmentDetail" />
-        <activity
-            android:name=".storyboard.overlay.OverlayCameraActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar" />
-    </application>
+    <activity
+        android:name=".storyboard.Storyboard"
+        android:label="@string/title_activity_storyboard"
+        android:parentActivityName=".main.MainActivity"
+        android:theme="@style/AppTheme.NoActionBar">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity"/>
+    </activity>
+    <activity
+        android:name=".main.assignments.AssignmentDetailActivity"
+        android:label="AssignmentDetail"></activity>
+    <activity
+        android:name=".storyboard.overlay.OverlayCameraActivity"
+        android:screenOrientation="landscape"
+        android:theme="@style/AppTheme.NoActionBar"></activity>
+    <service android:name=".main.assignments.MyFirebaseInstanceIdService">
+      <intent-filter>
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT"></action>
+      </intent-filter>
+    </service>
+    <service android:name=".main.assignments.MyFirebaseMessagingService">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"></action>
+      </intent-filter>
+    </service>
+  </application>
+
 
 </manifest>
