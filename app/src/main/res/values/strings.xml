@@ -70,4 +70,8 @@
     <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
 
 
+    <!-- Push Notification-->
+    <string name="notification_title">New Assignments</string>
+    <string name="notification_message">A new Assignment has been added</string>
+
 </resources>
