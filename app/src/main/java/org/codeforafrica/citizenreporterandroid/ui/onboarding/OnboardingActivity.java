@@ -24,11 +24,16 @@ public class OnboardingActivity extends AppIntro implements OnboardingActivityVi
         AppIntroFragment.newInstance("View Current Assignments",
             getString(R.string.assignments_description),
             R.drawable.view_assignments,
-            getResources().getColor(R.color.cfAfrica_blue)));
+            getResources().getColor(R.color.white_trans)));
     addSlide(
-        AppIntroFragment.newInstance("Capture Media", getString(R.string.capture_media_desc), R.drawable
+        AppIntroFragment.newInstance("Capture Media and Upload your report", getString(R.string
+                .capture_media_desc), R.drawable
                 .fill_questionaire,
-            getResources().getColor(R.color.cfAfrica_red)));
+            getResources().getColor(R.color.white_trans)));
+    addSlide(
+        AppIntroFragment.newInstance("Have your story published", "", R.drawable
+                .published_stories,
+            getResources().getColor(R.color.white_trans)));
   }
 
   @Override public void onSkipPressed(Fragment currentFragment) {

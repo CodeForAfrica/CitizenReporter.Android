@@ -2,6 +2,7 @@ package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -239,6 +240,7 @@ public class Storyboard extends AppCompatActivity
     String title = story.getString("title") != null ? story.getString("title") : "";
     String summary = story.getString("summary") != null ? story.getString("summary") : "";
     String whoIsInvolved = story.getString("who") != null ? story.getString("who") : "";
+    boolean uploaded = story.getBoolean("uploaded");
     Date whenItOccurred = story.getDate("when");
     String loc = story.getString("location") != null ? story.getString("location") : "";
     media = story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
@@ -248,6 +250,19 @@ public class Storyboard extends AppCompatActivity
         "loadSavedReport: " + title + " " + summary + " " + whoIsInvolved + " " + location_btn);
 
     // set text to appropriate views
+
+    if (uploaded) {
+      story_title.setEnabled(false);
+      story_title.setTextColor(Color.BLACK);
+      story_who.setEnabled(false);
+      story_who.setTextColor(Color.BLACK);
+      story_summary.setEnabled(false);
+      story_summary.setTextColor(Color.BLACK);
+      date.setEnabled(false);
+      date.setTextColor(Color.BLACK);
+      location_btn.setEnabled(false);
+      location_btn.setTextColor(Color.BLACK);
+    }
 
     story_title.setText(title);
     story_summary.setText(summary);
