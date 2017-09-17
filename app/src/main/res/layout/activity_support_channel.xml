@@ -49,11 +49,12 @@ tools:context="org.codeforafrica.citizenreporterandroid.SupportChannelActivity">
         android:layout_height="wrap_content"
         android:maxLines="6"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/button_chatbox_send"
         android:text="SEND"
         android:textSize="14dp"
         android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_icons8_sent_96"
         android:clickable="true"
         android:layout_width="64dp"
         android:layout_height="48dp"
