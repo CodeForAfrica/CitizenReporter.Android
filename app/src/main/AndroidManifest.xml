@@ -106,15 +106,19 @@
         <activity
             android:name=".main.assignments.AssignmentDetailActivity"
             android:label="AssignmentDetail"
-            android:parentActivityName=".main.MainActivity"></activity>
+            android:parentActivityName=".main.MainActivity" />
         <activity
             android:name=".storyboard.overlay.OverlayCameraActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.auth.SignInActivity"
+            android:label="@string/title_activity_sign_in"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.auth.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_sign_in"></activity>
+            android:label="@string/title_activity_sign_up"></activity>
     </application>
 
 </manifest>

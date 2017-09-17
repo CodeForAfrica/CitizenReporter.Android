@@ -67,5 +67,6 @@
     <string name="assignments_error_detail">Something went wrong</string>
     <string name="stories_error_detail">You have not submitted any reports</string>
     <string name="title_activity_sign_in">Sign in</string>
+    <string name="title_activity_sign_up">Sign up</string>
 
 </resources>
