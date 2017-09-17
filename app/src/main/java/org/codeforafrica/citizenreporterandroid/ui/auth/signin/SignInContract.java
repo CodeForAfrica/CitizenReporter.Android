@@ -10,11 +10,13 @@ public interface SignInContract {
     void hideLoading();
     void showValidationErrors(String error);
     void goToMainActivity();
+    void goToPasswordReset();
   };
 
   interface Presenter {
     void signin(String email, String password);
     void attachView(SignInContract.View view);
     void detachView();
+    void forgotPassword();
   }
 }

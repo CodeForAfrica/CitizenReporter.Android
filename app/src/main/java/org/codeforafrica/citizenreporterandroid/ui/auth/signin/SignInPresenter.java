@@ -35,4 +35,9 @@ public class SignInPresenter implements SignInContract.Presenter {
   @Override public void detachView() {
     view = null;
   }
+
+  @Override public void forgotPassword() {
+    Log.d(TAG, "forgotPassword: click");
+    view.goToPasswordReset();
+  }
 }

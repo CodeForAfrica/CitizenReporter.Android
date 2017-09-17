@@ -124,6 +124,8 @@
         </activity>
         <activity android:name=".ui.auth.signup.SignUpActivity">
         </activity>
+        <activity android:name=".ui.auth.passwordRecovery.PasswordResetActivity">
+        </activity>
     </application>
 
 </manifest>
