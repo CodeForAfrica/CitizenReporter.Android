@@ -22,7 +22,7 @@ import org.codeforafrica.citizenreporterandroid.ui.about.AboutActivity;
 import org.codeforafrica.citizenreporterandroid.ui.feedback.FeedbackActivity;
 
 public class SettingsFragment extends Fragment {
-  private LoginButton fbLogoutBtn;
+  private Button fbLogoutBtn;
   private Button googleSignOut;
   @Inject DataManager manager;
 
@@ -47,8 +47,7 @@ public class SettingsFragment extends Fragment {
     AccessToken token = AccessToken.getCurrentAccessToken();
 
     View view = inflater.inflate(R.layout.fragment_settings, container, false);
-    fbLogoutBtn = (LoginButton) view.findViewById(R.id.facebook_button_logout);
-    googleSignOut = (Button) view.findViewById(R.id.google_sign_out);
+    fbLogoutBtn = (Button) view.findViewById(R.id.button_logout);
     if (token == null) {
       googleSignOut.setVisibility(View.VISIBLE);
     } else {
@@ -59,12 +58,12 @@ public class SettingsFragment extends Fragment {
     return view;
   }
 
-  @OnClick(R.id.google_sign_out) public void googleSignOut() {
-    manager.setUserLoggedOut();
-    startActivity(new Intent(getActivity(), LoginActivity.class));
-    getActivity().finish();
-
-  }
+  //@OnClick(R.id.google_sign_out) public void googleSignOut() {
+  //  manager.setUserLoggedOut();
+  //  startActivity(new Intent(getActivity(), LoginActivity.class));
+  //  getActivity().finish();
+  //
+  //}
 
   @OnClick(R.id.support_menu_item) public void startSupportChannelActivity() {
     startActivity(new Intent(getActivity(), SupportChannelActivity.class));
@@ -78,7 +77,7 @@ public class SettingsFragment extends Fragment {
     startActivity(new Intent(getActivity(), FeedbackActivity.class));
   }
 
-  @OnClick(R.id.facebook_button_logout) public void facebookLogout() {
+  @OnClick(R.id.button_logout) public void facebookLogout() {
     LoginManager.getInstance().logOut();
     manager.setUserLoggedOut();
     startActivity(new Intent(getActivity(), LoginActivity.class));

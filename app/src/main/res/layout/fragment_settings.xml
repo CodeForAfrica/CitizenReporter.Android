@@ -2,30 +2,27 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/accent_material_white"
     android:orientation="vertical"
-    >
+    android:background="@color/accent_material_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
   <LinearLayout
       android:layout_width="289dp"
       android:layout_height="392dp"
       android:layout_marginBottom="8dp"
-      android:layout_marginEnd="8dp"
       android:layout_marginLeft="8dp"
       android:layout_marginRight="8dp"
-      android:layout_marginStart="8dp"
       android:layout_marginTop="8dp"
       android:orientation="vertical"
-      android:weightSum="1"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintHorizontal_bias="0.533"
+      app:layout_constraintHorizontal_bias="0.531"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.0"
-      >
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp">
 
     <View
         android:layout_width="match_parent"
@@ -34,8 +31,7 @@
         android:layout_marginTop="8dp"
         android:background="@color/separator_gray"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp"
-        />
+        tools:layout_editor_absoluteY="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,8 +40,13 @@
         android:paddingLeft="8dp"
         android:paddingStart="8dp"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        >
+        tools:layout_editor_absoluteY="8dp">
+
+      <ImageView
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:paddingEnd="10dp"
+          android:src="@drawable/ic_customer_support_50" />
 
       <TextView
           android:id="@+id/support_menu_item"
@@ -54,15 +55,7 @@
           android:layout_gravity="center_vertical"
           android:layout_weight="1"
           android:text="Support Channel"
-          android:textSize="16sp"
-          />
-
-      <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:src="@drawable/right_caret"
-          />
-
+          android:textSize="16sp" />
     </LinearLayout>
 
     <View
@@ -72,8 +65,7 @@
         android:layout_marginTop="8dp"
         android:background="@color/separator_gray"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp"
-        />
+        tools:layout_editor_absoluteY="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,8 +73,13 @@
         android:orientation="horizontal"
         android:paddingStart="8dp"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        >
+        tools:layout_editor_absoluteY="8dp">
+
+      <ImageView
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:paddingEnd="10dp"
+          android:src="@drawable/ic_chat_50" />
 
       <TextView
           android:id="@+id/feedback_menu_item"
@@ -91,15 +88,7 @@
           android:layout_gravity="center_vertical"
           android:layout_weight="0.96"
           android:text="Feedback"
-          android:textSize="16sp"
-          />
-
-      <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:src="@drawable/right_caret"
-          />
-
+          android:textSize="16sp" />
     </LinearLayout>
 
     <View
@@ -109,8 +98,7 @@
         android:layout_marginTop="8dp"
         android:background="@color/separator_gray"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp"
-        />
+        tools:layout_editor_absoluteY="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -118,8 +106,13 @@
         android:orientation="horizontal"
         android:paddingStart="8dp"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        >
+        tools:layout_editor_absoluteY="8dp">
+
+      <ImageView
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:paddingEnd="10dp"
+          android:src="@drawable/ic_about_50" />
 
       <TextView
           android:id="@+id/about_menu_item"
@@ -128,64 +121,34 @@
           android:layout_gravity="center_vertical"
           android:layout_weight="1"
           android:text="About"
-          android:textSize="16sp"
-          />
-
-      <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:src="@drawable/right_caret"
-          />
-
+          android:textSize="16sp" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginTop="4dp"
         android:background="@color/separator_gray"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp"
-        />
+        tools:layout_editor_absoluteY="0dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_weight="0.41"
-        android:orientation="vertical"
-        >
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:gravity="center">
 
       <Button
-          android:id="@+id/google_sign_out"
+          android:id="@+id/button_logout"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="LogOut"
-          android:visibility="gone"
-          tools:layout_editor_absoluteX="112dp"
-          tools:layout_editor_absoluteY="231dp"
-          />
-      <com.facebook.login.widget.LoginButton
-          android:id="@+id/facebook_button_logout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:layout_marginBottom="-135dp"
-          android:layout_marginEnd="8dp"
-          android:layout_marginLeft="8dp"
-          android:layout_marginRight="8dp"
-          android:layout_marginStart="8dp"
-          android:visibility="gone"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintHorizontal_bias="0.284"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintRight_toRightOf="parent"
-          />
+          android:text="Logout"
+          android:textAllCaps="false"
+          android:background="@drawable/rounded_dark_button"
+          android:gravity="center" />
     </LinearLayout>
-
-
   </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

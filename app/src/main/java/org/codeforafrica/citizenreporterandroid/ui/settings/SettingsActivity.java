@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.facebook.login.LoginManager;
+import com.parse.ParseUser;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.SupportChannelActivity;
 import org.codeforafrica.citizenreporterandroid.ui.auth.LoginActivity;
@@ -32,8 +33,9 @@ public class SettingsActivity extends AppCompatActivity {
     startActivity(new Intent(this, FeedbackActivity.class));
   }
 
-  @OnClick(R.id.facebook_button_logout) public void facebookLogout() {
+  @OnClick(R.id.button_logout) public void logout() {
     LoginManager.getInstance().logOut();
+    ParseUser.logOut();
     startActivity(new Intent(this, LoginActivity.class));
     finish();
   }

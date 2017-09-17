@@ -72,7 +72,12 @@ public class StoriesRecyclerViewAdapter
   @Override public void onBindViewHolder(StoryHolder holder, int position) {
     ParseObject story = storyList.get(position);
     holder.story_title.setText(story.getString("title"));
-    holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getDate("updatedAt")));
+    Date updated = story.getUpdatedAt();
+    if (updated != null) {
+      holder.story_date_saved.setText(TimeUtils.getShortDateFormat(updated));
+    } else {
+      holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getDate("updatedAt")));
+    }
     setUploadedDisplay(story, holder.uploaded);
   }
 
