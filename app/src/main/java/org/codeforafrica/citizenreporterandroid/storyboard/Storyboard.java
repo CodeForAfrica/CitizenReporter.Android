@@ -57,6 +57,7 @@ import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
+import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -158,7 +159,12 @@ public class Storyboard extends AppCompatActivity
     switch (item.getItemId()) {
       case R.id.upload:
         Log.d(TAG, "onOptionsItemSelected: Clicked uploaded");
-        presenter.uploadStory(activeStory);
+        if (NetworkUtils.isNetworkAvailable(this)) {
+          presenter.uploadStory(activeStory);
+        } else {
+          Toast.makeText(this, R.string.no_active_internet, Toast.LENGTH_SHORT).show();
+        }
+
         return true;
 
       default:

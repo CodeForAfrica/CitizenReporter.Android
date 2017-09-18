@@ -2,6 +2,7 @@ package org.codeforafrica.citizenreporterandroid.app;
 
 import android.app.Application;
 import android.util.Log;
+import com.google.firebase.FirebaseApp;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -34,6 +35,7 @@ public class CitizenReporterApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
+    FirebaseApp.initializeApp(getApplicationContext());
     Parse.initialize(new Parse.Configuration.Builder(this)
         .applicationId("11235813")
         .server("http://creporter-server.herokuapp.com/parse/")
@@ -49,19 +51,31 @@ public class CitizenReporterApplication extends Application {
     ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
     query.findInBackground(new FindCallback<ParseObject>() {
       @Override public void done(List<ParseObject> objects, ParseException e) {
-        if (objects != null) {
-          Log.d(TAG, "Got all assignments: " + objects.size());
+        if (e == null) {
+          try {
+            Log.d(TAG, "Got all assignments: " + objects.size());
+            ParseObject.pinAllInBackground(objects);
+          } catch (NullPointerException e1) {
+            e1.printStackTrace();
+          }
         }
 
-        ParseObject.pinAllInBackground(objects);
       }
     });
 
     ParseQuery<ParseObject> storiesQuery = ParseQuery.getQuery("Story");
     storiesQuery.findInBackground(new FindCallback<ParseObject>() {
       public void done(List<ParseObject> storyList, ParseException e) {
-        Log.d("Stories", "done: storyList " + storyList.size());
-        ParseObject.pinAllInBackground(storyList);
+        if (e == null) {
+          try {
+            Log.d("Stories", "done: storyList " + storyList.size());
+            ParseObject.pinAllInBackground(storyList);
+          } catch (NullPointerException e1) {
+            e1.printStackTrace();
+          }
+        }
+
+
       }
     });
 

@@ -11,9 +11,10 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.SupportChannelActivity;
 import org.codeforafrica.citizenreporterandroid.ui.auth.LoginActivity;
 import org.codeforafrica.citizenreporterandroid.ui.about.AboutActivity;
+import org.codeforafrica.citizenreporterandroid.ui.base.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.ui.feedback.FeedbackActivity;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

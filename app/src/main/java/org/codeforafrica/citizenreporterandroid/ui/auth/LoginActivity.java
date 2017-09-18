@@ -12,10 +12,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.facebook.Profile;
 
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import java.util.Arrays;
 import java.util.List;
@@ -67,9 +70,40 @@ public class LoginActivity extends AppCompatActivity {
 
                     user.saveEventually();
                   }
+                  ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
+                  query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override public void done(List<ParseObject> objects, ParseException e) {
+                      if (e == null) {
+                        try {
+                          Log.d(TAG, "Got all assignments: " + objects.size());
+                          ParseObject.pinAllInBackground(objects);
+                        } catch (NullPointerException e1) {
+                          e1.printStackTrace();
+                        }
+                      }
+
+                    }
+                  });
+
+                  ParseQuery<ParseObject> storiesQuery = ParseQuery.getQuery("Story");
+                  storiesQuery.findInBackground(new FindCallback<ParseObject>() {
+                    public void done(List<ParseObject> storyList, ParseException e) {
+                      if (e == null) {
+                        try {
+                          Log.d("Stories", "done: storyList " + storyList.size());
+                          ParseObject.pinAllInBackground(storyList);
+                        } catch (NullPointerException e1) {
+                          e1.printStackTrace();
+                        }
+                      }
+
+
+                    }
+                  });
                   Log.d("MyApp", "done: intent");
                   Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                   startActivity(intent);
+                  finish();
                   Log.d("MyApp", "done: intent done");
                 }
               }

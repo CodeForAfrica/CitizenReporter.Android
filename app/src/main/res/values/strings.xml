@@ -81,5 +81,6 @@
     <string name="join_with_email">JOIN WITH EMAIL</string>
     <string name="sigin_in_error">Invalid Email or Password Combination</string>
     <string name="password_reset_success">The password reset link has been sent to your email</string>
+  <string name="no_active_internet">You have no active internet connection</string>
 
 </resources>

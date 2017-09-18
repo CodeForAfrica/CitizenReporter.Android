@@ -10,8 +10,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import org.codeforafrica.citizenreporterandroid.BuildConfig;
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.ui.base.BaseActivity;
 
-public class FeedbackActivity extends AppCompatActivity {
+public class FeedbackActivity extends BaseActivity {
 
   EditText feedbackField, nameField, emailField;
   CheckBox responseCheckbox;

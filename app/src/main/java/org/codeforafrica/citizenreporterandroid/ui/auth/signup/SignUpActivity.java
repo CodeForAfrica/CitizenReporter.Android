@@ -16,6 +16,7 @@ import butterknife.OnClick;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.storyboard.StoryboardContract;
 import org.codeforafrica.citizenreporterandroid.ui.auth.signin.SignInActivity;
+import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpContract.View {
   SignUpContract.Presenter presenter;
@@ -72,6 +73,11 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     String name = nameField.getText().toString();
     String email = emailField.getText().toString();
     String password = passwordField.getText().toString();
-    presenter.signup(name, email, password);
+    if (NetworkUtils.isNetworkAvailable(this)) {
+      presenter.signup(name, email, password);
+    } else {
+      Toast.makeText(this, "You have no active internet connection", Toast.LENGTH_SHORT).show();
+    }
+
   }
 }

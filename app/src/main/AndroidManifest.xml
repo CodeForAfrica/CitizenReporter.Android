@@ -3,129 +3,145 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.codeforafrica.citizenreporterandroid">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
-    <application
-        android:name=".app.CitizenReporterApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_creporter_launcher"
+  <application
+      android:name=".app.CitizenReporterApplication"
+      android:allowBackup="true"
+      android:icon="@mipmap/ic_creporter_launcher"
+      android:label="@string/app_name"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:supportsRtl="true"
+      android:theme="@style/AppTheme"
+      tools:replace="android:icon">
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY"/>
+    <meta-data
+        android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id"/>
+    <meta-data
+        android:name="DOMAIN_PACKAGE_NAME"
+        android:value="org.codeforafrica.citizenreporterandroid"/>
+
+    <activity
+        android:name=".ui.auth.LoginActivity"
+        android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        android:noHistory="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+    <activity
+        android:name=".main.MainActivity"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar"/>
+    <activity
+        android:name=".ui.splash.SplashActivity"
+        android:theme="@style/SplashTheme">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity
+        android:name=".ui.onboarding.OnboardingActivity"
+        android:theme="@style/AppTheme.NoActionBar"/>
+    <activity android:name=".ui.base.BaseActivity"/>
+    <activity
+        android:name=".ui.settings.SettingsActivity"
+        android:label="@string/title_activity_settings"
+        android:parentActivityName=".main.MainActivity"
+        android:theme="@style/AppTheme"/>
+    <activity
+        android:name=".ui.about.AboutActivity"
+        android:label="@string/title_activity_about"
+        android:parentActivityName=".ui.settings.SettingsActivity"
+        android:theme="@style/AppTheme.NoActionBar">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity"/>
+    </activity>
+    <activity
+        android:name=".SupportChannelActivity"
+        android:label="@string/title_activity_support_channel"
+        android:parentActivityName=".ui.settings.SettingsActivity"
+        android:theme="@style/AppTheme">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity"/>
+    </activity>
+    <activity
+        android:name=".ui.feedback.FeedbackActivity"
+        android:label="@string/title_activity_feedback"
+        android:parentActivityName=".ui.settings.SettingsActivity"
+        android:theme="@style/AppTheme">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity"/>
+    </activity>
+
+    <meta-data
+        android:name="io.fabric.ApiKey"
+        android:value="c99a6a9a2e47604595017b4d8c8e7db46db93b9e"/>
+
+    <activity
+        android:name=".storyboard.Storyboard"
+        android:label="@string/title_activity_storyboard"
+        android:parentActivityName=".main.MainActivity"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon">
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAG4udu-zr6UHXyZosiiik8D_jNE3QJ0eY"/>
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-        <meta-data
-            android:name="DOMAIN_PACKAGE_NAME"
-            android:value="org.codeforafrica.citizenreporterandroid"/>
+        android:windowSoftInputMode="adjustNothing">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity"/>
+    </activity>
+    <activity
+        android:name=".main.assignments.AssignmentDetailActivity"
+        android:label="AssignmentDetail"/>
+    <activity
+        android:name=".storyboard.overlay.OverlayCameraActivity"
+        android:screenOrientation="landscape"
+        android:theme="@style/AppTheme.NoActionBar"/>
+    <activity
+        android:name=".camera.CameraActivity"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:theme="@style/FullscreenTheme">
+    </activity>
+    <activity
+        android:name=".camera.ViewImageActivity"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:label="@string/title_activity_view_image"
+        android:theme="@style/FullscreenTheme">
+    </activity>
+    <activity
+        android:name=".ui.auth.signin.SignInActivity"
+        android:noHistory="true">
+    </activity>
+    <activity
+        android:name=".ui.auth.signup.SignUpActivity"
+        android:noHistory="true">
+    </activity>
+    <activity android:name=".ui.auth.passwordRecovery.PasswordResetActivity">
+    </activity>
 
-        <activity
-            android:name=".ui.auth.LoginActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity
-            android:name=".main.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".ui.splash.SplashActivity"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.onboarding.OnboardingActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.base.BaseActivity"/>
-        <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".main.MainActivity"
-            android:theme="@style/AppTheme"/>
-        <activity
-            android:name=".ui.about.AboutActivity"
-            android:label="@string/title_activity_about"
-            android:parentActivityName=".ui.settings.SettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity"/>
-        </activity>
-        <activity
-            android:name=".SupportChannelActivity"
-            android:label="@string/title_activity_support_channel"
-            android:parentActivityName=".ui.settings.SettingsActivity"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity"/>
-        </activity>
-        <activity
-            android:name=".ui.feedback.FeedbackActivity"
-            android:label="@string/title_activity_feedback"
-            android:parentActivityName=".ui.settings.SettingsActivity"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.codeforafrica.citizenreporterandroid.ui.settings.SettingsActivity"/>
-        </activity>
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="c99a6a9a2e47604595017b4d8c8e7db46db93b9e"/>
-
-        <activity
-            android:name=".storyboard.Storyboard"
-            android:label="@string/title_activity_storyboard"
-            android:parentActivityName=".main.MainActivity"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustNothing">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity"/>
-        </activity>
-        <activity
-            android:name=".main.assignments.AssignmentDetailActivity"
-            android:label="AssignmentDetail"/>
-        <activity
-            android:name=".storyboard.overlay.OverlayCameraActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".camera.CameraActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme">
-        </activity>
-        <activity
-            android:name=".camera.ViewImageActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_view_image"
-            android:theme="@style/FullscreenTheme">
-        </activity>
-        <activity android:name=".ui.auth.signin.SignInActivity">
-        </activity>
-        <activity android:name=".ui.auth.signup.SignUpActivity">
-        </activity>
-        <activity android:name=".ui.auth.passwordRecovery.PasswordResetActivity">
-        </activity>
-    </application>
+    <service android:name=".main.assignments.MyFirebaseInstanceIdService">
+      <intent-filter>
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT"></action>
+      </intent-filter>
+    </service>
+    <service android:name=".main.assignments.MyFirebaseMessagingService">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"></action>
+      </intent-filter>
+    </service>
+  </application>
 
 </manifest>
