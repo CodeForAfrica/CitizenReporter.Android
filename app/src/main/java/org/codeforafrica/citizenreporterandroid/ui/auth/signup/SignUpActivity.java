@@ -33,6 +33,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     presenter = new SignUpPresenter();
     presenter.attachView(this);
     ButterKnife.bind(this);
+    this.hideLoading();
   }
 
   @Override protected void onStart() {
