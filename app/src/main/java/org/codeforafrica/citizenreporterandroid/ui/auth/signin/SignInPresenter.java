@@ -20,6 +20,7 @@ public class SignInPresenter implements SignInContract.Presenter {
           view.hideLoading();
           view.goToMainActivity();
         } else {
+        	view.hideLoading();
           Log.e(TAG, "done: ", e.fillInStackTrace());
           view.showValidationErrors(e.getLocalizedMessage());
         }
