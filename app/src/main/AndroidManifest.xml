@@ -33,7 +33,7 @@
         android:value="org.codeforafrica.citizenreporterandroid"/>
 
     <activity
-        android:name=".ui.auth.LoginActivity"
+        android:name=".ui.auth.login.LoginActivity"
         android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
         android:noHistory="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
@@ -43,6 +43,7 @@
         android:theme="@style/AppTheme.NoActionBar"/>
     <activity
         android:name=".ui.splash.SplashActivity"
+        android:noHistory="true"
         android:theme="@style/SplashTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

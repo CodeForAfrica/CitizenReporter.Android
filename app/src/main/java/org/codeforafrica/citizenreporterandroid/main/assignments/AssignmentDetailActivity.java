@@ -9,6 +9,8 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -58,8 +60,9 @@ public class AssignmentDetailActivity extends Activity {
               TimeUtils.getShortDateFormat(assignmentObject.getDate("deadline")));
           assignment_detail_text.setText(assignmentObject.getString("description"));
           assignment_detail_author.setText(assignmentObject.getString("author"));
-          Picasso.with(AssignmentDetailActivity.this)
+          Glide.with(AssignmentDetailActivity.this)
               .load(assignmentObject.getParseFile("featured_image").getUrl())
+              .diskCacheStrategy(DiskCacheStrategy.SOURCE)
               .into(featured_image);
         } else {
           // something went wrong

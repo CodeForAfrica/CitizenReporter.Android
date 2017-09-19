@@ -9,17 +9,12 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import java.util.List;
+import com.wang.avi.AVLoadingIndicatorView;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.ui.auth.passwordRecovery.PasswordResetActivity;
@@ -27,7 +22,7 @@ import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
 
 public class SignInActivity extends AppCompatActivity implements SignInContract.View {
   private static final String TAG = SignInActivity.class.getSimpleName();
-  @BindView(R.id.sign_in_progress) ProgressBar progressBar;
+  AVLoadingIndicatorView loadingIndicatorView;
   @BindView(R.id.sign_in_email) AutoCompleteTextView emailField;
   @BindView(R.id.sign_in_password) EditText passwordField;
   @BindView(R.id.sign_in_button_done) Button signinButton;
@@ -38,6 +33,7 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_siginin);
+    loadingIndicatorView = (AVLoadingIndicatorView) findViewById(R.id.sign_in_progress);
     ButterKnife.bind(this);
     presenter = new SignInPresenter();
     presenter.attachView(this);
@@ -57,11 +53,15 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
   }
 
   @Override public void showLoading() {
-    progressBar.setVisibility(View.VISIBLE);
+    Log.d(TAG, "showLoading: ");
+    loadingIndicatorView.setVisibility(View.VISIBLE);
+    loadingIndicatorView.show();
   }
 
   @Override public void hideLoading() {
-    progressBar.setVisibility(View.GONE);
+    Log.d(TAG, "hideLoading: ");
+    loadingIndicatorView.setVisibility(View.GONE);
+    loadingIndicatorView.hide();
   }
 
   @Override public void showValidationErrors(String error) {
@@ -69,36 +69,6 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
   }
 
   @Override public void goToMainActivity() {
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
-    query.findInBackground(new FindCallback<ParseObject>() {
-      @Override public void done(List<ParseObject> objects, ParseException e) {
-        if (e == null) {
-          try {
-            Log.d(TAG, "Got all assignments: " + objects.size());
-            ParseObject.pinAllInBackground(objects);
-          } catch (NullPointerException e1) {
-            e1.printStackTrace();
-          }
-        }
-
-      }
-    });
-
-    ParseQuery<ParseObject> storiesQuery = ParseQuery.getQuery("Story");
-    storiesQuery.findInBackground(new FindCallback<ParseObject>() {
-      public void done(List<ParseObject> storyList, ParseException e) {
-        if (e == null) {
-          try {
-            Log.d("Stories", "done: storyList " + storyList.size());
-            ParseObject.pinAllInBackground(storyList);
-          } catch (NullPointerException e1) {
-            e1.printStackTrace();
-          }
-        }
-
-
-      }
-    });
     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
     startActivity(intent);
     finish();
@@ -107,6 +77,10 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
   @Override public void goToPasswordReset() {
     Intent intent = new Intent(SignInActivity.this, PasswordResetActivity.class);
     startActivity(intent);
+  }
+
+  @Override public void enableDoneButton() {
+
   }
 
   @OnClick(R.id.sign_in_button_done) public void signIn() {

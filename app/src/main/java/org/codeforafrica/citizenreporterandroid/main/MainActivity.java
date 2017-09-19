@@ -23,6 +23,8 @@ import butterknife.ButterKnife;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -73,6 +75,15 @@ public class MainActivity extends BaseActivity {
     Picasso.with(this).load(profile_url).fit().into(profile_pic);
     getUserLocation();
 
+    String token = FirebaseInstanceId.getInstance().getToken();
+    ParseUser user = ParseUser.getCurrentUser();
+    if (token != null && user != null) {
+      user.put("fcm_token", token);
+      user.saveEventually();
+    }
+
+
+
     bottomNavigationView.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
           @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -94,6 +105,7 @@ public class MainActivity extends BaseActivity {
             return true;
           }
         });
+
 
     //Manually displaying the first fragment - one time only
     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

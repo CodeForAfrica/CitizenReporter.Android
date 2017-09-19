@@ -31,6 +31,8 @@ import cafe.adriel.androidaudiorecorder.model.AudioChannel;
 import cafe.adriel.androidaudiorecorder.model.AudioSampleRate;
 import cafe.adriel.androidaudiorecorder.model.AudioSource;
 import com.android.datetimepicker.date.DatePickerDialog;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -376,7 +378,10 @@ public class Storyboard extends AppCompatActivity
     ImageView image = (ImageView) view.findViewById(R.id.attached_image);
 
     filename.setText(name);
-    Picasso.with(Storyboard.this).load(url).into(image);
+    Glide.with(Storyboard.this)
+        .load(url)
+        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+        .into(image);
     attachmentsLayout.addView(view);
   }
 
@@ -501,10 +506,11 @@ public class Storyboard extends AppCompatActivity
   }
 
   @Override public void finishUploading() {
-    Intent intent = new Intent(Storyboard.this, MainActivity.class);
-    intent.putExtra("Source", "uploaded");
-    startActivity(intent);
-    finish();
+    onBackPressed();
+    //Intent intent = new Intent(Storyboard.this, MainActivity.class);
+    //intent.putExtra("Source", "uploaded");
+    //startActivity(intent);
+    //finish();
   }
 
   @Override public void sendCameraIntent() {

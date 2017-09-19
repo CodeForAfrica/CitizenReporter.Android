@@ -11,6 +11,7 @@ public interface SignInContract {
     void showValidationErrors(String error);
     void goToMainActivity();
     void goToPasswordReset();
+    void enableDoneButton();
   };
 
   interface Presenter {
@@ -18,5 +19,6 @@ public interface SignInContract {
     void attachView(SignInContract.View view);
     void detachView();
     void forgotPassword();
+    void enableButton();
   }
 }

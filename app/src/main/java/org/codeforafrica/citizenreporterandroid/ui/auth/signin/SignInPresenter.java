@@ -4,6 +4,7 @@ import android.util.Log;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import org.codeforafrica.citizenreporterandroid.data.ParseHelper;
 
 /**
  * Created by Ahereza on 9/17/17.
@@ -17,6 +18,8 @@ public class SignInPresenter implements SignInContract.Presenter {
     ParseUser.logInInBackground(email, password, new LogInCallback() {
       @Override public void done(ParseUser user, ParseException e) {
         if (e == null) {
+          ParseHelper.getParseAssignments();
+          ParseHelper.getParseStories();
           view.hideLoading();
           view.goToMainActivity();
         } else {
@@ -25,6 +28,8 @@ public class SignInPresenter implements SignInContract.Presenter {
         }
       }
     });
+
+
 
   }
 
@@ -39,5 +44,9 @@ public class SignInPresenter implements SignInContract.Presenter {
   @Override public void forgotPassword() {
     Log.d(TAG, "forgotPassword: click");
     view.goToPasswordReset();
+  }
+
+  @Override public void enableButton() {
+    view.enableDoneButton();
   }
 }
