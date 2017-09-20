@@ -1,8 +1,16 @@
 package org.codeforafrica.citizenreporterandroid.app;
 
 import android.app.Application;
+import android.util.Log;
+import com.google.firebase.FirebaseApp;
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import java.util.List;
 import javax.inject.Inject;
-import org.codeforafrica.citizenreporterandroid.data.DataManager;
 import org.codeforafrica.citizenreporterandroid.di.AppComponent;
 import org.codeforafrica.citizenreporterandroid.di.AppModule;
 import org.codeforafrica.citizenreporterandroid.di.DaggerAppComponent;
@@ -12,8 +20,8 @@ import org.codeforafrica.citizenreporterandroid.di.DaggerAppComponent;
  */
 
 public class CitizenReporterApplication extends Application {
+  private static final String TAG = CitizenReporterApplication.class.getSimpleName();
   private AppComponent appComponent;
-  @Inject DataManager manager;
 
   public AppComponent getAppComponent() {
     return appComponent;
@@ -23,10 +31,49 @@ public class CitizenReporterApplication extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
+    FirebaseApp.initializeApp(getApplicationContext());
+    Parse.initialize(new Parse.Configuration.Builder(this)
+        .applicationId("11235813")
+        .server("http://creporter-server.herokuapp.com/parse/")
+        .enableLocalDataStore()
+        .build()
+    );
+    ParseFacebookUtils.initialize(this);
+
     appComponent = DaggerAppComponent.builder()
         .appModule(new AppModule(this))
         .build();
     appComponent.inject(this);
-    manager.getAssignments();
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
+    query.findInBackground(new FindCallback<ParseObject>() {
+      @Override public void done(List<ParseObject> objects, ParseException e) {
+        if (e == null) {
+          try {
+            Log.d(TAG, "Got all assignments: " + objects.size());
+            ParseObject.pinAllInBackground(objects);
+          } catch (NullPointerException e1) {
+            e1.printStackTrace();
+          }
+        }
+
+      }
+    });
+
+    ParseQuery<ParseObject> storiesQuery = ParseQuery.getQuery("Story");
+    storiesQuery.findInBackground(new FindCallback<ParseObject>() {
+      public void done(List<ParseObject> storyList, ParseException e) {
+        if (e == null) {
+          try {
+            Log.d("Stories", "done: storyList " + storyList.size());
+            ParseObject.pinAllInBackground(storyList);
+          } catch (NullPointerException e1) {
+            e1.printStackTrace();
+          }
+        }
+
+
+      }
+    });
+
   }
 }

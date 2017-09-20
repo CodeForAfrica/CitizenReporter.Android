@@ -3,7 +3,6 @@ package org.codeforafrica.citizenreporterandroid.test;
 import android.test.mock.MockContext;
 import java.util.Arrays;
 import java.util.List;
-import org.codeforafrica.citizenreporterandroid.data.DataManager;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentFragmentContract;
 import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragmentPresenter;

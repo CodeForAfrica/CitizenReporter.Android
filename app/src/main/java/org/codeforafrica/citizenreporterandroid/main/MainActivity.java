@@ -1,6 +1,7 @@
 package org.codeforafrica.citizenreporterandroid.main;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -11,26 +12,29 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 import java.util.Objects;
-import org.codeforafrica.citizenreporterandroid.app.Constants;
-import org.codeforafrica.citizenreporterandroid.ui.base.BaseActivity;
 import org.codeforafrica.citizenreporterandroid.R;
-import org.codeforafrica.citizenreporterandroid.ui.settings.SettingsFragment;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
+import org.codeforafrica.citizenreporterandroid.ui.about.AboutActivity;
 import org.codeforafrica.citizenreporterandroid.ui.assignments.AssignmentsFragment;
+import org.codeforafrica.citizenreporterandroid.ui.base.BaseActivity;
+import org.codeforafrica.citizenreporterandroid.ui.settings.SettingsFragment;
 import org.codeforafrica.citizenreporterandroid.ui.stories.StoriesFragment;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
-import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
+import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -43,21 +47,34 @@ public class MainActivity extends BaseActivity {
 
   @BindView(R.id.navigation) BottomNavigationView bottomNavigationView;
 
-  @BindView(R.id.profile_pic) AppCompatImageView profile_pic;
-
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
     ButterKnife.bind(this);
 
+    Intent intent = getIntent();
+    String from_storyboard = intent.getStringExtra("Source");
+    if (from_storyboard == "uploaded") {
+      Log.d(TAG, "onCreate: has uploaded extra");
+      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+      transaction.replace(R.id.frame_layout, StoriesFragment.newInstance());
+      transaction.commit();
+    }
+
     apiClient = APIClient.getApiClient();
     preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
     fb_id = preferences.getString("fb_id", "");
     profile_url = preferences.getString(Constants.PREF_KEY_CURRENT_USER_PROFILE_PIC_URL,
         "http://www.freeiconspng.com/uploads/account-icon-21.png");
-    Picasso.with(this).load(profile_url).fit().into(profile_pic);
     getUserLocation();
+
+    String token = FirebaseInstanceId.getInstance().getToken();
+    ParseUser user = ParseUser.getCurrentUser();
+    if (token != null && user != null) {
+      user.put("fcm_token", token);
+      user.saveEventually();
+    }
 
     bottomNavigationView.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -106,10 +123,9 @@ public class MainActivity extends BaseActivity {
                 String co_ord = String.valueOf(location.getLatitude()) + ", " + String.valueOf(
                     location.getLongitude());
 
-                if (NetworkHelper.isNetworkAvailable(MainActivity.this) && !Objects.equals(fb_id,
+                if (NetworkUtils.isNetworkAvailable(MainActivity.this) && !Objects.equals(fb_id,
                     "")) {
                   // TODO send location to the server
-                  NetworkHelper.updateLocation(MainActivity.this, apiClient, co_ord, fb_id);
                 }
                 Log.d(TAG, "onSuccess: Long: "
                     + String.valueOf(location.getLongitude())
@@ -141,5 +157,10 @@ public class MainActivity extends BaseActivity {
     } else {
       super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+  }
+
+  @OnClick(R.id.about_icon_appbar) public void goToAbout() {
+    Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+    startActivity(intent);
   }
 }

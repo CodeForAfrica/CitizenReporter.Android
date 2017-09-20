@@ -1,5 +1,6 @@
 package org.codeforafrica.citizenreporterandroid.ui.stories;
 
+import com.parse.ParseObject;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 
@@ -11,14 +12,12 @@ public interface StoriesFragmentContract {
   interface View{
     void showLoading();
     void hideLoading();
-    void displayStories(List<Story> stories);
+    void displayStories(List<ParseObject> stories);
     void displayNoStories();
     void swipeToDelete();
   };
   interface Presenter{
-    void getStoriesFromDb();
-    void getStoriesFromNetwork();
-    void deleteStory(int storyID);
+    void loadStories();
     void attachView(View view);
     void detachView();
   };

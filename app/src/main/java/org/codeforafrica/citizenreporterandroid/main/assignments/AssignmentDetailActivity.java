@@ -9,11 +9,17 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import org.codeforafrica.citizenreporterandroid.R;
-import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
-import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
-import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
+import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
+import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
+import org.codeforafrica.citizenreporterandroid.utils.TimeUtils;
 
 /**
  * Created by Mugiwara_Munyi on 14/08/2017.
@@ -28,37 +34,46 @@ public class AssignmentDetailActivity extends Activity {
 
   @BindView(R.id.assignment_detail_text) TextView assignment_detail_text;
 
-  @BindView(R.id.assignment_detail_location) TextView assignment_detail_location;
-
   @BindView(R.id.assignment_detail_author) TextView assignment_detail_author;
 
-  private LocalDataHelper dataHelper;
 
   private Assignment assignment;
+  private String assignmentID;
 
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_assignment_detail);
-    dataHelper = new LocalDataHelper(this);
+
     ButterKnife.bind(this);
 
-    int assignmentID = getIntent().getIntExtra("assignment_id", -1);
-    if (assignmentID == -1) {
-      Toast.makeText(this, "This assignment was not found", Toast.LENGTH_SHORT).show();
-    } else {
-      assignment = dataHelper.getAssignment(assignmentID);
-      assignment_detail_title.setText(assignment.getTitle());
-      assignment_detail_deadline.setText(assignment.getDeadline());
-      assignment_detail_text.setText(assignment.getDescription());
-      assignment_detail_author.setText(assignment.getAuthor());
-      assignment_detail_location.setText(assignment.getAssignmentLocation());
-    }
+    assignmentID = getIntent().getStringExtra("assignment_id");
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
+    query.fromLocalDatastore();
+    query.getInBackground(assignmentID, new GetCallback<ParseObject>() {
+      public void done(ParseObject assignmentObject, ParseException e) {
+        if (e == null) {
+          assignment_detail_title.setText(assignmentObject.getString("title"));
+          assignment_detail_deadline.setText(
+              TimeUtils.getShortDateFormat(assignmentObject.getDate("deadline")));
+          assignment_detail_text.setText(assignmentObject.getString("description"));
+          assignment_detail_author.setText(assignmentObject.getString("author"));
+          Glide.with(AssignmentDetailActivity.this)
+              .load(assignmentObject.getParseFile("featured_image").getUrl())
+              .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+              .into(featured_image);
+        } else {
+          // something went wrong
+          Toast.makeText(AssignmentDetailActivity.this, "This assignment was not found",
+              Toast.LENGTH_SHORT).show();
+        }
+      }
+    });
   }
 
   @OnClick(R.id.start_reporting_button) public void start_reporting() {
     Intent report = new Intent(this, Storyboard.class);
     report.setAction(Constants.ACTION_NEW_STORY);
-    report.putExtra("assignmentID", assignment.getId());
+    report.putExtra("assignmentID", assignmentID);
     startActivity(report);
   }
 }

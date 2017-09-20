@@ -7,24 +7,18 @@
     <item
         android:id="@+id/record_audio"
         android:enabled="true"
-        android:icon="@drawable/ic_mic_none_black_24dp"
-        android:title="Microphone"/>
+        android:icon="@drawable/ic_add_recording_white_32"
+        android:title="Record Audio"/>
 
     <item
         android:id="@+id/capture_image"
         android:enabled="true"
-        android:icon="@drawable/ic_camera_alt_black_24dp"
-        android:title="Camera" />
-
-    <item
-        android:id="@+id/record_video"
-        android:enabled="true"
-        android:icon="@drawable/ic_videocam_black_24dp"
-        android:title="Video" />
+        android:icon="@drawable/ic_start_camera_white_32"
+        android:title="Start Camera" />
 
     <item
         android:id="@+id/open_gallery"
         android:enabled="true"
-        android:icon="@drawable/ic_image_black_24dp"
-        android:title="Image" />
+        android:icon="@drawable/ic_gallery_white_32"
+        android:title="Attach Photo" />
 </menu>
