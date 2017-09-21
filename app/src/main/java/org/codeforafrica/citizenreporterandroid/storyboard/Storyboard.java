@@ -208,6 +208,7 @@ public class Storyboard extends AppCompatActivity
             File f = new File(audio_path);
 
             try {
+
               byte[] audio_data = FileUtils.readFileToByteArray(f);
               final ParseFile file = new ParseFile(f.getName(), audio_data);
               presenter.attachAudio(file.getName());
