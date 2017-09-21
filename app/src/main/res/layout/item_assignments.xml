@@ -51,12 +51,14 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginRight="4dp"
-              android:src="@drawable/ic_location_pin_16"/>
+              android:src="@drawable/ic_ic_location_pin_16"/>
 
           <TextView
               android:id="@+id/assignment_location"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              android:gravity="center"
+              android:paddingTop="8dp"
               android:textColor="#ffffff"
               android:text="Bomet, Kenya"/>
         </LinearLayout>
@@ -70,12 +72,14 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginRight="8dp"
-              android:src="@drawable/ic_calendar_deadline_16"/>
+              android:src="@drawable/ic_ic_calendar_deadline_16"/>
 
           <TextView
               android:id="@+id/assignment_deadline"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              android:gravity="center"
+              android:paddingTop="8dp"
               android:textColor="#ffffff"
               android:text="21 April 2017"/>
         </LinearLayout>
