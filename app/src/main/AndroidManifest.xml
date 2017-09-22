@@ -69,8 +69,11 @@
     <activity
         android:name=".ui.feedback.FeedbackActivity"
         android:label="@string/title_activity_feedback"
-        android:parentActivityName=".ui.settings.SettingsActivity"
+        android:parentActivityName=".main.MainActivity"
         android:theme="@style/AppTheme">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="org.codeforafrica.citizenreporterandroid.main.MainActivity"/>
     </activity>
 
     <meta-data
