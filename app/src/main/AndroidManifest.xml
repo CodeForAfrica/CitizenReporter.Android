@@ -34,7 +34,7 @@
 
     <activity
         android:name=".ui.auth.login.LoginActivity"
-        android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     <activity
         android:name=".main.MainActivity"
