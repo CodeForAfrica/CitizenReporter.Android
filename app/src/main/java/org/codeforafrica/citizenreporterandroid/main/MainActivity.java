@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +37,9 @@ import org.codeforafrica.citizenreporterandroid.ui.stories.StoriesFragment;
 import org.codeforafrica.citizenreporterandroid.utils.APIClient;
 import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
+import android.support.design.widget.Snackbar;
+import android.widget.RelativeLayout;
+import android.view.View;
 
 public class MainActivity extends BaseActivity {
 
@@ -44,12 +49,14 @@ public class MainActivity extends BaseActivity {
   private String fb_id;
   private String profile_url;
   private SharedPreferences preferences;
+  private RelativeLayout relativeLayout;
 
   @BindView(R.id.navigation) BottomNavigationView bottomNavigationView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
 
     ButterKnife.bind(this);
 
@@ -137,6 +144,20 @@ public class MainActivity extends BaseActivity {
     } else {
       if (ActivityCompat.shouldShowRequestPermissionRationale(this,
           Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+        final Snackbar snackBar = Snackbar
+                .make(relativeLayout, "The location is used to send location based assignments", Snackbar.LENGTH_INDEFINITE);
+
+        snackBar.setAction("Dismiss", new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            snackBar.dismiss();
+          }
+        });
+        View sbView = snackBar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.YELLOW);
+        snackBar.show();
 
       }
 
