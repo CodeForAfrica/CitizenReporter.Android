@@ -404,9 +404,14 @@ public class Storyboard extends AppCompatActivity
 
   @Override public void showVideoAttachment(String name, String uri) {
     View view = inflater.inflate(R.layout.item_video, null);
-    TextView filename = (TextView) view.findViewById(R.id.video_filename_tv);
+    TextView fileName = (TextView) view.findViewById(R.id.video_filename_tv);
+    TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
 
-    filename.setText(name);
+
+    File file = new File(uri);
+    long size  = file.length();
+    fileName.setText(name);
+    fileSize.setText(size/1024 + " KB");
 
     attachmentsLayout.addView(view);
   }
@@ -414,10 +419,13 @@ public class Storyboard extends AppCompatActivity
   @Override public void showAudioAttachment(String name, String uri) {
     Log.i(TAG, "showAudioAttachment: ");
     View view = inflater.inflate(R.layout.item_audio, null);
-    TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
-    TextView filesize = (TextView) view.findViewById(R.id.audio_filesize_tv);
+    TextView fileName = (TextView) view.findViewById(R.id.audio_filename_tv);
+    TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
 
-    filename.setText(name);
+    File file = new File(uri);
+    long size  = file.length();
+    fileName.setText(name);
+    fileSize.setText(size/1024 + " KB");
 
 
     attachmentsLayout.addView(view);
@@ -427,8 +435,13 @@ public class Storyboard extends AppCompatActivity
     Log.i(TAG, "showUnknownAttachment: ");
     View view = inflater.inflate(R.layout.item_unkown, null);
     TextView filename = (TextView) view.findViewById(R.id.unknown_filename_tv);
+    TextView fileSize = (TextView) view.findViewById(R.id.unknown_filesize_tv);
 
     filename.setText(name);
+    File file = new File(uri);
+    long size  = file.length();
+    filename.setText(name);
+    fileSize.setText(size/1024 + " KB");
 
     attachmentsLayout.addView(view);
   }
