@@ -48,6 +48,8 @@ import gun0912.tedbottompicker.TedBottomPicker;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -419,13 +421,21 @@ public class Storyboard extends AppCompatActivity
   @Override public void showAudioAttachment(String name, String uri) {
     Log.i(TAG, "showAudioAttachment: ");
     View view = inflater.inflate(R.layout.item_audio, null);
-    TextView fileName = (TextView) view.findViewById(R.id.audio_filename_tv);
+    TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
     TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
 
     File file = new File(uri);
-    long size  = file.length();
-    fileName.setText(name);
-    fileSize.setText(size/1024 + " KB");
+    long size  = (file.length())/1024;
+    String size_label = size + " KB";
+
+    if (size>1000){
+      double sizeMb = (size * (.001));
+      DecimalFormat df = new DecimalFormat("#.##");
+      df.setRoundingMode(RoundingMode.CEILING);
+      size_label = df.format(sizeMb) + " MB";
+    }
+    filename.setText(name);
+    fileSize.setText(size_label);
 
 
     attachmentsLayout.addView(view);
@@ -440,8 +450,12 @@ public class Storyboard extends AppCompatActivity
     filename.setText(name);
     File file = new File(uri);
     long size  = file.length();
+    String size_label = size/1024 + " KB";
+    if (size>1000){
+      size_label = (size/1024 * .001) + " MB";
+    }
     filename.setText(name);
-    fileSize.setText(size/1024 + " KB");
+    fileSize.setText(size_label);
 
     attachmentsLayout.addView(view);
   }
