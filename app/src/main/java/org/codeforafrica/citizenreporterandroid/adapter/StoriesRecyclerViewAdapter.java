@@ -84,9 +84,11 @@ public class StoriesRecyclerViewAdapter
     if (updated != null) {
       holder.story_date_saved.setText(TimeUtils.getShortDateFormat(updated));
     } else {
-      holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getDate("updatedAt")));
+      holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getDate("createdAt")));
     }
     setUploadedDisplay(story, holder.uploaded);
+
+
   }
 
   @Override public int getItemCount() {
