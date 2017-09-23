@@ -5,6 +5,7 @@ import okhttp3.ResponseBody;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.data.models.User;
+import org.codeforafrica.citizenreporterandroid.data.models.WordpressStory;
 import org.codeforafrica.citizenreporterandroid.data.models.WordpressUser;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,20 +20,12 @@ import retrofit2.http.Path;
  * Created by Ahereza on 8/1/17.
  */
 
-public interface CReporterAPI {
-  @GET("stories/user/{uid}/") Call<List<Story>> getUserStories(@Path("uid") String uid);
+public interface WordpressAPI {
+  @FormUrlEncoded
+  @POST("api/cr/get_user_info/") Call<WordpressUser> verifyWordpressUser(
+      @Field("username") String username, @Field("password") String password);
 
-  @POST("users/register") Call<User> createUser(@Body User user);
-
-  @FormUrlEncoded @PATCH("users/update/{fb_id}/") Call<ResponseBody> updateFCM(
-      @Path("uid") String fb_id, @Field("location") String fcm_token);
-
-  @FormUrlEncoded @PATCH("users/update/{uid}/") Call<ResponseBody> updateLocation(
-      @Path("uid") String uid, @Field("location") String locationString);
-
-  @POST("stories/") Call<Story> uploadStory(@Body Story story);
-
-  @GET("assignments/") Call<List<Assignment>> getAssignments();
-
+  @GET("") Call<List<WordpressStory>> getOldUserStories();
+  // TODO: 9/21/17
 }
 

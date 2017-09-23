@@ -20,5 +20,6 @@ public interface SignInContract {
     void detachView();
     void forgotPassword();
     void enableButton();
+    //void getWordpressUserDetails();
   }
 }

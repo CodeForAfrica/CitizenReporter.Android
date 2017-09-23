@@ -8,6 +8,8 @@ public class Constants {
   public static final String BASE_URL = "http://api.creporter.codeforafrica.org/api/";
   //public static final String BASE_URL = "http://a865dfff.ngrok.io/api/";
 
+  public static final String WORDPRESS_BASE_URL = "https://reports.the-star.co.ke/";
+
   public static final String SHARED_PREF_FILENAME = "creporter_prefs";
 
   public static final String DB_NAME = "citizenReporterDB";

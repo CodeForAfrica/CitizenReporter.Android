@@ -22,6 +22,16 @@ public class APIClient {
     return apiClient;
   }
 
+  public static WordpressAPI getWordpressApiClient() {
+    Retrofit.Builder builder =
+        new Retrofit.Builder().baseUrl(Constants.WORDPRESS_BASE_URL)
+            //                .baseUrl("http://24f488d3.ngrok.io/api/")
+            .addConverterFactory(GsonConverterFactory.create());
+    retrofit = builder.build();
+    WordpressAPI apiClient = retrofit.create(WordpressAPI.class);
+    return apiClient;
+  }
+
   public static <S> S createService(Class<S> serviceClass) {
     return retrofit.create(serviceClass);
   }
