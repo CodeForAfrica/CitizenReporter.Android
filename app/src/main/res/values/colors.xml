@@ -25,6 +25,9 @@
     <color name="facebook_blue">#3B5998</color>
     <color name="google_red">#FF0000</color>
     <color name="media_picker">#F6F6F6</color>
-    <color name="email_green">#00FF00</color>
+    <color name="email_green">#126912</color>
     <color name="black_overlay">#66000000</color>
+    <color name="button_pressed">#66b1b5e7</color>
+    <color name="button_focused">#669ce2aa</color>
+    <color name="email_login_pressed">#661e612b</color>
 </resources>

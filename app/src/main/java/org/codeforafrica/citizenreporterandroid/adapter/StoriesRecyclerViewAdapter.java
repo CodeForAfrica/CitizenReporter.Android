@@ -105,9 +105,9 @@ public class StoriesRecyclerViewAdapter
 
   public void setUploadedDisplay(ParseObject story, ImageView uploadedView) {
     if (story.getBoolean("uploaded")) {
-      uploadedView.setImageResource(R.drawable.ic_cloud_checked_20);
+      uploadedView.setImageResource(R.drawable.ic_ic_cloud_checked_20);
     } else {
-      uploadedView.setImageResource(R.drawable.ic_upload_to_cloud_20);
+      uploadedView.setImageResource(R.drawable.ic_ic_upload_to_cloud_20);
     }
   }
 }

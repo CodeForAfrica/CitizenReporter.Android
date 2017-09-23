@@ -31,19 +31,19 @@
 
     <LinearLayout
         android:id="@+id/time_detail"
-        android:paddingTop="8dp"
+        android:paddingTop="0dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="10dp"
+        android:paddingBottom="0dp"
         android:paddingStart="10dp"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="4dp"
-            card_view:srcCompat="@drawable/ic_calendar_1st_20" />
+            android:layout_marginRight="0dp"
+            card_view:srcCompat="@drawable/ic_ic_calendar_1st_20" />
 
         <TextView
             android:id="@+id/story_date_saved"
@@ -51,12 +51,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <ImageView
             android:id="@+id/story_uploaded"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="4dp" />
 

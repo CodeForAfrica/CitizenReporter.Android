@@ -90,9 +90,9 @@
 
           <ImageView
               android:layout_width="wrap_content"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:paddingEnd="8dp"
-              android:src="@drawable/ic_user_account_20"
+              android:src="@drawable/ic_ic_user_account_20"
               android:layout_gravity="center_vertical"
               />
 
@@ -122,9 +122,9 @@
 
           <ImageView
               android:layout_width="wrap_content"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:paddingEnd="8dp"
-              android:src="@drawable/ic_calendar_7_20"
+              android:src="@drawable/ic_ic_calendar_7_20"
               android:layout_gravity="center_vertical"
               />
 
