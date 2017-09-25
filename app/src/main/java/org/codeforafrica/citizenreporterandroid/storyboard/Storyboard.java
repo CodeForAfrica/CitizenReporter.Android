@@ -48,6 +48,8 @@ import gun0912.tedbottompicker.TedBottomPicker;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -145,13 +147,23 @@ public class Storyboard extends AppCompatActivity
 
   @Override protected void onStop() {
     super.onStop();
-    presenter.saveStory(activeStory);
+    updateStoryObject(activeStory);
+    Log.d(TAG, "Value of activeStory.title.isEmpty " + (activeStory.get("title").toString().isEmpty()));
+    if(activeStory.get("title").toString().isEmpty()){
+      System.out.println(activeStory.getString("title"));
+      activeStory.unpinInBackground();
+    } else{
+      presenter.saveStory(activeStory);
+
+    }
+
+
   }
 
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    presenter.saveStory(activeStory);
+
   }
 
   @Override protected void onPause() {
@@ -211,7 +223,7 @@ public class Storyboard extends AppCompatActivity
 
               byte[] audio_data = FileUtils.readFileToByteArray(f);
               final ParseFile file = new ParseFile(f.getName(), audio_data);
-              presenter.attachAudio(file.getName());
+              presenter.attachAudio(file.getName(), f.getAbsolutePath());
               file.saveInBackground(new SaveCallback() {
                 @Override public void done(ParseException e) {
                   if (e == null) {
@@ -259,7 +271,7 @@ public class Storyboard extends AppCompatActivity
             try {
               byte[] video_data = FileUtils.readFileToByteArray(videoFile);
               final ParseFile file = new ParseFile(videoFile.getName(), video_data);
-              presenter.attachVideo(file.getName());
+              presenter.attachVideo(file.getName(), data.getStringExtra("videoPath"));
               file.saveInBackground(new SaveCallback() {
                 @Override public void done(ParseException e) {
                   if (e == null) {
@@ -393,31 +405,58 @@ public class Storyboard extends AppCompatActivity
     attachmentsLayout.addView(view);
   }
 
-  @Override public void showVideoAttachment(String name) {
+  @Override public void showVideoAttachment(String name, String uri) {
     View view = inflater.inflate(R.layout.item_video, null);
-    TextView filename = (TextView) view.findViewById(R.id.video_filename_tv);
+    TextView fileName = (TextView) view.findViewById(R.id.video_filename_tv);
+    TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
 
-    filename.setText(name);
+
+    File file = new File(uri);
+    long size  = file.length();
+    fileName.setText(name);
+    fileSize.setText(size/1024 + " KB");
 
     attachmentsLayout.addView(view);
   }
 
-  @Override public void showAudioAttachment(String name) {
+  @Override public void showAudioAttachment(String name, String uri) {
     Log.i(TAG, "showAudioAttachment: ");
     View view = inflater.inflate(R.layout.item_audio, null);
     TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
+    TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
 
+    File file = new File(uri);
+    long size  = (file.length())/1024;
+    String size_label = size + " KB";
+
+    if (size>1000){
+      double sizeMb = (size * (.001));
+      DecimalFormat df = new DecimalFormat("#.##");
+      df.setRoundingMode(RoundingMode.CEILING);
+      size_label = df.format(sizeMb) + " MB";
+    }
     filename.setText(name);
+    fileSize.setText(size_label);
+
 
     attachmentsLayout.addView(view);
   }
 
-  @Override public void showUnknownAttachment(String name) {
-    Log.i(TAG, "showAudioAttachment: ");
+  @Override public void showUnknownAttachment(String name, String uri) {
+    Log.i(TAG, "showUnknownAttachment: ");
     View view = inflater.inflate(R.layout.item_unkown, null);
     TextView filename = (TextView) view.findViewById(R.id.unknown_filename_tv);
+    TextView fileSize = (TextView) view.findViewById(R.id.unknown_filesize_tv);
 
     filename.setText(name);
+    File file = new File(uri);
+    long size  = file.length();
+    String size_label = size/1024 + " KB";
+    if (size>1000){
+      size_label = (size/1024 * .001) + " MB";
+    }
+    filename.setText(name);
+    fileSize.setText(size_label);
 
     attachmentsLayout.addView(view);
   }
@@ -436,11 +475,15 @@ public class Storyboard extends AppCompatActivity
   }
 
   @Override public void updateStoryObject(ParseObject activeStory) {
-    activeStory.put("title", story_title.getText().toString());
-    activeStory.put("summary", story_summary.getText().toString());
-    activeStory.put("who", story_who.getText().toString());
-    activeStory.put("media", media);
-    activeStory.put("updatedAt", new Date());
+    System.out.println(story_title.getText().toString());
+    {
+      activeStory.put("title", story_title.getText().toString());
+      activeStory.put("summary", story_summary.getText().toString());
+      activeStory.put("who", story_who.getText().toString());
+      activeStory.put("media", media);
+      activeStory.put("updatedAt", new Date());
+    }
+
   }
 
   @Override public void showDatePickerDialog() {

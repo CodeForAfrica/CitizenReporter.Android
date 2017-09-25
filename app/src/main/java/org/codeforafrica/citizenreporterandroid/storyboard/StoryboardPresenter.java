@@ -40,8 +40,11 @@ public class StoryboardPresenter implements Presenter {
         if (e == null && objects.size() > 0) {
           Log.d(TAG, "done: Loading saved report");
           ParseObject story = objects.get(0);
-          story.fetchInBackground();
-          view.loadSavedReport(story);
+          if (story.getString("title") != null){
+            story.fetchInBackground();
+            view.loadSavedReport(story);
+          }
+
         } else {
           // something went wrong
           Log.d(TAG, "Error: " + e.getMessage());
@@ -56,10 +59,14 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void saveStory(ParseObject story) {
-    if (story != null) {
       view.updateStoryObject(story);
+      if (story.getString("title") != null){
       story.pinInBackground();
+    } else{
+      story.unpinInBackground();
     }
+
+
   }
 
   @Override public void uploadStory(final ParseObject story) {
@@ -91,16 +98,17 @@ public class StoryboardPresenter implements Presenter {
     for (int i = 0; i < attachments.length(); i++) {
       JSONObject object = attachments.getJSONObject(i);
       String name = object.getString("name");
+      String url = object.getString("url");
       Log.i(TAG, "loadAllAttachments: " + object.getString("name") + " " + object.getString("url"));
       if (name.endsWith("wav")) {
-        view.showAudioAttachment(name);
+        view.showAudioAttachment(name, url);
       } else if (name.endsWith("jpg") || name.endsWith("jpeg") || name.endsWith("png")) {
         view.showImageAttachment(name, object.getString("url"));
 
       } else if (name.endsWith("mp4")) {
-        view.showVideoAttachment(name);
+        view.showVideoAttachment(name, url);
       } else {
-        view.showUnknownAttachment(name);
+        view.showUnknownAttachment(name, url);
       }
 
     }
@@ -128,16 +136,16 @@ public class StoryboardPresenter implements Presenter {
     view.showRecorder();
   }
 
-  @Override public void attachVideo(String name) {
-    view.showVideoAttachment(name);
+  @Override public void attachVideo(String name, String url) {
+    view.showVideoAttachment(name, url);
   }
 
-  @Override public void attachUnknown(String name) {
-    view.showUnknownAttachment(name);
+  @Override public void attachUnknown(String name, String url) {
+    view.showUnknownAttachment(name, url);
   }
 
-  @Override public void attachAudio(String name) {
-    view.showAudioAttachment(name);
+  @Override public void attachAudio(String name, String url) {
+    view.showAudioAttachment(name, url);
   }
 
   @Override public void attachImage(String name, String url) {
