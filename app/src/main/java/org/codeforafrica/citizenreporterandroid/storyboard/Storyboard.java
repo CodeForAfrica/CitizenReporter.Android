@@ -635,21 +635,18 @@ public class Storyboard extends AppCompatActivity
     }
   }
 
-  void showDialog(){
+  public void showDialog(){
     final Dialog dialog = new Dialog(Storyboard.this);
     //create dialog without title
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
     //set the custom dialog's layout to the dialog
     dialog.setContentView(R.layout.image_preview_dialog);
-    //set the background of dialog box as transparent
-    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
     //display the dialog box
     ImageView expandedImageView = (ImageView)dialog.findViewById(R.id.expanded_image);
     Glide.with(Storyboard.this)
             .load(selectedImage)
             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
             .into(expandedImageView);
-//    expandedImageView.setImageResource(selectedImage);
     dialog.show();
   }
 
