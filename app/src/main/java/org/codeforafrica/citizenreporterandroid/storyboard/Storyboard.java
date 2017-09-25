@@ -1,8 +1,10 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -85,6 +89,8 @@ public class Storyboard extends AppCompatActivity
   private final DatePickerDialog datePickerDialog =
       DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
           calendar.get(Calendar.DAY_OF_MONTH));
+
+  private String selectedImage;
 
   @BindView(R.id.attachmentsLayout) LinearLayout attachmentsLayout;
 
@@ -398,7 +404,17 @@ public class Storyboard extends AppCompatActivity
   @Override public void showImageAttachment(String name, String url) {
     View view = inflater.inflate(R.layout.item_image, null);
     TextView filename = (TextView) view.findViewById(R.id.image_filename_tv);
-    ImageView image = (ImageView) view.findViewById(R.id.attached_image);
+    final String imageUrl = url;
+
+    // Hook up clicks on the thumbnail views.
+    final ImageView image = (ImageView) view.findViewById(R.id.attached_image);
+    image.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        selectedImage = imageUrl;
+        showDialog();
+      }
+    });
 
     filename.setText(name);
     Glide.with(Storyboard.this)
@@ -618,6 +634,25 @@ public class Storyboard extends AppCompatActivity
       Log.e("BNVHelper", "Unable to change value of shift mode", e);
     }
   }
+
+  void showDialog(){
+    final Dialog dialog = new Dialog(Storyboard.this);
+    //create dialog without title
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+    //set the custom dialog's layout to the dialog
+    dialog.setContentView(R.layout.image_preview_dialog);
+    //set the background of dialog box as transparent
+    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+    //display the dialog box
+    ImageView expandedImageView = (ImageView)dialog.findViewById(R.id.expanded_image);
+    Glide.with(Storyboard.this)
+            .load(selectedImage)
+            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+            .into(expandedImageView);
+//    expandedImageView.setImageResource(selectedImage);
+    dialog.show();
+  }
+
 }
 
 
