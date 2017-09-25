@@ -1,13 +1,10 @@
 package org.codeforafrica.citizenreporterandroid.ui.stories;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.parse.ParseObject;
 import java.util.List;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.adapter.StoriesRecyclerViewAdapter;
 import org.codeforafrica.citizenreporterandroid.app.CitizenReporterApplication;
-import org.codeforafrica.citizenreporterandroid.data.models.Story;
-import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
-import org.codeforafrica.citizenreporterandroid.utils.APIClient;
-import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
-import org.codeforafrica.citizenreporterandroid.utils.NetworkHelper;
 
 public class StoriesFragment extends Fragment implements StoriesFragmentContract.View {
   @BindView(R.id.stories_recyclerview) RecyclerView storiesRecyclerView;
@@ -61,12 +54,12 @@ public class StoriesFragment extends Fragment implements StoriesFragmentContract
     super.onViewCreated(view, savedInstanceState);
     storiesRecyclerView.setHasFixedSize(true);
     storiesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    presenter.getStoriesFromDb();
+    presenter.loadStories();
   }
 
   @Override public void onResume() {
     super.onResume();
-    presenter.getStoriesFromDb();
+    presenter.loadStories();
   }
 
   @Override public void showLoading() {
@@ -77,7 +70,7 @@ public class StoriesFragment extends Fragment implements StoriesFragmentContract
     storiesProgressBar.setVisibility(View.GONE);
   }
 
-  @Override public void displayStories(List<Story> stories) {
+  @Override public void displayStories(List<ParseObject> stories) {
     adapter = new StoriesRecyclerViewAdapter(stories, getContext());
     storiesRecyclerView.setAdapter(adapter);
   }

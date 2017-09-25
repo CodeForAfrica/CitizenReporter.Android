@@ -8,8 +8,6 @@ import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
-import org.codeforafrica.citizenreporterandroid.data.DataManager;
-import org.codeforafrica.citizenreporterandroid.data.DataManagerImpl;
 import org.codeforafrica.citizenreporterandroid.utils.CReporterAPI;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -57,8 +55,4 @@ import retrofit2.converter.gson.GsonConverterFactory;
     return context.getSharedPreferences(Constants.SHARED_PREF_FILENAME, context.MODE_PRIVATE);
   }
 
-  @Singleton @Provides DataManager providesDataManager(CReporterAPI api, SharedPreferences prefs,
-      Context context) {
-    return new DataManagerImpl(api, prefs, context);
-  }
 }

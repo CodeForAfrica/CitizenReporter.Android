@@ -2,20 +2,31 @@ package org.codeforafrica.citizenreporterandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.parse.ParseObject;
+import java.util.Date;
 import java.util.List;
+
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
+
 import org.codeforafrica.citizenreporterandroid.app.Constants;
+import org.codeforafrica.citizenreporterandroid.utils.TimeUtils;
+
 
 /**
  * Created by Ahereza on 7/30/17.
@@ -23,14 +34,14 @@ import org.codeforafrica.citizenreporterandroid.app.Constants;
 
 public class StoriesRecyclerViewAdapter
     extends RecyclerView.Adapter<StoriesRecyclerViewAdapter.StoryHolder> {
-  private List<Story> storyList;
+  private List<ParseObject> storyList;
   private Context context;
 
-  public void setStoryList(List<Story> storyList) {
+  public void setStoryList(List<ParseObject> storyList) {
     this.storyList = storyList;
   }
 
-  public StoriesRecyclerViewAdapter(List<Story> storyList, Context context) {
+  public StoriesRecyclerViewAdapter(List<ParseObject> storyList, Context context) {
     this.storyList = storyList;
     this.context = context;
   }
@@ -49,13 +60,13 @@ public class StoriesRecyclerViewAdapter
     @Override public void onClick(View v) {
       // get the position of thr row clicked
       int position = getAdapterPosition();
-      Story currentStory = storyList.get(position);
-      Toast.makeText(context, currentStory.getTitle(), Toast.LENGTH_SHORT).show();
+      ParseObject currentStory = storyList.get(position);
+      Toast.makeText(context, currentStory.getString("title"), Toast.LENGTH_SHORT).show();
 
       // TODO send story id then the story will be retrieved from the database
       Intent openStoryIntent = new Intent(context, Storyboard.class);
       openStoryIntent.setAction(Constants.ACTION_EDIT_VIEW_STORY);
-      openStoryIntent.putExtra("STORY_ID", currentStory.getLocal_id());
+      openStoryIntent.putExtra("STORY_ID", currentStory.getString("localID"));
       context.startActivity(openStoryIntent);
     }
   }
@@ -67,29 +78,38 @@ public class StoriesRecyclerViewAdapter
   }
 
   @Override public void onBindViewHolder(StoryHolder holder, int position) {
-    Story story = storyList.get(position);
-    holder.story_title.setText(story.getTitle());
-    holder.story_date_saved.setText(story.getUpdated());
+    ParseObject story = storyList.get(position);
+    holder.story_title.setText(story.getString("title"));
+    Date updated = story.getUpdatedAt();
+    if (updated != null) {
+      holder.story_date_saved.setText(TimeUtils.getShortDateFormat(updated));
+    } else {
+      holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getDate("createdAt")));
+    }
     setUploadedDisplay(story, holder.uploaded);
+
+
   }
 
   @Override public int getItemCount() {
     return storyList.size();
   }
 
-  public void notify(List<Story> list) {
+  public void notify(List<ParseObject> list) {
     if (storyList != null) {
       storyList.clear();
       storyList.addAll(list);
     } else {
       storyList = list;
+
     }
-    notifyDataSetChanged();
   }
 
-  public void setUploadedDisplay(Story story, View uploadedView) {
-    if (story.isUploaded()) {
-      uploadedView.setVisibility(View.VISIBLE);
+  public void setUploadedDisplay(ParseObject story, ImageView uploadedView) {
+    if (story.getBoolean("uploaded")) {
+      uploadedView.setImageResource(R.drawable.ic_ic_cloud_checked_20);
+    } else {
+      uploadedView.setImageResource(R.drawable.ic_ic_upload_to_cloud_20);
     }
   }
 }

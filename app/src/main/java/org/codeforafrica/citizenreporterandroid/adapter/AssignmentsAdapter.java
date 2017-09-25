@@ -2,7 +2,9 @@ package org.codeforafrica.citizenreporterandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,12 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentDetailActivity;
+import org.codeforafrica.citizenreporterandroid.utils.TimeUtils;
 
 /**
  * Created by Mugiwara_Munyi on 30/07/2017.
@@ -23,14 +27,14 @@ import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentDetai
 
 public class AssignmentsAdapter
     extends RecyclerView.Adapter<AssignmentsAdapter.AssignmentsViewHolder> {
+  private static final String TAG = AssignmentsAdapter.class.getSimpleName();
 
   public class AssignmentsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.assignment_title) TextView assignment_title;
     @BindView(R.id.assignment_deadline) TextView assignment_deadline;
     @BindView(R.id.assignment_location) TextView assignment_location;
-    @BindView(R.id.assignment_author) TextView assignment_author;
     @BindView(R.id.assignment_image) ImageView featured_image;
-    @BindView(R.id.assignment_details) Button assignment_details;
+    @BindView(R.id.assignment_card) CardView assignment_card;
 
     public AssignmentsViewHolder(View view) {
       super(view);
@@ -62,14 +66,18 @@ public class AssignmentsAdapter
     final Assignment assignment = assignmentsList.get(position);
 
     viewHolder.assignment_title.setText(assignment.getTitle());
-    viewHolder.assignment_deadline.setText(assignment.getDeadline());
+    viewHolder.assignment_deadline.setText(TimeUtils.getShortDateFormat(assignment.getDeadline()));
     viewHolder.assignment_location.setText(assignment.getAssignmentLocation());
-    viewHolder.assignment_author.setText(assignment.getAuthor());
-    Glide.with(mContext).load(assignment.getFeaturedImage()).into(viewHolder.featured_image);
-    viewHolder.assignment_details.setOnClickListener(new View.OnClickListener() {
+    Glide.with(mContext)
+        .load(assignment.getFeaturedImage())
+        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+        .into(viewHolder.featured_image);
+
+    viewHolder.assignment_card.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         Intent intent = new Intent(mContext, AssignmentDetailActivity.class);
         intent.putExtra("assignment_id", assignment.getId());
+        Log.d(TAG, "onClick: assignmentID" + assignment.getId());
         mContext.startActivity(intent);
       }
     });

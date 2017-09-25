@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 import org.codeforafrica.citizenreporterandroid.R;
-import org.codeforafrica.citizenreporterandroid.ui.auth.LoginActivity;
+import org.codeforafrica.citizenreporterandroid.ui.auth.login.LoginActivity;
 
 public class OnboardingActivity extends AppIntro implements OnboardingActivityView {
   private SharedPreferences sharedPreferences;
@@ -21,14 +21,19 @@ public class OnboardingActivity extends AppIntro implements OnboardingActivityVi
     presenter = new OnboardingActivityPresenter(this);
     editor = sharedPreferences.edit();
     addSlide(
-        AppIntroFragment.newInstance("Welcome", "Description", R.drawable.cfa_transparent_blue_back,
-            getResources().getColor(R.color.cfAfrica_blue)));
+        AppIntroFragment.newInstance("View Current Assignments",
+            getString(R.string.assignments_description),
+            R.drawable.view_assignments,
+            getResources().getColor(R.color.white_trans)));
     addSlide(
-        AppIntroFragment.newInstance("Welcome", "Description", R.drawable.cfa_transparent_blue_back,
-            getResources().getColor(R.color.cfAfrica_blue)));
+        AppIntroFragment.newInstance("Capture Media and Upload your report", getString(R.string
+                .capture_media_desc), R.drawable
+                .fill_questionaire,
+            getResources().getColor(R.color.white_trans)));
     addSlide(
-        AppIntroFragment.newInstance("Welcome", "Description", R.drawable.cfa_transparent_blue_back,
-            getResources().getColor(R.color.cfAfrica_blue)));
+        AppIntroFragment.newInstance("Have your story published", "", R.drawable
+                .published_stories,
+            getResources().getColor(R.color.white_trans)));
   }
 
   @Override public void onSkipPressed(Fragment currentFragment) {

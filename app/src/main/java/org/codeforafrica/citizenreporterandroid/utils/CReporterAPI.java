@@ -19,18 +19,18 @@ import retrofit2.http.Path;
  */
 
 public interface CReporterAPI {
-  @GET("stories/user/{fb_id}/") Call<List<Story>> getUserStories(@Path("fb_id") String fb_id);
+  @GET("stories/user/{uid}/") Call<List<Story>> getUserStories(@Path("uid") String uid);
 
   @POST("users/register") Call<User> createUser(@Body User user);
 
   @FormUrlEncoded @PATCH("users/update/{fb_id}/") Call<ResponseBody> updateFCM(
-      @Path("fb_id") String fb_id, @Field("location") String fcm_token);
+      @Path("uid") String fb_id, @Field("location") String fcm_token);
 
-  @FormUrlEncoded @PATCH("users/update/{fb_id}/") Call<ResponseBody> updateLocation(
-      @Path("fb_id") String fb_id, @Field("location") String locationString);
+  @FormUrlEncoded @PATCH("users/update/{uid}/") Call<ResponseBody> updateLocation(
+      @Path("uid") String uid, @Field("location") String locationString);
 
   @POST("stories/") Call<Story> uploadStory(@Body Story story);
 
-  @GET("assignments") Call<List<Assignment>> getAssignments();
+  @GET("assignments/") Call<List<Assignment>> getAssignments();
 }
 

@@ -6,6 +6,7 @@ package org.codeforafrica.citizenreporterandroid.app;
 
 public class Constants {
   public static final String BASE_URL = "http://api.creporter.codeforafrica.org/api/";
+  //public static final String BASE_URL = "http://a865dfff.ngrok.io/api/";
 
   public static final String SHARED_PREF_FILENAME = "creporter_prefs";
 
@@ -29,6 +30,7 @@ public class Constants {
   public static final String KEY_UPLOADED = "uploaded";
   public static final String KEY_UPDATED = "updated";
   public static final String KEY_WHERE = "location";
+  public static final String ITEM_INDEX = "position";
 
   //Assignment table
   public static final String ASSIGNMENTS_TABLE_NAME = "assignments";
@@ -48,7 +50,7 @@ public class Constants {
   // shared preferences
 
   public static final String PREF_KEY_USER_LOGGED_IN_MODE = "PREF_KEY_USER_LOGGED_IN_MODE";
-  public static final String PREF_KEY_CURRENT_USER_FB_ID = "PREF_KEY_CURRENT_USER_FB_ID";
+  public static final String PREF_KEY_CURRENT_USER_UID = "PREF_KEY_CURRENT_USER_UID";
   public static final String PREF_KEY_CURRENT_USER_NAME = "PREF_KEY_CURRENT_USER_NAME";
   public static final String PREF_KEY_CURRENT_USER_PROFILE_PIC_URL
       = "PREF_KEY_CURRENT_USER_PROFILE_PIC_URL";
@@ -69,6 +71,8 @@ public class Constants {
 
   public static final String ACTION_EDIT_VIEW_STORY = "EDIT_VIEW_STORY";
   public static final String ACTION_NEW_STORY = "NEW_STORY";
+
+  public static final int CUSTOM_CAMERA_REQUEST_CODE = 9432;
 
   // mode constants
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item
+      android:id="@+id/upload"
+      android:orderInCategory="300"
+      android:title="Upload"
+      android:icon="@drawable/ic_upload_white_40"
+      app:showAsAction="ifRoom"></item>
+</menu>

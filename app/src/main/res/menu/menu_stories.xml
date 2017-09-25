@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.codeforafrica.citizenreporterandroid.main.MainActivity">
+    <item
+        android:id="@+id/undo_checkbox"
+        android:checkable="true"
+        android:checked="false"
+        android:title="Undo"
+        app:showAsAction="never"/>
+</menu>

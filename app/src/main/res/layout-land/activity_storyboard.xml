@@ -1,0 +1,155 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="2"
+    android:scrollbars="vertical"
+    android:fillViewport="true">
+
+  <android.support.constraint.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="fill_parent"
+      android:layout_weight="2"
+      android:orientation="vertical"
+      >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal" >
+
+      <LinearLayout
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:gravity="top"
+          android:padding="10dp"
+          android:layout_weight="1"
+          tools:layout_editor_absoluteY="8dp"
+          tools:layout_editor_absoluteX="0dp">
+
+        <EditText
+            android:id="@+id/story_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Title"
+            android:inputType="textPersonName"
+            android:layout_marginTop="10dp"
+            />
+
+        <EditText
+            android:id="@+id/story_who_is_involved"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Who is involved?"
+            android:layout_marginTop="10dp"
+            android:inputType="textPersonName"
+            />
+
+        <Button
+            android:id="@+id/storyboard_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_dark_button"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_navigation_24"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:text="Location"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <Button
+            android:id="@+id/storybaord_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_dark_button"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_calendar_24"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:textSize="12sp"
+            android:text="Date"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+      </LinearLayout>
+
+      <ScrollView
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          android:paddingEnd="10dp"
+          android:paddingStart="10dp"
+          >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+
+            <EditText
+                android:id="@+id/summary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="Provide a brief, precise summary of your story"
+                android:layout_weight="3"
+                android:backgroundTint="@android:color/transparent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:padding="30dp"
+                android:visibility="visible"
+                android:inputType="textMultiLine"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
+
+            <LinearLayout
+                android:id="@+id/attachmentsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+      </ScrollView>
+
+
+    </LinearLayout>
+
+
+  </android.support.constraint.ConstraintLayout>
+
+  <android.support.design.widget.BottomNavigationView
+      android:id="@+id/storybard_bottom_navigation"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:background="@color/colorPrimary"
+      app:itemBackground="@color/colorPrimary"
+      app:itemIconTint="#fff"
+      app:itemTextColor="#fff"
+      app:menu="@menu/storyboard_bottom_nav"
+      />
+</LinearLayout>
