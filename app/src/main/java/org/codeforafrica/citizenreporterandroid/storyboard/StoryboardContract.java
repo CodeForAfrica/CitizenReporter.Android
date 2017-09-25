@@ -20,9 +20,9 @@ public interface StoryboardContract {
     void showStoryNotFoundError(String message);
     void displayAttachments(List<ParseFile> files);
     void showImageAttachment(String name, String url);
-    void showVideoAttachment(String name);
-    void showAudioAttachment(String name);
-    void showUnknownAttachment(String name);
+    void showVideoAttachment(String name, String url);
+    void showAudioAttachment(String name, String url);
+    void showUnknownAttachment(String name, String url);
     void showLocationSearch();
     void updateStoryObject(ParseObject activeStory);
     void showDatePickerDialog();
@@ -43,9 +43,9 @@ public interface StoryboardContract {
     void getLocation();
     void getWhenItOccurred();
     void startRecorder();
-    void attachVideo(String name);
-    void attachUnknown(String name);
-    void attachAudio(String name);
+    void attachVideo(String name, String url);
+    void attachUnknown(String name, String url);
+    void attachAudio(String name, String url);
     void attachImage(String name, String url);
     void getPicturesFromGallery();
     void startCameraCapture();
