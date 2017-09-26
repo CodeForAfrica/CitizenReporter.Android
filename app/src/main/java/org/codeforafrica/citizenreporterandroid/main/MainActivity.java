@@ -8,14 +8,12 @@ import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -60,8 +57,6 @@ public class MainActivity extends BaseActivity {
     private TabLayout tabLayout;
 
 
-    @BindView(R.id.navigation)
-    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +65,7 @@ public class MainActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
+        prepareDataResource();
         // Initialise and Bind the ViewPager and Adapter containing the fragments
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -102,39 +98,9 @@ public class MainActivity extends BaseActivity {
             user.saveEventually();
         }
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment selectedFragment = null;
-                        switch (item.getItemId()) {
-                            case R.id.assignments_item:
-                                selectedFragment = AssignmentsFragment.newInstance();
-                                break;
-                            case R.id.stories_item:
-                                selectedFragment = StoriesFragment.newInstance();
-                                break;
-                            case R.id.settings_item:
-                                selectedFragment = SettingsFragment.newInstance();
-                                break;
-                        }
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_layout, selectedFragment);
-                        transaction.commit();
-                        return true;
-                    }
-                });
-
-        //Manually displaying the first fragment - one time only
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, AssignmentsFragment.newInstance());
-        transaction.commit();
-
         //Used to select an item programmatically
         //bottomNavigationView.getMenu().getItem(2).setChecked(true);
-        
-        prepareDataResource();
-        setTabIcons();
+
     }
 
 
@@ -150,13 +116,6 @@ public class MainActivity extends BaseActivity {
     private void addData(Fragment fragment, String title) {
         fragmentList.add(fragment);
         titleList.add(title);
-    }
-
-    private void setTabIcons() {
-
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_assignments_white_32);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_my_reports_white_32);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_settings_white_32);
     }
 
     private void getUserLocation() {
