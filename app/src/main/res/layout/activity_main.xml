@@ -94,7 +94,7 @@
 
   </android.support.design.widget.TabLayout>
 
-  <android.support.v4.view.ViewPager
+  <FrameLayout
       android:id="@+id/frame_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -103,15 +103,15 @@
       android:animateLayoutChanges="true"
       >
 
-    <!--<android.support.v4.view.ViewPager-->
-        <!--android:id="@+id/viewPager"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_above="@+id/navigation"-->
-        <!--android:layout_below="@+id/tabLayout"-->
-        <!--android:animateLayoutChanges="true"/>-->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/navigation"
+        android:layout_below="@+id/tabLayout"
+        android:animateLayoutChanges="true"/>
 
-  </android.support.v4.view.ViewPager>
+  </FrameLayout>
 
   <android.support.design.widget.BottomNavigationView
       android:id="@+id/navigation"
