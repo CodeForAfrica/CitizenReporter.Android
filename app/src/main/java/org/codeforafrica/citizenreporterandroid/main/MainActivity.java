@@ -138,13 +138,13 @@ public class MainActivity extends BaseActivity {
     }
 
 
-//    // Add Fragments and their titles to the ArrayList
-//    private void prepareDataResource() {
-//
-//        addData(new AssignmentsFragment(), "Assignments");
-//        addData(new StoriesFragment(), "Stories");
-//        addData(new SettingsFragment(), "Settings");
-//    }
+    // Add Fragments and their titles to the ArrayList
+    private void prepareDataResource() {
+
+        addData(new AssignmentsFragment(), "Assignments");
+        addData(new StoriesFragment(), "Stories");
+        addData(new SettingsFragment(), "Settings");
+    }
 
     // Method for adding Fragments and their titles to the ArrayList
     private void addData(Fragment fragment, String title) {
