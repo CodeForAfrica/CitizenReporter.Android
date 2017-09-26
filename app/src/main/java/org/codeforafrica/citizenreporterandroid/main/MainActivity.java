@@ -133,8 +133,8 @@ public class MainActivity extends BaseActivity {
         //Used to select an item programmatically
         //bottomNavigationView.getMenu().getItem(2).setChecked(true);
         
-//        prepareDataResource();
-//        setTabIcons();
+        prepareDataResource();
+        setTabIcons();
     }
 
 
@@ -152,12 +152,12 @@ public class MainActivity extends BaseActivity {
         titleList.add(title);
     }
 
-//    private void setTabIcons() {
-//
-//        tabLayout.getTabAt(0).setIcon(R.drawable.ic_assignments_white_32);
-//        tabLayout.getTabAt(1).setIcon(R.drawable.ic_my_reports_white_32);
-//        tabLayout.getTabAt(2).setIcon(R.drawable.ic_settings_white_32);
-//    }
+    private void setTabIcons() {
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_assignments_white_32);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_my_reports_white_32);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_settings_white_32);
+    }
 
     private void getUserLocation() {
         FusedLocationProviderClient mFusedLocationClient =
