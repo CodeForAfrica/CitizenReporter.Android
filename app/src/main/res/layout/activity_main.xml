@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,88 +7,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".main.MainActivity"
+    android:orientation="vertical"
     >
 
-  <android.support.design.widget.AppBarLayout
-      android:id="@+id/appbar"
+  <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="50dp"
-      android:theme="@style/AppTheme.AppBarOverlay"
+      android:background="?attr/colorPrimary"
+      app:layout_scrollFlags="scroll|enterAlways"
+      app:popupTheme="@style/AppTheme.PopupOverlay"
       >
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:layout_height="match_parent"
         >
 
-      <RelativeLayout
+      <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="match_parent"
+          android:orientation="horizontal"
           >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/app_icon_view"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            android:src="@mipmap/ic_creporter_launcher"
+            />
 
-          <android.support.v7.widget.AppCompatImageView
-              android:id="@+id/app_icon_view"
-              android:layout_width="32dp"
-              android:layout_height="32dp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginRight="8dp"
-              android:src="@mipmap/ic_creporter_launcher"
-              />
-
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_alignRight="@id/app_icon_view"
-              android:layout_gravity="center_vertical"
-              android:text="@string/app_name"
-              android:textColor="@color/accent_material_white"
-              android:textSize="18dp"
-              />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/app_icon_view"
+            android:layout_gravity="center_vertical"
+            android:text="@string/app_name"
+            android:textColor="@color/accent_material_white"
+            android:textSize="18dp"
+            />
 
-          <android.support.v7.widget.AppCompatImageView
-              android:id="@+id/about_icon_appbar"
-              android:layout_width="24dp"
-              android:layout_height="24dp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginRight="8dp"
-              android:src="@drawable/ic_about_icon_32"
+      </LinearLayout>
 
-              />
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_alignParentRight="true"
+          android:orientation="horizontal">
 
-        </LinearLayout>
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/about_icon_appbar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_about_icon_32"
+
+            />
+
+      </LinearLayout>
 
 
-      </RelativeLayout>
+    </RelativeLayout>
 
-    </android.support.v7.widget.Toolbar>
-
-  </android.support.design.widget.AppBarLayout>
+  </android.support.v7.widget.Toolbar>
 
   <android.support.design.widget.TabLayout
       android:id="@+id/tabLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="?attr/colorPrimary"
-      android:layout_above="@+id/frame_layout"
-      android:layout_below="@+id/appbar"
       app:tabGravity="fill"
       app:tabMode="fixed">
 
@@ -117,10 +107,9 @@
       android:id="@+id/navigation"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
       android:background="@color/colorPrimary"
       app:itemIconTint="#fff"
       app:itemTextColor="#fff"
       app:menu="@menu/bottom_navigation_main"
       />
-</RelativeLayout>
+</LinearLayout>
