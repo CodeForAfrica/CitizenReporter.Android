@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity {
         viewPager.setAdapter(fragmentsAdapter);
 
         // Bind TabLayout with the View Pager
-//        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
 
         Intent intent = getIntent();
         String from_storyboard = intent.getStringExtra("Source");
