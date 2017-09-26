@@ -81,7 +81,7 @@
       android:background="?attr/colorPrimary"
       app:tabGravity="fill"
       app:tabMode="fixed"
-      app:tabTextColor="@color/dark_gray"
+      app:tabTextColor="@color/separator_gray"
       app:tabIndicatorColor="@color/accent_material_white"
       app:tabSelectedTextColor="@color/accent_material_white">
 
