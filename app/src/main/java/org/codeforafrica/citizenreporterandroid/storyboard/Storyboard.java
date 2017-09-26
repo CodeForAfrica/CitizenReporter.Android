@@ -5,15 +5,19 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -59,7 +64,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.io.FileUtils;
 
 import org.codeforafrica.citizenreporterandroid.BuildConfig;
@@ -231,6 +239,7 @@ public class Storyboard extends AppCompatActivity
 
               byte[] audio_data = FileUtils.readFileToByteArray(f);
               final ParseFile file = new ParseFile(f.getName(), audio_data);
+
               presenter.attachAudio(file.getName(), f.getAbsolutePath());
               file.saveInBackground(new SaveCallback() {
                 @Override public void done(ParseException e) {
@@ -443,10 +452,12 @@ public class Storyboard extends AppCompatActivity
     View view = inflater.inflate(R.layout.item_audio, null);
     TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
     TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
+    final TextView audioTime = (TextView) view.findViewById(R.id.audio_time);
 
     File file = new File(uri);
     long size  = (file.length())/1024;
     String size_label = size + " KB";
+
 
     if (size>1000){
       double sizeMb = (size * (.001));
@@ -457,7 +468,71 @@ public class Storyboard extends AppCompatActivity
     filename.setText(name);
     fileSize.setText(size_label);
 
+    final MediaPlayer mediaPlayer = MediaPlayer.create(this, Uri.parse(audio_path));
+    final SeekBar seekbar = (SeekBar)view.findViewById(R.id.audio_progress_bar);
+    int audioDuration = mediaPlayer.getDuration();
+    seekbar.setMax(audioDuration);
+    final Handler myHandler = new Handler();
+    seekbar.setProgress(0);
+    myHandler.postDelayed(new Runnable() {
+      public void run() {
+        double startTime = mediaPlayer.getCurrentPosition();
+        audioTime.setText(String.format(Locale.ROOT, "%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                toMinutes((long) startTime)))
+        );
+        seekbar.setProgress((int)startTime);
+        myHandler.postDelayed(this, 100);
+      }
+    },100);
 
+    final ImageView playPause = (ImageView)view.findViewById(R.id.audio_play_pause);
+    playPause.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        if(mediaPlayer.isPlaying()){
+          mediaPlayer.pause();
+          playPause.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
+                  R.drawable.ic_icons8_play_filled_100, null));
+        }
+        else {
+          mediaPlayer.start();
+          playPause.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
+                  R.drawable.ic_icons8_pause_104, null));
+        }
+      }
+    });
+
+    seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+      @Override
+      public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if(fromUser){
+          seekbar.setProgress(progress);
+          mediaPlayer.seekTo(progress * 1000);
+        }
+
+      }
+
+      @Override
+      public void onStartTrackingTouch(SeekBar seekBar) {
+
+      }
+
+      @Override
+      public void onStopTrackingTouch(SeekBar seekBar) {
+
+      }
+    });
+
+    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+      @Override
+      public void onCompletion(MediaPlayer mediaPlayer) {
+        playPause.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
+                R.drawable.ic_icons8_play_filled_100, null));
+      }
+    });
     attachmentsLayout.addView(view);
   }
 

@@ -2,6 +2,8 @@ package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+
+import java.io.File;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;

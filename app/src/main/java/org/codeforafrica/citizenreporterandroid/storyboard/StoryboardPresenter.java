@@ -8,6 +8,8 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+
+import java.io.File;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.storyboard.StoryboardContract.Presenter;
 import org.json.JSONArray;
@@ -147,7 +149,6 @@ public class StoryboardPresenter implements Presenter {
 
   @Override public void attachAudio(String name, String url) {
     view.showAudioAttachment(name, url);
-  }
 
   @Override public void attachImage(String name, String url) {
     view.showImageAttachment(name, url);
