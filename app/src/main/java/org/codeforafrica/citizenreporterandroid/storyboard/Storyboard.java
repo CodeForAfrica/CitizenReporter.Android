@@ -3,14 +3,17 @@ package org.codeforafrica.citizenreporterandroid.storyboard;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -75,6 +78,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.ui.video.VideoViewActivity;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
@@ -283,6 +287,7 @@ public class Storyboard extends AppCompatActivity
             }
 
           } else if (data.getStringExtra("videoPath") != null) {
+            String path = data.getStringExtra("videoPath");
             File videoFile = new File(data.getStringExtra("videoPath"));
             try {
               byte[] video_data = FileUtils.readFileToByteArray(videoFile);
@@ -437,7 +442,25 @@ public class Storyboard extends AppCompatActivity
     View view = inflater.inflate(R.layout.item_video, null);
     TextView fileName = (TextView) view.findViewById(R.id.video_filename_tv);
     TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
-
+    ImageView play_video_icon = (ImageView) view.findViewById(R.id.play_video_icon);
+    ImageView videoThumbnail = (ImageView) view.findViewById(R.id.video_thumbnail);
+    final String path = uri;
+    final String videoFilename = name;
+    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
+    final int videoHeight = thumb.getHeight();
+    final int videoWidth = thumb.getWidth();
+    videoThumbnail.setImageBitmap(thumb);
+    play_video_icon.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(Storyboard.this, VideoViewActivity.class);
+        intent.putExtra("videoUrl", path);
+        intent.putExtra("videoHeight", videoHeight);
+        intent.putExtra("videoWidth", videoWidth);
+        intent.putExtra("videoFilename", videoFilename);
+        startActivity(intent);
+      }
+    });
 
     File file = new File(uri);
     long size  = file.length();
@@ -652,7 +675,7 @@ public class Storyboard extends AppCompatActivity
 
   @Override public void finishUploading() {
     onBackPressed();
-    //Intent intent = new Intent(Storyboard.this, MainActivity.class);
+    //Intent intent = new Intent(Storyboard.this, VideoViewActivity.class);
     //intent.putExtra("Source", "uploaded");
     //startActivity(intent);
     //finish();
@@ -723,6 +746,16 @@ public class Storyboard extends AppCompatActivity
             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
             .into(expandedImageView);
     dialog.show();
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Bundle savedState) {
+    super.onRestoreInstanceState(savedState);
   }
 
 }
