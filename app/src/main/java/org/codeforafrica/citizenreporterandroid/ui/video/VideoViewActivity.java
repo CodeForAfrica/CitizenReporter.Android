@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.universalvideoview.UniversalMediaController;
 import com.universalvideoview.UniversalVideoView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import org.codeforafrica.citizenreporterandroid.R;
 
@@ -18,9 +20,13 @@ public class VideoViewActivity extends AppCompatActivity implements UniversalVid
     private static final String SEEK_POSITION_KEY = "SEEK_POSITION_KEY";
     private static String VIDEO_URL;
 
+    @BindView(R.id.videoView)
     UniversalVideoView mVideoView;
+
+    @BindView(R.id.media_controller)
     UniversalMediaController mMediaController;
 
+    @BindView(R.id.video_layout)
     View mVideoLayout;
 
     private int mSeekPosition;
@@ -30,14 +36,11 @@ public class VideoViewActivity extends AppCompatActivity implements UniversalVid
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_view);
+        ButterKnife.bind(this);
 
         String videoUrl = getIntent().getExtras().getString("videoUrl");
         String videoFilename = getIntent().getExtras().getString("videoFilename");
         VIDEO_URL = videoUrl;
-
-        mVideoLayout = findViewById(R.id.video_layout);
-        mVideoView = (UniversalVideoView) findViewById(R.id.videoView);
-        mMediaController = (UniversalMediaController) findViewById(R.id.media_controller);
         mVideoView.setMediaController(mMediaController);
         setVideoAreaSize();
         mVideoView.setVideoViewCallback(this);
