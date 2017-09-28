@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -28,7 +26,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,7 +53,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.squareup.picasso.Picasso;
+
 import gun0912.tedbottompicker.TedBottomPicker;
 import java.io.File;
 import java.io.IOException;
@@ -67,9 +64,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 
@@ -78,6 +73,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+import org.codeforafrica.citizenreporterandroid.ui.stories.AudioProgressUpdateThread;
 import org.codeforafrica.citizenreporterandroid.ui.video.VideoViewActivity;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
@@ -85,7 +81,6 @@ import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import static org.codeforafrica.citizenreporterandroid.utils.TimeUtils.formatDate;
 import static org.codeforafrica.citizenreporterandroid.utils.TimeUtils.getShortDateFormat;
 
 public class Storyboard extends AppCompatActivity
@@ -496,20 +491,8 @@ public class Storyboard extends AppCompatActivity
     int audioDuration = mediaPlayer.getDuration();
     seekbar.setMax(audioDuration);
     final Handler myHandler = new Handler();
-    seekbar.setProgress(0);
-    myHandler.postDelayed(new Runnable() {
-      public void run() {
-        double startTime = mediaPlayer.getCurrentPosition();
-        audioTime.setText(String.format(Locale.ROOT, "%02d:%02d",
-                TimeUnit.MILLISECONDS.toMinutes((long) startTime),
-                TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
-                                toMinutes((long) startTime)))
-        );
-        seekbar.setProgress((int)startTime);
-        myHandler.postDelayed(this, 100);
-      }
-    },100);
+    final AudioProgressUpdateThread runnable = new AudioProgressUpdateThread(mediaPlayer, myHandler, audioTime, seekbar);
+    myHandler.postDelayed(runnable, 100);
 
     final ImageView playPause = (ImageView)view.findViewById(R.id.audio_play_pause);
     playPause.setOnClickListener(new View.OnClickListener() {
@@ -532,19 +515,25 @@ public class Storyboard extends AppCompatActivity
       @Override
       public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if(fromUser){
-          seekbar.setProgress(progress);
-          mediaPlayer.seekTo(progress * 1000);
+
         }
 
       }
 
       @Override
       public void onStartTrackingTouch(SeekBar seekBar) {
+        myHandler.removeCallbacks(runnable);
 
       }
 
       @Override
       public void onStopTrackingTouch(SeekBar seekBar) {
+        myHandler.removeCallbacks(runnable);
+        int seekBarPosition = seekBar.getProgress();
+
+        // forward or backward to certain seconds
+        mediaPlayer.seekTo(seekBarPosition);
+        myHandler.postDelayed(runnable, 100);
 
       }
     });
