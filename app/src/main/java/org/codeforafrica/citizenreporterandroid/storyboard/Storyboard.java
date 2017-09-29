@@ -547,7 +547,7 @@ public class Storyboard extends AppCompatActivity
     filename.setText(name);
     fileSize.setText(size_label);
 
-    final MediaPlayer mediaPlayer = MediaPlayer.create(this, Uri.parse(audio_path));
+    final MediaPlayer mediaPlayer = MediaPlayer.create(this, Uri.parse(uri));
     final SeekBar seekbar = (SeekBar)view.findViewById(R.id.audio_progress_bar);
     int audioDuration = mediaPlayer.getDuration();
     seekbar.setMax(audioDuration);
