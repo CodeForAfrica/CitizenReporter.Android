@@ -140,6 +140,7 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void attachVideo(String name, String url) {
+    view.addToVideoAttachments(name, url);
     view.showVideoAttachment(name, url);
   }
 
@@ -148,9 +149,12 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void attachAudio(String name, String url) {
+    view.addToAudioAttachments(name, url);
     view.showAudioAttachment(name, url);
+  }
 
   @Override public void attachImage(String name, String url) {
+    view.addToImageAttachments(name, url);
     view.showImageAttachment(name, url);
   }
 

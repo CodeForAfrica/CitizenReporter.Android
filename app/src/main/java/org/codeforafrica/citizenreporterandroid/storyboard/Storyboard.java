@@ -63,8 +63,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.io.FileUtils;
 
@@ -72,6 +74,7 @@ import org.codeforafrica.citizenreporterandroid.BuildConfig;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
+import org.codeforafrica.citizenreporterandroid.data.models.Attachment;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.ui.stories.AudioProgressUpdateThread;
 import org.codeforafrica.citizenreporterandroid.ui.video.VideoViewActivity;
@@ -87,6 +90,12 @@ public class Storyboard extends AppCompatActivity
     implements StoryboardContract.View, DatePickerDialog.OnDateSetListener {
 
   private static final String TAG = Storyboard.class.getSimpleName();
+  private static final String LOCATION_KEY = "LOCATION_KEY";
+  private static final String DATE_KEY = "DATE_KEY";
+  private static final String IMAGE_ATTACHMENTS_KEY = "IMAGE_ATTACHMENTS_KEY";
+  private static final String VIDEO_ATTACHMENTS_KEY = "VIDEO_ATTACHMENTS_KEY";
+  private static final String AUDIO_ATTACHMENTS_KEY = "AUDIO_ATTACHMENTS_KEY";
+
   StoryboardContract.Presenter presenter;
   ParseObject activeStory;
   LayoutInflater inflater;
@@ -98,6 +107,12 @@ public class Storyboard extends AppCompatActivity
           calendar.get(Calendar.DAY_OF_MONTH));
 
   private String selectedImage;
+
+  private String cachedLocation;
+  private String cachedDate;
+  private CopyOnWriteArrayList<Attachment> imageAttachments = new CopyOnWriteArrayList<>();
+  private CopyOnWriteArrayList<Attachment> audioAttachments = new CopyOnWriteArrayList<>();
+  private CopyOnWriteArrayList<Attachment> videoAttachments = new CopyOnWriteArrayList<>();
 
   @BindView(R.id.attachmentsLayout) LinearLayout attachmentsLayout;
 
@@ -124,6 +139,46 @@ public class Storyboard extends AppCompatActivity
     presenter = new StoryboardPresenter(this);
 
     inflater = LayoutInflater.from(Storyboard.this);
+
+    // If we have a saved state then we can restore it now
+    if (savedInstanceState != null) {
+      cachedLocation = savedInstanceState.getString(LOCATION_KEY);
+      cachedDate = savedInstanceState.getString(DATE_KEY);
+      location_btn.setText(cachedLocation);
+      date.setText(cachedDate);
+
+      imageAttachments = (CopyOnWriteArrayList<Attachment>) savedInstanceState.getSerializable(IMAGE_ATTACHMENTS_KEY);
+      Iterator<Attachment> imageIterator = imageAttachments.iterator();
+      while (imageIterator.hasNext()) {
+        Attachment imageAttachment = imageIterator.next();
+        showImageAttachment(imageAttachment.getName(), imageAttachment.getUrl());
+//        System.out.println(iterator.next());
+      }
+//      for(Attachment imageAttachment: imageAttachments) {
+//        showImageAttachment(imageAttachment.getName(), imageAttachment.getUrl());
+//      }
+
+      audioAttachments = (CopyOnWriteArrayList<Attachment>) savedInstanceState.getSerializable(AUDIO_ATTACHMENTS_KEY);
+      Iterator<Attachment> audioIterator = audioAttachments.iterator();
+      while (audioIterator.hasNext()) {
+        Attachment audioAttachment = audioIterator.next();
+        showAudioAttachment(audioAttachment.getName(), audioAttachment.getUrl());
+      }
+//      for(Attachment audioAttachment: audioAttachments) {
+//        showImageAttachment(audioAttachment.getName(), audioAttachment.getUrl());
+//      }
+
+      videoAttachments = (CopyOnWriteArrayList<Attachment>) savedInstanceState.getSerializable(VIDEO_ATTACHMENTS_KEY);
+      Iterator<Attachment> videoIterator = imageAttachments.iterator();
+      while (videoIterator.hasNext()) {
+        Attachment videoAttachment = videoIterator.next();
+        showVideoAttachment(videoAttachment.getName(), videoAttachment.getUrl());
+      }
+//      for(Attachment videoAttachment: videoAttachments) {
+//        showImageAttachment(videoAttachment.getName(), videoAttachment.getUrl());
+//      }
+    }
+
     String action = getIntent().getAction();
     if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
       String storyID = getIntent().getStringExtra("STORY_ID");
@@ -215,10 +270,11 @@ public class Storyboard extends AppCompatActivity
         if (resultCode == RESULT_OK) {
           Place place = PlaceAutocomplete.getPlace(this, data);
           // TODO check out LatLong Object
+          cachedLocation = place.getName().toString();
           location_btn.setText(place.getName());
 
-          // add location to current story
-          activeStory.put("location", place.getName());
+          // add cachedLocation to current story
+          activeStory.put("cachedLocation", place.getName());
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
           Status status = PlaceAutocomplete.getStatus(this, data);
           Toast.makeText(this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
@@ -330,7 +386,7 @@ public class Storyboard extends AppCompatActivity
     String whoIsInvolved = story.getString("who") != null ? story.getString("who") : "";
     boolean uploaded = story.getBoolean("uploaded");
     Date whenItOccurred = story.getDate("when");
-    String loc = story.getString("location") != null ? story.getString("location") : "";
+    String loc = story.getString("cachedLocation") != null ? story.getString("cachedLocation") : "";
     activeStory.put("source_app", getString(R.string.app_name));
     media = story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
     Log.d(TAG, "loadSavedReport: media" + media.length());
@@ -408,6 +464,21 @@ public class Storyboard extends AppCompatActivity
   @Override public void displayAttachments(List<ParseFile> files) {
     // get list of files pass them to the attachments adapter
 
+  }
+
+  @Override public void addToImageAttachments(String name, String url) {
+    // Add to cached image attachments
+    imageAttachments.add(new Attachment(name, url));
+  }
+
+  @Override public void addToAudioAttachments(String name, String url) {
+    // Add to cached audio attachments
+    audioAttachments.add(new Attachment(name, url));
+  }
+
+  @Override public void addToVideoAttachments(String name, String url) {
+    // Add to cached video attachments
+    videoAttachments.add(new Attachment(name, url));
   }
 
   @Override public void showImageAttachment(String name, String url) {
@@ -698,6 +769,7 @@ public class Storyboard extends AppCompatActivity
     newCalendar.set(year, monthOfYear, dayOfMonth);
     activeStory.put("when", newCalendar.getTime());
     date.setText(getShortDateFormat(newCalendar.getTime()));
+    cachedDate = getShortDateFormat(newCalendar.getTime());
   }
 
   public static void disableShiftMode(BottomNavigationView view) {
@@ -740,6 +812,11 @@ public class Storyboard extends AppCompatActivity
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
+    outState.putString(LOCATION_KEY, cachedLocation);
+    outState.putString(DATE_KEY, cachedDate);
+    outState.putSerializable(IMAGE_ATTACHMENTS_KEY, imageAttachments);
+    outState.putSerializable(VIDEO_ATTACHMENTS_KEY, videoAttachments);
+    outState.putSerializable(AUDIO_ATTACHMENTS_KEY, audioAttachments);
   }
 
   @Override
