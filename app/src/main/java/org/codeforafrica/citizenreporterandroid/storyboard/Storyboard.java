@@ -152,11 +152,7 @@ public class Storyboard extends AppCompatActivity
       while (imageIterator.hasNext()) {
         Attachment imageAttachment = imageIterator.next();
         showImageAttachment(imageAttachment.getName(), imageAttachment.getUrl());
-//        System.out.println(iterator.next());
       }
-//      for(Attachment imageAttachment: imageAttachments) {
-//        showImageAttachment(imageAttachment.getName(), imageAttachment.getUrl());
-//      }
 
       audioAttachments = (CopyOnWriteArrayList<Attachment>) savedInstanceState.getSerializable(AUDIO_ATTACHMENTS_KEY);
       Iterator<Attachment> audioIterator = audioAttachments.iterator();
@@ -164,19 +160,13 @@ public class Storyboard extends AppCompatActivity
         Attachment audioAttachment = audioIterator.next();
         showAudioAttachment(audioAttachment.getName(), audioAttachment.getUrl());
       }
-//      for(Attachment audioAttachment: audioAttachments) {
-//        showImageAttachment(audioAttachment.getName(), audioAttachment.getUrl());
-//      }
 
       videoAttachments = (CopyOnWriteArrayList<Attachment>) savedInstanceState.getSerializable(VIDEO_ATTACHMENTS_KEY);
-      Iterator<Attachment> videoIterator = imageAttachments.iterator();
+      Iterator<Attachment> videoIterator = videoAttachments.iterator();
       while (videoIterator.hasNext()) {
         Attachment videoAttachment = videoIterator.next();
         showVideoAttachment(videoAttachment.getName(), videoAttachment.getUrl());
       }
-//      for(Attachment videoAttachment: videoAttachments) {
-//        showImageAttachment(videoAttachment.getName(), videoAttachment.getUrl());
-//      }
     }
 
     String action = getIntent().getAction();
