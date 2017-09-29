@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -63,6 +65,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -503,6 +506,13 @@ public class Storyboard extends AppCompatActivity
     final String path = uri;
     final String videoFilename = name;
     Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
+    if (path.startsWith("http")) {
+      try {
+        thumb = this.retriveVideoFrameFromVideo(path);
+      } catch (Throwable e){
+
+      }
+    }
     final int videoHeight = thumb.getHeight();
     final int videoWidth = thumb.getWidth();
     videoThumbnail.setImageBitmap(thumb);

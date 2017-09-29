@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.universalvideoview.UniversalMediaController;
 import com.universalvideoview.UniversalVideoView;
@@ -37,6 +39,16 @@ public class VideoViewActivity extends AppCompatActivity implements UniversalVid
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_view);
         ButterKnife.bind(this);
+
+        // Override chinese error message in library
+        ViewGroup errorLayout = (ViewGroup) mMediaController.findViewById(R.id.error_layout);
+        TextView errorTextView = (TextView)errorLayout.findViewById(R.id.error_text);
+        errorTextView.setText("Sorry, an error occurred! Check your internet connection and try again");
+
+        // Override chinese loading message in library
+        ViewGroup loadingLayout = (ViewGroup) mMediaController.findViewById(R.id.loading_layout);
+        TextView loadingTextView = (TextView)loadingLayout.findViewById(R.id.loading_text);
+        loadingTextView.setText("Loading...");
 
         String videoUrl = getIntent().getExtras().getString("videoUrl");
         String videoFilename = getIntent().getExtras().getString("videoFilename");
