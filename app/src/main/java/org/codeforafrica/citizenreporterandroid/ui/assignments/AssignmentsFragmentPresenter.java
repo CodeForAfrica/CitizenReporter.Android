@@ -35,7 +35,7 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
     query.findInBackground(new FindCallback<ParseObject>() {
       @Override public void done(List<ParseObject> objects, ParseException e) {
         List<Assignment> assignments = parseListAssignments(objects);
-        Log.d("Parse", "done: " + assignments.size());
+        Log.d("Assignments", "done: " + assignments.size());
         checkNumberOfAssignments(assignments);
       }
     });

@@ -44,6 +44,7 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
 
   private void checkNumberOfStories(List<ParseObject> storyList) {
     if (storyList != null && storyList.size() > 0) {
+      view.hideErrorLayout();
       view.displayStories(storyList);
     } else {
       view.displayNoStories();
