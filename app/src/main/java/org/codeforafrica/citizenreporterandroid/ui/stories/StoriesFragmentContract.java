@@ -15,6 +15,7 @@ public interface StoriesFragmentContract {
     void displayStories(List<ParseObject> stories);
     void displayNoStories();
     void swipeToDelete();
+    void hideErrorLayout();
   };
   interface Presenter{
     void loadStories();
