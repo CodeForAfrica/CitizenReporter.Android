@@ -173,38 +173,7 @@ public class StoryboardPresenter implements Presenter {
       view.showUnknownAttachment(remoteName);
     }
   }
-
-
-  @Override public void loadAllAttachments(JSONArray attachments) throws JSONException {
-    for (int i = 0; i < attachments.length(); i++) {
-      JSONObject object = attachments.getJSONObject(i);
-      String name = object.getString("name");
-      String url = object.getString("url");
-      Log.i(TAG, "loadAllAttachments: " + object.getString("name") + " " + object.getString("url"));
-      if (name.endsWith("wav")) {
-        view.showAudioAttachment(name, url);
-      } else if (name.endsWith("jpg") || name.endsWith("jpeg") || name.endsWith("png")) {
-        view.showImageAttachment(name, object.getString("url"));
-
-      } else if (name.endsWith("mp4")) {
-        view.showVideoAttachment(name, url);
-      } else {
-        view.showUnknownAttachment(name, url);
-      }
-
-    }
-    // get parse files
-
-    // if file name ends in jpg or png or gif
-    // view.showImageAttachment(file);
-
-    // if file is video
-    // view.showVideoAttachment(file);
-
-    // if file is audio
-    // view.showAudioAttachment(file)
-  }
-
+  
   @Override public void getLocation() {
     view.showLocationSearch();
   }

@@ -49,7 +49,6 @@ public interface StoryboardContract {
     void createAndUploadParseMediaFile(ParseObject activeStory, String localURL, ParseFile file);
     void saveStory(ParseObject object);
     void uploadStory(ParseObject story);
-    void loadAllAttachments(JSONArray attachments) throws JSONException;
     void loadAttachment(String localURL, String remoteName, String remoteUrl);
     void getLocation();
     void getWhenItOccurred();
