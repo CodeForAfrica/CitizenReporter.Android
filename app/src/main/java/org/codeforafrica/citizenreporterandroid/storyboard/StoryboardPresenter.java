@@ -67,7 +67,32 @@ public class StoryboardPresenter implements Presenter {
         Log.d(TAG, "done: got");
         if (e == null && objects.size() > 0) {
           Log.d(TAG, "done: Loading saved report");
-          view.loadSavedAttachments(objects);
+
+          for (ParseObject mediaFile:  objects){
+            ParseFile file = (ParseFile)mediaFile.get("remoteFile");
+            final String localURL = mediaFile.getString("localUrl");
+            final String name = file.getName();
+            final String url = file.getUrl();
+            loadAttachment(localURL, name, url);
+            mediaFile.fetchInBackground(new GetCallback<ParseObject>() {
+              public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                  String _localURL = object.getString("localUrl");
+                  ParseFile file = (ParseFile)object.get("remoteFile");
+                  if (file != null) {
+                    String _url = file.getUrl();
+                    String _name = file.getName();
+                    if (!_name.equals(name) || !_url.equals(url) || !_localURL.equals(localURL)) {
+                      loadAttachment(_localURL, _url, _name);
+                    }
+                  }
+                } else {
+                  Log.e(TAG, "loadSavedAttachment", e.fillInStackTrace());
+                }
+              }
+            });
+
+          }
         } else {
           // something went wrong
           Log.d(TAG, "new Error: " + e);

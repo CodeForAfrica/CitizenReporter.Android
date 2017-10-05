@@ -19,7 +19,6 @@ public interface StoryboardContract {
     void hideLoading();
     void showUploadingProgress();
     void loadSavedReport(ParseObject story);
-    void loadSavedAttachments(List<ParseObject> mediaFiles);
     void loadNewReport(String assignmentID);
     void showStoryNotFoundError(String message);
     void displayAttachments(List<ParseFile> files);

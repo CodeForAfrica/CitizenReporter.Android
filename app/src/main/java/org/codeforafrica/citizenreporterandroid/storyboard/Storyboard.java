@@ -50,6 +50,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -377,26 +378,6 @@ public class Storyboard extends AppCompatActivity
 
   @Override public void showUploadingProgress() {
 
-  }
-
-  @Override public void loadSavedAttachments(List<ParseObject> mediaFiles) {
-    for (ParseObject mediaFile:  mediaFiles){
-      mediaFile.fetchInBackground(new GetCallback<ParseObject>() {
-        public void done(ParseObject object, ParseException e) {
-          if (e == null) {
-            String localURL = object.getString("localUrl");
-            ParseFile file = (ParseFile)object.get("remoteFile");
-            if (file != null) {
-              String url = file.getUrl();
-              String name = file.getName();
-              presenter.loadAttachment(localURL, name, url);
-            }
-          } else {
-            Log.e(TAG, "loadSavedAttachment", e.fillInStackTrace());
-          }
-        }
-      });
-    }
   }
 
   @Override public void loadSavedReport(ParseObject story) {
