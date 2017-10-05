@@ -50,9 +50,11 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -282,7 +284,7 @@ public class Storyboard extends AppCompatActivity
         if (resultCode == RESULT_OK) {
           if (audio_path != null) {
             File f = new File(audio_path);
-
+            final String localURL = audio_path;
             try {
 
               byte[] audio_data = FileUtils.readFileToByteArray(f);
@@ -293,6 +295,8 @@ public class Storyboard extends AppCompatActivity
                 @Override public void done(ParseException e) {
                   if (e == null) {
                     Log.i(TAG, "done: uploading file");
+                    presenter.createAndUploadParseMediaFile(activeStory, localURL, file);
+                    media.put(file);
                     Log.i(TAG, "onActivityResult URL: " + file.getUrl());
                   } else {
                     Log.d(TAG, "Error: " + e.getLocalizedMessage());
@@ -313,13 +317,15 @@ public class Storyboard extends AppCompatActivity
       case Constants.CUSTOM_CAMERA_REQUEST_CODE:
         if (resultCode == RESULT_OK) {
           if (data.getStringExtra("imagePath") != null) {
-            File imageFile = new File(data.getStringExtra("imagePath"));
+            final String localURL = data.getStringExtra("imagePath");
+            File imageFile = new File(localURL);
             try {
               byte[] imageData = FileUtils.readFileToByteArray(imageFile);
               final ParseFile imageParseFile = new ParseFile(imageFile.getName(), imageData);
               imageParseFile.saveInBackground(new SaveCallback() {
                 @Override public void done(ParseException e) {
                   if (e == null) {
+                    presenter.createAndUploadParseMediaFile(activeStory, localURL, imageParseFile);
                     presenter.attachImage(imageParseFile.getName(), imageParseFile.getUrl());
                     media.put(imageParseFile);
                     Log.i(TAG, "onActivityResult URL: image " + imageParseFile.getUrl());
@@ -331,7 +337,7 @@ public class Storyboard extends AppCompatActivity
             }
 
           } else if (data.getStringExtra("videoPath") != null) {
-            String path = data.getStringExtra("videoPath");
+            final String localURL = data.getStringExtra("videoPath");
             File videoFile = new File(data.getStringExtra("videoPath"));
             try {
               byte[] video_data = FileUtils.readFileToByteArray(videoFile);
@@ -341,6 +347,7 @@ public class Storyboard extends AppCompatActivity
                 @Override public void done(ParseException e) {
                   if (e == null) {
                     Log.i(TAG, "done: uploading video file");
+                    presenter.createAndUploadParseMediaFile(activeStory, localURL, file);
                     media.put(file);
                     Log.i(TAG, "onActivityResult video URL: " + file.getUrl());
                   } else {
@@ -370,6 +377,26 @@ public class Storyboard extends AppCompatActivity
 
   @Override public void showUploadingProgress() {
 
+  }
+
+  @Override public void loadSavedAttachments(List<ParseObject> mediaFiles) {
+    for (ParseObject mediaFile:  mediaFiles){
+      mediaFile.fetchInBackground(new GetCallback<ParseObject>() {
+        public void done(ParseObject object, ParseException e) {
+          if (e == null) {
+            String localURL = object.getString("localUrl");
+            ParseFile file = (ParseFile)object.get("remoteFile");
+            if (file != null) {
+              String url = file.getUrl();
+              String name = file.getName();
+              presenter.loadAttachment(localURL, name, url);
+            }
+          } else {
+            Log.e(TAG, "loadSavedAttachment", e.fillInStackTrace());
+          }
+        }
+      });
+    }
   }
 
   @Override public void loadSavedReport(ParseObject story) {
@@ -408,11 +435,6 @@ public class Storyboard extends AppCompatActivity
     date.setText(whenItOccurred == null ? "Date" : getShortDateFormat(whenItOccurred));
     location_btn.setText(loc);
 
-    try {
-      presenter.loadAllAttachments(media);
-    } catch (JSONException e) {
-      Log.e(TAG, "loadSavedReport: JSON Array media", e.fillInStackTrace());
-    }
   }
 
   @Override public void loadNewReport(String assignmentID) {
@@ -704,13 +726,15 @@ public class Storyboard extends AppCompatActivity
                 for (Uri uri : uriList) {
                   Log.d("IMAGE SELECTOR",
                       "onImagesSelected: " + MediaUtils.getPathFromUri(Storyboard.this, uri));
-                  File imageFile = new File(uri.getPath());
+                  final String localURL = uri.getPath();
+                  File imageFile = new File(localURL);
                   try {
                     byte[] imageData = FileUtils.readFileToByteArray(imageFile);
                     final ParseFile imageParseFile = new ParseFile(imageFile.getName(), imageData);
                     imageParseFile.saveInBackground(new SaveCallback() {
                       @Override public void done(ParseException e) {
                         if (e == null) {
+                          presenter.createAndUploadParseMediaFile(activeStory, localURL, imageParseFile);
                           presenter.attachImage(imageParseFile.getName(), imageParseFile.getUrl());
                           media.put(imageParseFile);
                           Log.i(TAG, "onActivityResult URL: " + imageParseFile.getUrl());
