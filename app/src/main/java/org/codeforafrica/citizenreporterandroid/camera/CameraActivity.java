@@ -1275,6 +1275,7 @@ public class CameraActivity extends AppCompatActivity
 		resultIntent.putExtra(VIDEO_SAVED_PATH, videoFileName);
 		setResult(Activity.RESULT_OK, resultIntent);
 		Log.d(TAG, "Success: " + videoFileName);
+		CameraActivity.super.finish();
 	}
 
 	private void hideSceneIcons() {
