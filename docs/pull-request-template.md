@@ -2,10 +2,8 @@
 **READY/ IN DEVELOPMENT/ HOLD**
 
 ## Story ID
-The unique identifier of the story/stories worked upon as shown on pivotal tracker.
+The unique identifier of the story/stories worked upon as shown on trello.
 
-## Added Migrations
-YES | NO
 
 ## Description
 A few sentences describing the overall goals or tasks of the pull request's commits.
@@ -30,7 +28,7 @@ other_pr_master | [link]()
 
 
 ## Deploy Notes
-Notes about how to deploy this work. For example, running a migration against the production DB, etc..
+Notes about how to deploy this work.
 
 ## Steps to Test or Reproduce
 Outline the steps to test or reproduce the PR here.
@@ -45,3 +43,4 @@ List general components of the application that this PR will affect:
 * component 1
 
 ## Known Issues
+* Some known issues or bugs
