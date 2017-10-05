@@ -4,6 +4,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +19,7 @@ public interface StoryboardContract {
     void hideLoading();
     void showUploadingProgress();
     void loadSavedReport(ParseObject story);
+    void loadSavedAttachments(List<ParseObject> mediaFiles);
     void loadNewReport(String assignmentID);
     void showStoryNotFoundError(String message);
     void displayAttachments(List<ParseFile> files);
@@ -45,9 +47,11 @@ public interface StoryboardContract {
   interface Presenter {
     void openSavedStory(String storyID);
     void createNewStory(String assignmentID);
+    void createAndUploadParseMediaFile(ParseObject activeStory, String localURL, ParseFile file);
     void saveStory(ParseObject object);
     void uploadStory(ParseObject story);
     void loadAllAttachments(JSONArray attachments) throws JSONException;
+    void loadAttachment(String localURL, String remoteName, String remoteUrl);
     void getLocation();
     void getWhenItOccurred();
     void startRecorder();
