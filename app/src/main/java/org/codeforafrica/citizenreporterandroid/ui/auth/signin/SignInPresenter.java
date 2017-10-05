@@ -23,7 +23,11 @@ public class SignInPresenter implements SignInContract.Presenter {
           view.hideLoading();
           view.goToMainActivity();
         } else {
+<<<<<<< HEAD
 		view.hideLoading();
+=======
+        	view.hideLoading();
+>>>>>>> ff38bc7077fe05477233a123934939bd7f9e4789
           Log.e(TAG, "done: ", e.fillInStackTrace());
           view.showValidationErrors(e.getLocalizedMessage());
         }

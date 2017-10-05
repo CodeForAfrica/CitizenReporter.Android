@@ -14,6 +14,7 @@ repositories {
   mavenCentral()
   maven { url 'https://jitpack.io' }
   maven { url 'https://maven.fabric.io/public' }
+  maven { url 'https://maven.google.com' }
 }
 
 
@@ -61,7 +62,7 @@ dependencies {
   compile 'com.facebook.android:facebook-android-sdk:[4,5)'
   compile 'com.android.support.constraint:constraint-layout:1.0.2'
   compile 'com.github.apl-devs:appintro:v4.2.0'
-  compile 'com.jakewharton:butterknife:8.5.1'
+  compile 'com.jakewharton:butterknife:8.8.1'
   compile 'com.squareup.retrofit2:retrofit:2.1.0'
   compile 'com.google.code.gson:gson:2.6.2'
   compile 'com.squareup.retrofit2:converter-gson:2.1.0'
@@ -71,7 +72,7 @@ dependencies {
   compile 'com.daimajia.slider:library:1.1.5@aar'
   compile 'com.github.citux:datetimepicker:0.2.0'
   testCompile 'junit:junit:4.12'
-  annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
   compile 'com.github.phillipahereza:AndroidAudioRecorder:-SNAPSHOT'
   compile 'com.github.kobakei:MaterialFabSpeedDial:1.1.5'
   compile 'com.github.Fueled:fab.ulous:1.0.0'
@@ -84,7 +85,9 @@ dependencies {
   compile 'com.github.justzak:dilatingdotsprogressbar:1.0.1'
 
   //Glide
-  compile 'com.github.bumptech.glide:glide:3.8.0'
+  //  compile 'com.github.bumptech.glide:glide:3.8.0'
+  compile 'com.github.bumptech.glide:glide:4.1.1'
+  annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
   compile 'gun0912.ted:tedbottompicker:1.0.12'
 
   compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
