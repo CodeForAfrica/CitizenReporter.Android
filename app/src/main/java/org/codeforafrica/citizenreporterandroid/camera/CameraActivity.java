@@ -75,6 +75,8 @@ import java.util.List;
 import java.util.Objects;
 import org.codeforafrica.citizenreporterandroid.R;
 
+import static org.codeforafrica.citizenreporterandroid.GlideApp.*;
+
 public class CameraActivity extends AppCompatActivity
 		implements SceneSelectorAdapter.OnClickThumbListener {
 	private static final int REQUEST_CAMERA_PERMISSION = 1;
@@ -219,7 +221,7 @@ public class CameraActivity extends AppCompatActivity
 
 	@Override public void OnClickScene(String sceneKey, Integer position) {
 		int imgID = overlayScenes.get(sceneKey).get(position);
-		GlideApp.with(this).load(null).placeholder(imgID).centerCrop().into(imgOverlay);
+		with(this).load(null).placeholder(imgID).centerCrop().into(imgOverlay);
 		hideSceneSwitcher();
 	}
 
@@ -451,21 +453,21 @@ public class CameraActivity extends AppCompatActivity
 
 		switch (flashStatus) {
 			case 0:
-				GlideApp.with(this)
+				with(this)
 						.load(null)
 						.placeholder(R.drawable.ic_flash_off)
 						.centerCrop()
 						.into(flashModeBtn);
 				break;
 			case 1:
-				GlideApp.with(this)
+				with(this)
 						.load(null)
 						.placeholder(R.drawable.ic_flash_on)
 						.centerCrop()
 						.into(flashModeBtn);
 				break;
 			case 2:
-				GlideApp.with(this)
+				with(this)
 						.load(null)
 						.placeholder(R.drawable.ic_flash_auto)
 						.centerCrop()
@@ -982,7 +984,7 @@ public class CameraActivity extends AppCompatActivity
 			@Override public void onClick(View view) {
 				if (showOverlays) {
 					showOverlays = false;
-					GlideApp.with(CameraActivity.this)
+					with(CameraActivity.this)
 							.load(null)
 							.placeholder(R.drawable.ic_not_visible)
 							.centerCrop()
@@ -990,7 +992,7 @@ public class CameraActivity extends AppCompatActivity
 					hideOverlayDetails();
 				} else {
 					showOverlays = true;
-					GlideApp.with(CameraActivity.this)
+					with(CameraActivity.this)
 							.load(null)
 							.placeholder(R.drawable.ic_visible)
 							.centerCrop()
@@ -1096,7 +1098,7 @@ public class CameraActivity extends AppCompatActivity
 				imgOverlay.setImageDrawable(null);
 				swipeText.setText(R.string.recording_status);
 
-				GlideApp.with(CameraActivity.this)
+				with(CameraActivity.this)
 						.load(null)
 						.placeholder(R.drawable.ic_video_record)
 						.centerCrop()
@@ -1129,7 +1131,7 @@ public class CameraActivity extends AppCompatActivity
 					chronometer.setVisibility(View.INVISIBLE);
 
 					isRecording = false;
-					GlideApp.with(CameraActivity.this)
+					with(CameraActivity.this)
 							.load(null)
 							.placeholder(R.drawable.camera_capture)
 							.centerCrop()
@@ -1446,7 +1448,7 @@ public class CameraActivity extends AppCompatActivity
 		int imgID = overlayScenes.get(scene).get(0);
 		currentScene = scene;
 		swipeText.setText(scene);
-		GlideApp.with(this)
+		with(this)
 				.load(null)
 				.placeholder(imgID)
 				.centerCrop()

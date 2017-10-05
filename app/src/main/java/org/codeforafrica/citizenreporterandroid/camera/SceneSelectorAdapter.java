@@ -11,6 +11,8 @@ import butterknife.ButterKnife;
 import java.util.ArrayList;
 import org.codeforafrica.citizenreporterandroid.R;
 
+import static org.codeforafrica.citizenreporterandroid.GlideApp.*;
+
 public class SceneSelectorAdapter extends RecyclerView.Adapter<SceneSelectorAdapter.ViewHolder> {
 	private String sceneKey;
 	private ArrayList<Integer> scenesList;
@@ -53,7 +55,7 @@ public class SceneSelectorAdapter extends RecyclerView.Adapter<SceneSelectorAdap
 		}
 
 		private void bindScene(Integer sceneID) {
-			GlideApp.with(itemView)
+			with(itemView)
 					.load(null)
 					.placeholder(sceneID)
 					.into(imageView);

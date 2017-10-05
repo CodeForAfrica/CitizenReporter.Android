@@ -1,4 +1,4 @@
-package org.codeforafrica.citizenreporterandroid.camera;
+package org.codeforafrica.citizenreporterandroid;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
@@ -8,6 +8,6 @@ import com.bumptech.glide.module.AppGlideModule;
  */
 
 @GlideModule
-public final class CameraGlideModule extends AppGlideModule {
+public final class CitizenReporterGlideModule extends AppGlideModule {
 
 }
