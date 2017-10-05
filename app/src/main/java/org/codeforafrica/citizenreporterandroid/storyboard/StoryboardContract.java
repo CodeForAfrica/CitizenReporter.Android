@@ -23,14 +23,12 @@ public interface StoryboardContract {
     void showStoryNotFoundError(String message);
     void displayAttachments(List<ParseFile> files);
     void showImageAttachment(String name, String url);
-    void showVideoAttachment(String name, String url);
     void showAudioAttachment(String name, String url);
     void showUnknownAttachment(String name, String url);
     void addToImageAttachments(String name, String url);
     void showVideoAttachment(String name, String... paths);
     void addToVideoAttachments(String name, String videoPath);
     void addToAudioAttachments(String name, String audioPath);
-    void showUnknownAttachment(String name);
     void showLocationSearch();
     void updateStoryObject(ParseObject activeStory);
     void showDatePickerDialog();

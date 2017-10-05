@@ -185,7 +185,7 @@ public class StoryboardPresenter implements Presenter {
     } else if (remoteName.endsWith("mp4")) {
       view.showVideoAttachment(remoteName, url, remoteUrls[1]);
     } else {
-      view.showUnknownAttachment(remoteName);
+      view.showUnknownAttachment(remoteName, url);
     }
   }
   

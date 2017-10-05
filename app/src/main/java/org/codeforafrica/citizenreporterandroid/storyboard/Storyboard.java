@@ -521,7 +521,7 @@ public class Storyboard extends AppCompatActivity
   @Override public void showVideoAttachment(String name, String... paths) {
     View view = inflater.inflate(R.layout.item_video, null);
     TextView fileName = (TextView) view.findViewById(R.id.video_filename_tv);
-    TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
+    TextView fileSize = (TextView) view.findViewById(R.id.video_filesize_tv);
     ImageView play_video_icon = (ImageView) view.findViewById(R.id.play_video_icon);
     ImageView videoThumbnail = (ImageView) view.findViewById(R.id.video_thumbnail);
     final String path = paths[0];
