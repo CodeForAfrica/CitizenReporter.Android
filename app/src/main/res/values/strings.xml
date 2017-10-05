@@ -70,9 +70,6 @@
     <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
     <string name="assignments_description">Once signed in, you\'ll be presented with a customised list of active assignments appropriate to your location of specialisation</string>
     <string name="capture_media_desc">You can add media by clicking on any of the media capture buttons at the bottom of the screen</string>
-    <string name="desc_take_picture">Button to take a picture</string>
-    <string name="overlay_img_desc">This is the overlay image</string>
-    <string name="swipe_text">Swipe to change scenes</string>
 
     <string name="title_activity_view_image">View Image</string>
     <string name="already_have_an_account_sign_in">Already have an account? Sign in</string>
@@ -81,6 +78,14 @@
     <string name="join_with_email">JOIN WITH EMAIL</string>
     <string name="sigin_in_error">Invalid Email or Password Combination</string>
     <string name="password_reset_success">The password reset link has been sent to your email</string>
-  <string name="no_active_internet">You have no active internet connection</string>
+    <string name="no_active_internet">You have no active internet connection</string>
+
+    <string name="desc_take_picture">Button to take a picture</string>
+    <string name="overlay_img_desc">This is the overlay image</string>
+    <string name="swipe_text">Swipe to change scenes</string>
+    <string name="portrait_scene">Portrait</string>
+    <string name="interaction_scene">Interaction Scene</string>
+    <string name="scene_changer_text">Swipe to change scenes</string>
+    <string name="recording_status">Recording video</string>
 
 </resources>

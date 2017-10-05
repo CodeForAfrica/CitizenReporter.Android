@@ -27,4 +27,7 @@
     <color name="media_picker">#F6F6F6</color>
     <color name="email_green">#00FF00</color>
     <color name="black_overlay">#66000000</color>
+
+    <color name="black">#000000</color>
+    <color name="colorPrimaryLight">#F5F5F5</color>
 </resources>
