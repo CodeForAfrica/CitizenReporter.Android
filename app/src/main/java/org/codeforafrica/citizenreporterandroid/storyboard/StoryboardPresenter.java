@@ -7,9 +7,11 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.storyboard.StoryboardContract.Presenter;
 import org.json.JSONArray;
@@ -54,6 +56,41 @@ public class StoryboardPresenter implements Presenter {
         }
       }
     });
+
+
+    // Get saved media
+    ParseQuery<ParseObject> mediaFileQuery = ParseQuery.getQuery("mediaFile");
+    mediaFileQuery.fromLocalDatastore();
+    mediaFileQuery.whereEqualTo("localStoryID", storyID);
+    mediaFileQuery.findInBackground(new FindCallback<ParseObject>() {
+      @Override public void done(List<ParseObject> objects, ParseException e) {
+        Log.d(TAG, "done: got");
+        if (e == null && objects.size() > 0) {
+          Log.d(TAG, "done: Loading saved report");
+          view.loadSavedAttachments(objects);
+        } else {
+          // something went wrong
+          Log.d(TAG, "new Error: " + e);
+        }
+      }
+    });
+
+  }
+
+  @Override public void createAndUploadParseMediaFile(ParseObject activeStory, String localURL, ParseFile file) {
+    final ParseObject parseMediaFile = new ParseObject("mediaFile");
+    parseMediaFile.put("parent", activeStory);
+    parseMediaFile.put("localStoryID", activeStory.getString("localID"));
+    parseMediaFile.put("localUrl", localURL);
+    parseMediaFile.put("createdBy", ParseUser.getCurrentUser());
+    parseMediaFile.put("remoteFile", file);
+    try {
+      parseMediaFile.pin();
+    } catch (ParseException e) {
+      e.printStackTrace();
+      Log.e(TAG, "Create and upload: Error pinning", e.fillInStackTrace());
+    }
+    parseMediaFile.saveInBackground();
   }
 
   @Override public void createNewStory(String assignmentID) {
@@ -96,6 +133,22 @@ public class StoryboardPresenter implements Presenter {
       });
     }
   }
+
+  @Override public void loadAttachment(String localURL, String remoteName, String remoteUrl){
+    File file = new File(localURL);
+    String url = (file.exists()) ? localURL : remoteUrl;
+    if (remoteName.endsWith("wav")) {
+      view.showAudioAttachment(remoteName, url);
+    } else if (remoteName.endsWith("jpg") || remoteName.endsWith("jpeg") || remoteName.endsWith("png")) {
+      view.showImageAttachment(remoteName, url);
+
+    } else if (remoteName.endsWith("mp4")) {
+      view.showVideoAttachment(remoteName, url);
+    } else {
+      view.showUnknownAttachment(remoteName);
+    }
+  }
+
 
   @Override public void loadAllAttachments(JSONArray attachments) throws JSONException {
     for (int i = 0; i < attachments.length(); i++) {
