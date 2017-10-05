@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import org.codeforafrica.citizenreporterandroid.R;
 
+import static org.codeforafrica.citizenreporterandroid.GlideApp.*;
+
 public class ViewImageActivity extends AppCompatActivity {
 	private static final String IMAGE_FILE_LOCATION = "image_file_location";
 	private static final String IMAGE_SAVED_PATH = "imagePath";
@@ -61,7 +63,7 @@ public class ViewImageActivity extends AppCompatActivity {
 				getIntent().getStringExtra(IMAGE_FILE_LOCATION)
 		);
 
-		GlideApp.with(this)
+		with(this)
 				.load(imageFile)
 				.override(width, height)
 				.skipMemoryCache(true)
@@ -143,7 +145,7 @@ public class ViewImageActivity extends AppCompatActivity {
 		@Override protected void onPostExecute(Void aVoid) {
 			super.onPostExecute(aVoid);
 			long longDate = System.currentTimeMillis();
-			GlideApp.with(getApplicationContext())
+			with(getApplicationContext())
 					.load(imageFile)
 					.signature(new MediaStoreSignature("image/jpeg", longDate, (int) rotationAngle))
 					.into(imageView);
