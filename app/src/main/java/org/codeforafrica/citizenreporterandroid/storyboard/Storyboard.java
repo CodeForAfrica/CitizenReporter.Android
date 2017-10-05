@@ -9,6 +9,7 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -77,6 +78,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.commons.io.FileUtils;
 
 import org.codeforafrica.citizenreporterandroid.BuildConfig;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
@@ -348,7 +350,22 @@ public class Storyboard extends AppCompatActivity
                 @Override public void done(ParseException e) {
                   if (e == null) {
                     Log.i(TAG, "done: uploading video file");
-                    presenter.createAndUploadParseMediaFile(activeStory, localURL, file);
+
+                    Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(localURL, MediaStore.Images.Thumbnails.MINI_KIND);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] bitmapBytes = stream.toByteArray();
+                    final ParseFile thumbnailFile = new ParseFile("thumbnail", bitmapBytes);
+                    thumbnailFile.saveInBackground(new SaveCallback() {
+                      @Override
+                      public void done(ParseException e) {
+                        if (e == null) {
+                          presenter.createAndUploadParseMediaFile(activeStory, localURL, file, thumbnailFile);
+                        } else {
+                          Log.d(TAG, "Error: video thumbnail " + e.getLocalizedMessage());
+                        }
+                      }
+                    });
                     media.put(file);
                     Log.i(TAG, "onActivityResult video URL: " + file.getUrl());
                   } else {
@@ -500,24 +517,32 @@ public class Storyboard extends AppCompatActivity
     attachmentsLayout.addView(view);
   }
 
-  @Override public void showVideoAttachment(String name, String uri) {
+
+  @Override public void showVideoAttachment(String name, String... paths) {
     View view = inflater.inflate(R.layout.item_video, null);
     TextView fileName = (TextView) view.findViewById(R.id.video_filename_tv);
     TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
     ImageView play_video_icon = (ImageView) view.findViewById(R.id.play_video_icon);
     ImageView videoThumbnail = (ImageView) view.findViewById(R.id.video_thumbnail);
-    final String path = uri;
+    final String path = paths[0];
     final String videoFilename = name;
     Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
-    if (path.startsWith("http")) {
-      try {
-        thumb = this.retriveVideoFrameFromVideo(path);
-      } catch (Throwable e){
 
-      }
+    final int videoHeight;
+    final int videoWidth;
+
+    if (path.startsWith("http")) {
+      Glide.with(Storyboard.this)
+              .load(paths[1])
+              .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+              .into(videoThumbnail);
+
+      videoHeight = videoWidth = 300;
+    } else {
+      videoHeight = thumb.getHeight();
+      videoWidth = thumb.getWidth();
     }
-    final int videoHeight = thumb.getHeight();
-    final int videoWidth = thumb.getWidth();
+
     videoThumbnail.setImageBitmap(thumb);
     play_video_icon.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -531,7 +556,7 @@ public class Storyboard extends AppCompatActivity
       }
     });
 
-    File file = new File(uri);
+    File file = new File(path);
     long size  = file.length();
     fileName.setText(name);
     fileSize.setText(size/1024 + " KB");
@@ -539,14 +564,14 @@ public class Storyboard extends AppCompatActivity
     attachmentsLayout.addView(view);
   }
 
-  @Override public void showAudioAttachment(String name, String uri) {
+  @Override public void showAudioAttachment(String name, String url) {
     Log.i(TAG, "showAudioAttachment: ");
     View view = inflater.inflate(R.layout.item_audio, null);
     TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
     TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
     final TextView audioTime = (TextView) view.findViewById(R.id.audio_time);
 
-    File file = new File(uri);
+    File file = new File(url);
     long size  = (file.length())/1024;
     String size_label = size + " KB";
 
@@ -560,7 +585,7 @@ public class Storyboard extends AppCompatActivity
     filename.setText(name);
     fileSize.setText(size_label);
 
-    final MediaPlayer mediaPlayer = MediaPlayer.create(this, Uri.parse(uri));
+    final MediaPlayer mediaPlayer = MediaPlayer.create(this, Uri.parse(url));
     final SeekBar seekbar = (SeekBar)view.findViewById(R.id.audio_progress_bar);
     int audioDuration = mediaPlayer.getDuration();
     seekbar.setMax(audioDuration);

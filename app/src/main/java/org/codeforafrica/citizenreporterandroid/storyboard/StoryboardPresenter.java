@@ -73,7 +73,12 @@ public class StoryboardPresenter implements Presenter {
             final String localURL = mediaFile.getString("localUrl");
             final String name = file.getName();
             final String url = file.getUrl();
-            loadAttachment(localURL, name, url);
+            if (name.endsWith("mp4")) {
+              ParseFile thumbnail = (ParseFile)mediaFile.get("thumbnail");
+              loadAttachment(localURL, name, url, thumbnail.getUrl());
+            } else {
+              loadAttachment(localURL, name, url);
+            }
             mediaFile.fetchInBackground(new GetCallback<ParseObject>() {
               public void done(ParseObject object, ParseException e) {
                 if (e == null) {
@@ -83,7 +88,12 @@ public class StoryboardPresenter implements Presenter {
                     String _url = file.getUrl();
                     String _name = file.getName();
                     if (!_name.equals(name) || !_url.equals(url) || !_localURL.equals(localURL)) {
-                      loadAttachment(_localURL, _url, _name);
+                      if (name.endsWith("mp4")) {
+                        ParseFile _thumbnail = (ParseFile)object.get("thumbnail");
+                        loadAttachment(_localURL, _url, _name, _thumbnail.getUrl());
+                      } else {
+                        loadAttachment(_localURL, _url, _name);
+                      }
                     }
                   }
                 } else {
@@ -102,13 +112,18 @@ public class StoryboardPresenter implements Presenter {
 
   }
 
-  @Override public void createAndUploadParseMediaFile(ParseObject activeStory, String localURL, ParseFile file) {
+  @Override public void createAndUploadParseMediaFile(ParseObject activeStory, String localURL, ParseFile... files) {
     final ParseObject parseMediaFile = new ParseObject("mediaFile");
     parseMediaFile.put("parent", activeStory);
     parseMediaFile.put("localStoryID", activeStory.getString("localID"));
     parseMediaFile.put("localUrl", localURL);
     parseMediaFile.put("createdBy", ParseUser.getCurrentUser());
-    parseMediaFile.put("remoteFile", file);
+    parseMediaFile.put("remoteFile", files[0]);
+
+    // Save video thumbnail
+    if (files.length > 1) {
+      parseMediaFile.put("thumbnail", files[1]);
+    }
     try {
       parseMediaFile.pin();
     } catch (ParseException e) {
@@ -159,16 +174,16 @@ public class StoryboardPresenter implements Presenter {
     }
   }
 
-  @Override public void loadAttachment(String localURL, String remoteName, String remoteUrl){
+  @Override public void loadAttachment(String localURL, String remoteName, String... remoteUrls){
     File file = new File(localURL);
-    String url = (file.exists()) ? localURL : remoteUrl;
+    String url = (file.exists()) ? localURL : remoteUrls[0];
     if (remoteName.endsWith("wav")) {
       view.showAudioAttachment(remoteName, url);
     } else if (remoteName.endsWith("jpg") || remoteName.endsWith("jpeg") || remoteName.endsWith("png")) {
       view.showImageAttachment(remoteName, url);
 
     } else if (remoteName.endsWith("mp4")) {
-      view.showVideoAttachment(remoteName, url);
+      view.showVideoAttachment(remoteName, url, remoteUrls[1]);
     } else {
       view.showUnknownAttachment(remoteName);
     }

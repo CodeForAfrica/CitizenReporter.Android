@@ -27,6 +27,7 @@ public interface StoryboardContract {
     void showAudioAttachment(String name, String url);
     void showUnknownAttachment(String name, String url);
     void addToImageAttachments(String name, String url);
+    void showVideoAttachment(String name, String... paths);
     void addToVideoAttachments(String name, String videoPath);
     void addToAudioAttachments(String name, String audioPath);
     void showUnknownAttachment(String name);
@@ -46,10 +47,10 @@ public interface StoryboardContract {
   interface Presenter {
     void openSavedStory(String storyID);
     void createNewStory(String assignmentID);
-    void createAndUploadParseMediaFile(ParseObject activeStory, String localURL, ParseFile file);
+    void createAndUploadParseMediaFile(ParseObject activeStory, String localURL, ParseFile... files);
     void saveStory(ParseObject object);
     void uploadStory(ParseObject story);
-    void loadAttachment(String localURL, String remoteName, String remoteUrl);
+    void loadAttachment(String localURL, String remoteName, String... remoteUrl);
     void getLocation();
     void getWhenItOccurred();
     void startRecorder();
