@@ -83,6 +83,10 @@ public class StoriesFragment extends Fragment implements StoriesFragmentContract
 
   }
 
+  @Override public void hideErrorLayout() {
+    errorLayout.setVisibility(View.GONE);
+  }
+
   @Override public void onDestroy() {
     super.onDestroy();
     presenter.detachView();

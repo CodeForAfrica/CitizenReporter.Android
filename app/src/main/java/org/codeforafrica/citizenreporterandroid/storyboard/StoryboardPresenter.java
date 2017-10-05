@@ -79,13 +79,14 @@ public class StoryboardPresenter implements Presenter {
       story.saveEventually(new SaveCallback() {
         @Override public void done(ParseException e) {
           if (e == null) {
-
             view.hideLoading();
+            view.showUploadSuccess();
             Log.d(TAG, "done: finished uploading successfully");
             // go to stories activity
             view.finishUploading();
           } else {
             story.put("uploaded", false);
+            view.showUploadError();
             Log.e(TAG, "done: upload failed", e.fillInStackTrace());
           }
 

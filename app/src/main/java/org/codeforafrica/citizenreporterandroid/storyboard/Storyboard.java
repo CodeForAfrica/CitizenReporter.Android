@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -57,6 +58,7 @@ import java.util.List;
 import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
+import org.codeforafrica.citizenreporterandroid.BuildConfig;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
@@ -228,7 +230,6 @@ public class Storyboard extends AppCompatActivity
                 @Override public void done(ParseException e) {
                   if (e == null) {
                     Log.i(TAG, "done: uploading file");
-                    media.put(file);
                     Log.i(TAG, "onActivityResult URL: " + file.getUrl());
                   } else {
                     Log.d(TAG, "Error: " + e.getLocalizedMessage());
@@ -315,6 +316,7 @@ public class Storyboard extends AppCompatActivity
     boolean uploaded = story.getBoolean("uploaded");
     Date whenItOccurred = story.getDate("when");
     String loc = story.getString("location") != null ? story.getString("location") : "";
+    activeStory.put("source_app", getString(R.string.app_name));
     media = story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
     Log.d(TAG, "loadSavedReport: media" + media.length());
 
@@ -359,6 +361,7 @@ public class Storyboard extends AppCompatActivity
     activeStory.put("uploaded", false);
     activeStory.put("assignment", assignmentID);
     activeStory.put("author", user.getObjectId());
+    activeStory.put("source_app", getString(R.string.app_name));
 
     Log.i(TAG, "loadNewReport: Assignment " + activeStory.getString("assignment"));
     Log.i(TAG, "loadNewReport: uploaded " + activeStory.getBoolean("uploaded"));
@@ -568,6 +571,14 @@ public class Storyboard extends AppCompatActivity
     Intent intent = new Intent(Storyboard.this, CameraActivity.class);
     startActivityForResult(intent, Constants.CUSTOM_CAMERA_REQUEST_CODE);
 
+  }
+
+  @Override public void showUploadError() {
+    Toast.makeText(this, "Upload Failed! Try again Later", Toast.LENGTH_SHORT).show();
+  }
+
+  @Override public void showUploadSuccess() {
+    Toast.makeText(this, "Upload Successful", Toast.LENGTH_SHORT).show();
   }
 
   @OnClick(R.id.storyboard_location) public void getLocation() {

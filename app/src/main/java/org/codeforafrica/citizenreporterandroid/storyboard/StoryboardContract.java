@@ -31,6 +31,8 @@ public interface StoryboardContract {
     void showImagePicker();
     void finishUploading();
     void sendCameraIntent();
+    void showUploadError();
+    void showUploadSuccess();
 
 
   };
