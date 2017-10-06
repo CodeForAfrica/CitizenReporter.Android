@@ -219,6 +219,7 @@ public class CameraActivity extends AppCompatActivity
 	@BindView(R.id.txt_zoom_caption) TextView zoomCaption;
 	@BindView(R.id.seekbar_light) SeekBar lightSeekBar;
 	@BindView(R.id.chronometer2) Chronometer chronometer;
+	private boolean initialized	= false;
 
 	@Override public void OnClickScene(String sceneKey, Integer position) {
 		int imgID = overlayScenes.get(sceneKey).get(position);
@@ -1204,6 +1205,25 @@ public class CameraActivity extends AppCompatActivity
 		hideSpecialEffects();
 		hideSceneSwitcher();
 		hideSceneIcons();
+
+		showOverlays = false;
+		with(CameraActivity.this)
+				.load(null)
+				.placeholder(R.drawable.ic_not_visible)
+				.centerCrop()
+				.into(overlayToggle);
+	}
+
+	private void showOthers() {
+		flashModeBtn.setVisibility(View.VISIBLE);
+		openGalleryBtn.setVisibility(View.VISIBLE);
+		swapCameraBtn.setVisibility(View.VISIBLE);
+		capturePictureBtn.setVisibility(View.VISIBLE);
+		icon_black_background.setVisibility(View.VISIBLE);
+		swipeText.setVisibility(View.VISIBLE);
+		imgOverlay.setVisibility(View.GONE);
+		hideOverlayDetails();
+		showSpecialEffects();
 	}
 
 	private void showOverlayDetails() {
@@ -1583,6 +1603,10 @@ public class CameraActivity extends AppCompatActivity
 			if (manualFocusEngaged) {
 				Log.d(TAG, "Manual focus already engaged!");
 				return true;
+			}
+
+			if (!initialized) {
+				showOthers();
 			}
 
 			final int y =
