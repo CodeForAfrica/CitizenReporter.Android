@@ -1216,6 +1216,13 @@ public class CameraActivity extends AppCompatActivity
 	}
 
 	private void showOthers() {
+		showOverlays = false;
+		with(CameraActivity.this)
+				.load(null)
+				.placeholder(R.drawable.ic_not_visible)
+				.centerCrop()
+				.into(overlayToggle);
+
 		flashModeBtn.setVisibility(View.VISIBLE);
 		openGalleryBtn.setVisibility(View.VISIBLE);
 		swapCameraBtn.setVisibility(View.VISIBLE);
@@ -1607,6 +1614,7 @@ public class CameraActivity extends AppCompatActivity
 			}
 
 			if (!initialized) {
+				initialized = true;
 				showOthers();
 			}
 
