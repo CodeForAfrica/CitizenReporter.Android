@@ -213,6 +213,7 @@ public class CameraActivity extends AppCompatActivity
 	@BindView(R.id.img_overlay) ImageView imgOverlay;
 	@BindView(R.id.img_effects_btn) ImageView effectsBtn;
 	@BindView(R.id.img_wb_btn) ImageView imgToggleWB;
+	@BindView(R.id.img_btn_bg) ImageView icon_black_background;
 	@BindView(R.id.txt_swipe_caption) TextView swipeText;
 	@BindView(R.id.txt_seekbar_progress) TextView seekBarProgressText;
 	@BindView(R.id.txt_zoom_caption) TextView zoomCaption;
@@ -979,6 +980,7 @@ public class CameraActivity extends AppCompatActivity
 		initializeObjects();
 		initializeScenes();
 		initializeCameraInterface(); // Creates the swipe buttons
+		hideOthers();
 
 		overlayToggle.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View view) {
@@ -1190,6 +1192,20 @@ public class CameraActivity extends AppCompatActivity
 		overlayToggle.setVisibility(View.VISIBLE);
 	}
 
+	private void hideOthers() {
+		seekBarProgressText.setVisibility(View.GONE);
+		zoomCaption.setVisibility(View.GONE);
+		flashModeBtn.setVisibility(View.GONE);
+		openGalleryBtn.setVisibility(View.GONE);
+		swapCameraBtn.setVisibility(View.GONE);
+		capturePictureBtn.setVisibility(View.GONE);
+		icon_black_background.setVisibility(View.GONE);
+		swipeText.setVisibility(View.GONE);
+		hideSpecialEffects();
+		hideSceneSwitcher();
+		hideSceneIcons();
+	}
+
 	private void showOverlayDetails() {
 		showSceneIcons();
 		imgOverlay.setVisibility(View.VISIBLE);
@@ -1286,9 +1302,7 @@ public class CameraActivity extends AppCompatActivity
 		switcher3.setVisibility(View.INVISIBLE);
 		switcher4.setVisibility(View.INVISIBLE);
 		switcher5.setVisibility(View.INVISIBLE);
-		flashModeBtn.setVisibility(View.INVISIBLE);
 		lightSeekBar.setVisibility(View.INVISIBLE);
-		overlayToggle.setVisibility(View.INVISIBLE);
 	}
 
 	private void showSceneIcons() {
@@ -1297,15 +1311,10 @@ public class CameraActivity extends AppCompatActivity
 		switcher3.setVisibility(View.VISIBLE);
 		switcher4.setVisibility(View.VISIBLE);
 		switcher5.setVisibility(View.VISIBLE);
-		flashModeBtn.setVisibility(View.VISIBLE);
 		lightSeekBar.setVisibility(View.VISIBLE);
-		overlayToggle.setVisibility(View.VISIBLE);
 	}
 
 	private void initializeScenes() {
-		seekBarProgressText.setVisibility(View.INVISIBLE);
-		zoomCaption.setVisibility(View.INVISIBLE);
-		hideSceneSwitcher();
 		portrait = new ArrayList<Integer>() {
 			{
 				add(R.drawable.portrait_001);

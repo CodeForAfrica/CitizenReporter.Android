@@ -32,5 +32,6 @@
     <color name="email_login_pressed">#661e612b</color>
 
     <color name="black">#000000</color>
+    <color name="dark_grey">#212121</color>
     <color name="colorPrimaryLight">#F5F5F5</color>
 </resources>
