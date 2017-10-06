@@ -985,6 +985,8 @@ public class CameraActivity extends AppCompatActivity
 
 		overlayToggle.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View view) {
+
+
 				if (showOverlays) {
 					showOverlays = false;
 					with(CameraActivity.this)
@@ -992,7 +994,11 @@ public class CameraActivity extends AppCompatActivity
 							.placeholder(R.drawable.ic_not_visible)
 							.centerCrop()
 							.into(overlayToggle);
-					hideOverlayDetails();
+					if (initialized) {
+						hideOverlayDetails();
+					} else {
+						imgOverlay.setVisibility(View.GONE);
+					}
 				} else {
 					showOverlays = true;
 					with(CameraActivity.this)
@@ -1000,7 +1006,11 @@ public class CameraActivity extends AppCompatActivity
 							.placeholder(R.drawable.ic_visible)
 							.centerCrop()
 							.into(overlayToggle);
-					showOverlayDetails();
+					if (initialized) {
+						showOverlayDetails();
+					} else {
+						imgOverlay.setVisibility(View.VISIBLE);
+					}
 				}
 			}
 		});
