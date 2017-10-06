@@ -985,8 +985,6 @@ public class CameraActivity extends AppCompatActivity
 
 		overlayToggle.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View view) {
-
-
 				if (showOverlays) {
 					showOverlays = false;
 					with(CameraActivity.this)
@@ -1215,13 +1213,6 @@ public class CameraActivity extends AppCompatActivity
 		hideSpecialEffects();
 		hideSceneSwitcher();
 		hideSceneIcons();
-
-		showOverlays = false;
-		with(CameraActivity.this)
-				.load(null)
-				.placeholder(R.drawable.ic_not_visible)
-				.centerCrop()
-				.into(overlayToggle);
 	}
 
 	private void showOthers() {
