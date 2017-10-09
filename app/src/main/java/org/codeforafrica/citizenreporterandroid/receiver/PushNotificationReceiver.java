@@ -13,6 +13,8 @@ import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentDetai
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 
 /**
  * Created by edwinkato on 10/6/17.
@@ -64,7 +66,9 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
                 .setAutoCancel(true)
                 .build();
 
+        int Unique_Integer_Number = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
+
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, notification);
+        manager.notify(Unique_Integer_Number, notification);
     }
 }
