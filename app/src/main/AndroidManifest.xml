@@ -119,17 +119,6 @@
         <activity android:name=".ui.auth.signup.SignUpActivity"></activity>
         <activity android:name=".ui.auth.passwordRecovery.PasswordResetActivity"></activity>
 
-        <service android:name=".main.assignments.MyFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".main.assignments.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
         <activity
             android:name=".ui.video.VideoViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -162,27 +151,9 @@
 
         <meta-data android:name="com.parse.push.gcm_sender_id"
             android:value="id:999110587741" />;
-        <!--<service android:name=".main.assignments.MyFirebaseInstanceIdService">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="com.google.firebase.INSTANCE_ID_EVENT"></action>-->
-        <!--</intent-filter>-->
-        <!--</service>-->
-        <!--<service android:name=".main.assignments.MyFirebaseMessagingService">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="com.google.firebase.MESSAGING_EVENT"></action>-->
-        <!--</intent-filter>-->
-        <!--</service>-->
 
         <!-- Configure parse push notifications -->
         <service android:name="com.parse.PushService" />
-        <!--<receiver android:name="com.parse.ParsePushBroadcastReceiver"-->
-        <!--android:exported="false">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="com.parse.push.intent.RECEIVE" />-->
-        <!--<action android:name="com.parse.push.intent.DELETE" />-->
-        <!--<action android:name="com.parse.push.intent.OPEN" />-->
-        <!--</intent-filter>-->
-        <!--</receiver>-->
         <receiver android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
