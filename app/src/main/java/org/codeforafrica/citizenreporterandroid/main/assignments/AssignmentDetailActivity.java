@@ -3,6 +3,7 @@ package org.codeforafrica.citizenreporterandroid.main.assignments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,9 @@ import java.util.HashMap;
  */
 
 public class AssignmentDetailActivity extends Activity {
+
+  private static final String TAG = "AssignmentDetail";
+
   @BindView(R.id.assignment_detail_title) TextView assignment_detail_title;
 
   @BindView(R.id.featuredImageView) ImageView featured_image;
@@ -44,6 +48,7 @@ public class AssignmentDetailActivity extends Activity {
 
   private Assignment assignment;
   private String assignmentID;
+  private Boolean is_new_assignment;
 
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -52,33 +57,69 @@ public class AssignmentDetailActivity extends Activity {
     ButterKnife.bind(this);
 
     assignmentID = getIntent().getStringExtra("assignment_id");
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
-    query.fromLocalDatastore();
-    query.getInBackground(assignmentID, new GetCallback<ParseObject>() {
-      public void done(ParseObject assignmentObject, ParseException e) {
-        if (e == null) {
-          String assignmentTitle = assignmentObject.getString("title");
-          assignment_detail_title.setText(assignmentTitle);
-          assignment_detail_deadline.setText(
-              TimeUtils.getShortDateFormat(assignmentObject.getDate("deadline")));
-          assignment_detail_text.setText(assignmentObject.getString("description"));
-          assignment_detail_author.setText(assignmentObject.getString("author"));
-          GlideApp.with(AssignmentDetailActivity.this)
-              .load(assignmentObject.getParseFile("featured_image").getUrl())
-              .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-              .into(featured_image);
+    is_new_assignment = getIntent().getExtras().getBoolean("is_new_assignment");
 
-          // Track Assignment open
-          HashMap<String, String> assignmentParameters = new HashMap<>(2);
-          assignmentParameters.put(AnalyticsHelper.PARAM_ASSIGNMENT_TITLE, assignmentTitle);
-          AnalyticsHelper.logEvent(AnalyticsHelper.EVENT_ASSIGNMENT_OPEN, assignmentParameters, true);
-        } else {
-          // something went wrong
-          Toast.makeText(AssignmentDetailActivity.this, "This assignment was not found",
-              Toast.LENGTH_SHORT).show();
+
+    if (is_new_assignment){
+      ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
+      query.getInBackground(assignmentID, new GetCallback<ParseObject>() {
+        public void done(ParseObject object, ParseException e) {
+          if (e == null) {
+            String assignmentTitle = object.getString("title");
+            assignment_detail_title.setText(assignmentTitle);
+            assignment_detail_deadline.setText(
+                    TimeUtils.getShortDateFormat(object.getDate("deadline")));
+            assignment_detail_text.setText(object.getString("description"));
+            assignment_detail_author.setText(object.getString("author"));
+            Glide.with(AssignmentDetailActivity.this)
+                    .load(object.getParseFile("featured_image").getUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .into(featured_image);
+            trackAssignmentOpen(assignmentTitle);
+            try {
+              object.pin();
+            } catch (ParseException exception) {
+              Log.e(TAG, exception.getMessage());
+            }
+          } else {
+            Log.e(TAG, e.getMessage());
+            Toast.makeText(AssignmentDetailActivity.this, "This assignment was not found",
+                    Toast.LENGTH_SHORT).show();
+          }
         }
-      }
-    });
+      });
+    } else {
+      ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
+      query.fromLocalDatastore();
+      query.getInBackground(assignmentID, new GetCallback<ParseObject>() {
+        public void done(ParseObject assignmentObject, ParseException e) {
+          if (e == null) {
+            String assignmentTitle = assignmentObject.getString("title");
+            assignment_detail_title.setText(assignmentTitle);
+            assignment_detail_deadline.setText(
+                    TimeUtils.getShortDateFormat(assignmentObject.getDate("deadline")));
+            assignment_detail_text.setText(assignmentObject.getString("description"));
+            assignment_detail_author.setText(assignmentObject.getString("author"));
+            Glide.with(AssignmentDetailActivity.this)
+                    .load(assignmentObject.getParseFile("featured_image").getUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(featured_image);
+            trackAssignmentOpen(assignmentTitle);
+          } else {
+            // something went wrong
+            Toast.makeText(AssignmentDetailActivity.this, "This assignment was not found",
+                    Toast.LENGTH_SHORT).show();
+          }
+        }
+      });
+    }
+  }
+
+  private void trackAssignmentOpen(String assignmentTitle) {
+    // Track Assignment open
+    HashMap<String, String> assignmentParameters = new HashMap<>(2);
+    assignmentParameters.put(AnalyticsHelper.PARAM_ASSIGNMENT_TITLE, assignmentTitle);
+    AnalyticsHelper.logEvent(AnalyticsHelper.EVENT_ASSIGNMENT_OPEN, assignmentParameters, true);
   }
 
   @OnClick(R.id.start_reporting_button) public void start_reporting() {
