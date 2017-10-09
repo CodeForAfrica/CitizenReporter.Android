@@ -16,39 +16,49 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class CameraActivityInitialState {
+public class CameraActivityInitialized {
 
 	@Rule
 	public ActivityTestRule<CameraActivity> mActivityTestRule =
 			new ActivityTestRule<>(CameraActivity.class);
 
-	@Test
-	public void cameraActivityInitialState() {
-		onView(withId(R.id.img_overlay_toggle))
-				.check(matches(isDisplayed()));
+	public void checkIsDisplayed(ArrayList<Integer> list) {
+		for (Integer id : list) {
+			onView(withId(id))
+					.check(matches(isDisplayed()));
+		}
+	}
 
-		onView(withId(R.id.tv_camera))
-				.check(matches(isDisplayed()));
-
-		onView(withId(R.id.img_overlay))
-				.check(matches(isDisplayed()));
+	public void checkIsGone(ArrayList<Integer> list) {
+		for (Integer id : list) {
+			onView(withId(id))
+					.check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
+		}
 	}
 
 	@Test
-	public void toggleOverlayVisibility() {
-		onView(withId(R.id.img_overlay_toggle))
+	public void cameraIconsDisplayTest() {
+		onView(withId(R.id.tv_camera))
 				.perform(click());
 
-		onView(withId(R.id.img_overlay))
-				.check(matches(not(isDisplayed())));
-	}
+		ArrayList<Integer> displayedList = new ArrayList<Integer>() {
+			{
+				add(R.id.img_capture);
+				add(R.id.img_flash_btn);
+				add(R.id.img_overlay_toggle);
+				add(R.id.img_switch_camera);
+				add(R.id.img_gallery);
+				add(R.id.img_effects_btn);
+				add(R.id.img_wb_btn);
+				add(R.id.tv_camera);
+				add(R.id.seekbar_light);
+				add(R.id.img_btn_bg);
+			}
+		};
 
-	@Test
-	public void absenceOfOtherIcons() {
 		ArrayList<Integer> goneList = new ArrayList<Integer>() {
 			{
 				add(R.id.txt_swipe_caption);
@@ -57,24 +67,10 @@ public class CameraActivityInitialState {
 				add(R.id.sw_swipe_3);
 				add(R.id.sw_swipe_4);
 				add(R.id.sw_swipe_5);
-
-				add(R.id.img_capture);
-				add(R.id.img_flash_btn);
-				add(R.id.img_switch_camera);
-				add(R.id.img_gallery);
-				add(R.id.img_effects_btn);
-				add(R.id.img_wb_btn);
-				add(R.id.seekbar_light);
 			}
 		};
-		testIsGone(goneList);
-	}
 
-	public void testIsGone(ArrayList<Integer> list) {
-		for (Integer id : list) {
-			onView(withId(id))
-					.check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-		}
+		checkIsDisplayed(displayedList);
+		checkIsGone(goneList);
 	}
-
 }
