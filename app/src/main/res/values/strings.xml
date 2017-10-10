@@ -79,7 +79,7 @@
     <string name="password_reset_success">The password reset link has been sent to your email</string>
     <string name="no_active_internet">You have no active internet connection</string>
 
-    <!-- Push Notification-->
+    <!-- Push Notifications-->
     <string name="notification_title">New Assignments</string>
     <string name="notification_message">A new Assignment has been added</string>
 

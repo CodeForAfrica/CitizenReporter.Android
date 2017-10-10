@@ -1,7 +1,9 @@
 package org.codeforafrica.citizenreporterandroid.main.assignments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import org.codeforafrica.citizenreporterandroid.GlideApp;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
+import org.codeforafrica.citizenreporterandroid.receiver.Notifications;
 import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
 import org.codeforafrica.citizenreporterandroid.utils.AnalyticsHelper;
 import org.codeforafrica.citizenreporterandroid.utils.TimeUtils;
@@ -61,6 +64,8 @@ public class AssignmentDetailActivity extends Activity {
 
 
     if (is_new_assignment){
+      Notifications notifications = Notifications.getInstance("");
+      notifications.clearNotifications();
       ParseQuery<ParseObject> query = ParseQuery.getQuery("Assignment");
       query.getInBackground(assignmentID, new GetCallback<ParseObject>() {
         public void done(ParseObject object, ParseException e) {

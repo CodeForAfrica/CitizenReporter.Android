@@ -19,6 +19,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.adapter.AssignmentsAdapter;
 import org.codeforafrica.citizenreporterandroid.app.CitizenReporterApplication;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
+import org.codeforafrica.citizenreporterandroid.receiver.Notifications;
 
 public class AssignmentsFragment extends Fragment implements AssignmentFragmentContract.View {
 
@@ -42,6 +43,11 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
 
   public static AssignmentsFragment newInstance() {
     AssignmentsFragment fragment = new AssignmentsFragment();
+
+    // Clear notifications on new fragment instance
+    Notifications notifications = Notifications.getInstance("");
+    notifications.clearNotifications();
+
     return fragment;
   }
 
