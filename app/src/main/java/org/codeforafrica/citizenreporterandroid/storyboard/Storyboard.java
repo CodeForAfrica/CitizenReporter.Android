@@ -533,9 +533,9 @@ public class Storyboard extends AppCompatActivity
     final int videoWidth;
 
     if (path.startsWith("http")) {
-      Glide.with(Storyboard.this)
+      GlideApp.with(Storyboard.this)
               .load(paths[1])
-              .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+              .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
               .into(videoThumbnail);
 
       videoHeight = videoWidth = 300;
@@ -833,9 +833,9 @@ public class Storyboard extends AppCompatActivity
     dialog.setContentView(R.layout.image_preview_dialog);
     //display the dialog box
     ImageView expandedImageView = (ImageView)dialog.findViewById(R.id.expanded_image);
-    Glide.with(Storyboard.this)
+    GlideApp.with(Storyboard.this)
             .load(selectedImage)
-            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .into(expandedImageView);
     dialog.show();
   }

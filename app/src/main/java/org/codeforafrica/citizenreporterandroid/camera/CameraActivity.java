@@ -660,6 +660,7 @@ public class CameraActivity extends AppCompatActivity
 					Intent resultIntent = new Intent();
 					resultIntent.putExtra(IMAGE_SAVED_PATH, cameraPreviewResult);
 					setResult(Activity.RESULT_OK, resultIntent);
+					CameraActivity.super.finish();
 				} else if (resultCode == Activity.RESULT_CANCELED) {
 					// Set the response of the camera intent to result canceled.
 					setResult(Activity.RESULT_CANCELED);
@@ -1130,6 +1131,7 @@ public class CameraActivity extends AppCompatActivity
 					mediaStoreUpdateIntent.setData(Uri.fromFile(new File(videoFileName)));
 					sendBroadcast(mediaStoreUpdateIntent);
 					createVideoReturnIntent();
+					CameraActivity.super.finish();
 				}
 			}
 		});
