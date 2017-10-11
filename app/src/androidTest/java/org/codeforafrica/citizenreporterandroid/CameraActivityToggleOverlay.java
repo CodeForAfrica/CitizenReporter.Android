@@ -1,5 +1,6 @@
 package org.codeforafrica.citizenreporterandroid;
 
+import android.content.res.Resources;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
@@ -40,7 +41,7 @@ public class CameraActivityToggleOverlay {
 		// Toggle to show overlay pictures
 		onView(withId(R.id.img_overlay_toggle)).perform(click());
 
-		ArrayList<Integer> visibleObjects = new ArrayList<Integer>(){
+		ArrayList<Integer> visibleObjects = new ArrayList<Integer>() {
 			{
 				add(R.id.txt_swipe_caption);
 				add(R.id.sw_swipe_1);
@@ -66,18 +67,19 @@ public class CameraActivityToggleOverlay {
 
 	@Test
 	public void testOverlayFling() {
+		final Resources resources = mActivityTestRule.getActivity().getResources();
 		// initialize Camera
 		onView(withId(R.id.tv_camera)).perform(click());
 		onView(withId(R.id.img_overlay_toggle)).perform(click());
 
 		// Fling to change overlays
-		ArrayList<String> scenes = new ArrayList<String>(){
+		ArrayList<String> scenes = new ArrayList<String>() {
 			{
-				add("Signature");
-				add("Portrait");
-				add("Environment");
-				add("Candid");
-				add("Interaction");
+				add(resources.getString(R.string.signature));
+				add(resources.getString(R.string.portrait));
+				add(resources.getString(R.string.environment));
+				add(resources.getString(R.string.candid));
+				add(resources.getString(R.string.interaction));
 			}
 		};
 		swipeToChangeScenes(scenes);
@@ -85,10 +87,12 @@ public class CameraActivityToggleOverlay {
 
 	@Test
 	public void testDefaultScene() {
+		final Resources resources = mActivityTestRule.getActivity().getResources();
 		// initialize Camera
 		onView(withId(R.id.tv_camera)).perform(click());
 		onView(withId(R.id.img_overlay_toggle)).perform(click());
-		onView(withId(R.id.txt_swipe_caption)).check(matches(withText("Interaction")));
+		onView(withId(R.id.txt_swipe_caption)).check(
+				matches(withText(resources.getString(R.string.interaction))));
 		onView(withId(R.id.img_overlay)).check(matches(withDrawable(R.drawable.interaction_001)));
 
 		onView(withId(R.id.tv_camera)).perform(longClick());
@@ -189,6 +193,6 @@ public class CameraActivityToggleOverlay {
 	}
 
 	public static Matcher<View> noDrawable() {
-		return  new DrawableMatcher(-1);
+		return new DrawableMatcher(-1);
 	}
 }
