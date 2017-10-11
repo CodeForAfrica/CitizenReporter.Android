@@ -12,15 +12,14 @@
   <android.support.design.widget.AppBarLayout
       android:id="@+id/appbar"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:paddingTop="@dimen/appbar_padding_top"
+      android:layout_height="50dp"
       android:theme="@style/AppTheme.AppBarOverlay"
       >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="50dp"
         android:background="?attr/colorPrimary"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/AppTheme.PopupOverlay"
@@ -52,6 +51,7 @@
               android:layout_alignRight="@id/app_icon_view"
               android:layout_gravity="center_vertical"
               android:text="@string/app_name"
+              android:textColor="@color/accent_material_white"
               android:textSize="18dp"
               />
 
@@ -61,17 +61,16 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
           <android.support.v7.widget.AppCompatImageView
-              android:id="@+id/profile_pic"
-              android:layout_width="40dp"
-              android:layout_height="40dp"
+              android:id="@+id/about_icon_appbar"
+              android:layout_width="24dp"
+              android:layout_height="24dp"
               android:layout_gravity="center_vertical"
               android:layout_marginRight="8dp"
-              android:src="@mipmap/ic_creporter_launcher"
-              android:visibility="invisible"
+              android:src="@drawable/ic_about_icon_32"
+
               />
 
         </LinearLayout>

@@ -2,7 +2,6 @@ package org.codeforafrica.citizenreporterandroid.ui.assignments;
 
 import android.util.Log;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
-import org.codeforafrica.citizenreporterandroid.data.DataManager;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 
 /**
@@ -19,10 +17,8 @@ import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 
 public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.Presenter {
   private AssignmentFragmentContract.View view;
-  private DataManager dataManager;
 
-  @Inject public AssignmentsFragmentPresenter(DataManager dataManager) {
-    this.dataManager = dataManager;
+  @Inject public AssignmentsFragmentPresenter() {
   }
 
   @Override public void setView(AssignmentFragmentContract.View view) {
@@ -39,7 +35,7 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
     query.findInBackground(new FindCallback<ParseObject>() {
       @Override public void done(List<ParseObject> objects, ParseException e) {
         List<Assignment> assignments = parseListAssignments(objects);
-        Log.d("Parse", "done: " + assignments.size());
+        Log.d("Assignments", "done: " + assignments.size());
         checkNumberOfAssignments(assignments);
       }
     });
@@ -66,7 +62,7 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
     if (assignmentsList.size() > 0) {
       view.displayAssignments(assignmentsList);
     } else {
-      view.displayNoAssignments();
+      view.showNoAssignments();
     }
   }
 

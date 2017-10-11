@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+
 import android.support.v4.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -27,7 +28,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     style.bigText(remoteMessage.getNotification().getBody());
 
     NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable
-        .ic_chat_50, "MORE", null).build();
+        .ic_ic_chat_50, "MORE", null).build();
 
     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
     notificationBuilder.setContentTitle("New Assignments");
@@ -45,3 +46,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
   }
 }
+

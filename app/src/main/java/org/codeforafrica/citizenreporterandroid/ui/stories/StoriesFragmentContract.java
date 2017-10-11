@@ -15,10 +15,10 @@ public interface StoriesFragmentContract {
     void displayStories(List<ParseObject> stories);
     void displayNoStories();
     void swipeToDelete();
+    void hideErrorLayout();
   };
   interface Presenter{
     void loadStories();
-    void deleteStory(int storyID);
     void attachView(View view);
     void detachView();
   };

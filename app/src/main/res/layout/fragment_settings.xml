@@ -43,10 +43,10 @@
         tools:layout_editor_absoluteY="8dp">
 
       <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:paddingEnd="10dp"
-          android:src="@drawable/ic_customer_support_50" />
+          android:src="@drawable/ic_ic_customer_support_50" />
 
       <TextView
           android:id="@+id/support_menu_item"
@@ -76,10 +76,10 @@
         tools:layout_editor_absoluteY="8dp">
 
       <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:paddingEnd="10dp"
-          android:src="@drawable/ic_chat_50" />
+          android:src="@drawable/ic_ic_chat_50" />
 
       <TextView
           android:id="@+id/feedback_menu_item"
@@ -109,10 +109,10 @@
         tools:layout_editor_absoluteY="8dp">
 
       <ImageView
-          android:layout_width="30dp"
-          android:layout_height="30dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:paddingEnd="10dp"
-          android:src="@drawable/ic_about_50" />
+          android:src="@drawable/ic_ic_about_50" />
 
       <TextView
           android:id="@+id/about_menu_item"

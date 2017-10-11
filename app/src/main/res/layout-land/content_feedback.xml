@@ -1,0 +1,115 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/aboutScrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical"
+    android:fillViewport="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:weightSum="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/TextViewTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feedbacktitle"
+                    android:textSize="7pt"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/EditTextName"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/feedbackname"
+                    android:inputType="textPersonName"
+                    android:layout_width="fill_parent"
+                    android:layout_marginBottom="8dp">
+                </EditText>
+
+                <EditText
+                    android:id="@+id/EditTextEmail"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/feedbackemail"
+                    android:inputType="textEmailAddress"
+                    android:layout_width="fill_parent"
+                    android:layout_marginBottom="8dp">
+                </EditText>
+
+                <Spinner
+                    android:id="@+id/SpinnerFeedbackType"
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/feedbacktype1"
+                    android:layout_width="fill_parent"
+                    android:entries="@array/feedbacktypelist"
+                    android:layout_marginBottom="8dp">
+                </Spinner>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/EditTextFeedbackBody"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/feedbackbody"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
+                    android:layout_width="fill_parent"
+                    android:layout_marginBottom="8dp">
+                </EditText>
+
+                <CheckBox
+                    android:id="@+id/CheckBoxResponse"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feedbackresponse"
+                    android:layout_width="fill_parent"
+                    android:layout_marginBottom="8dp">
+                </CheckBox>
+
+                <Button
+                    android:id="@+id/ButtonSendFeedback"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feedbackbutton"
+                    android:onClick="sendFeedback"
+                    android:layout_width="fill_parent"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/colorBlack">
+                </Button>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+</RelativeLayout>

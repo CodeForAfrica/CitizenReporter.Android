@@ -9,15 +9,16 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.squareup.picasso.Picasso;
+import org.codeforafrica.citizenreporterandroid.GlideApp;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
-import org.codeforafrica.citizenreporterandroid.data.sources.LocalDataHelper;
 import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
 import org.codeforafrica.citizenreporterandroid.utils.TimeUtils;
 
@@ -36,7 +37,6 @@ public class AssignmentDetailActivity extends Activity {
 
   @BindView(R.id.assignment_detail_author) TextView assignment_detail_author;
 
-  private LocalDataHelper dataHelper;
 
   private Assignment assignment;
   private String assignmentID;
@@ -44,7 +44,7 @@ public class AssignmentDetailActivity extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_assignment_detail);
-    dataHelper = new LocalDataHelper(this);
+
     ButterKnife.bind(this);
 
     assignmentID = getIntent().getStringExtra("assignment_id");
@@ -58,8 +58,9 @@ public class AssignmentDetailActivity extends Activity {
               TimeUtils.getShortDateFormat(assignmentObject.getDate("deadline")));
           assignment_detail_text.setText(assignmentObject.getString("description"));
           assignment_detail_author.setText(assignmentObject.getString("author"));
-          Picasso.with(AssignmentDetailActivity.this)
+          GlideApp.with(AssignmentDetailActivity.this)
               .load(assignmentObject.getParseFile("featured_image").getUrl())
+              .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
               .into(featured_image);
         } else {
           // something went wrong

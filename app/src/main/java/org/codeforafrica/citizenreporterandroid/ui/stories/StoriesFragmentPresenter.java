@@ -8,22 +8,16 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import java.util.List;
 import javax.inject.Inject;
-import org.codeforafrica.citizenreporterandroid.data.DataManager;
-import org.codeforafrica.citizenreporterandroid.data.models.Story;
 
 /**
  * Created by Ahereza on 9/3/17.
  */
 
 public class StoriesFragmentPresenter implements StoriesFragmentContract.Presenter {
-  private DataManager dataManager;
   private StoriesFragmentContract.View view;
 
-  @Inject public StoriesFragmentPresenter(DataManager dataManager) {
-    this.dataManager = dataManager;
+  @Inject public StoriesFragmentPresenter() {
   }
-
-
 
   @Override public void loadStories() {
     view.showLoading();
@@ -40,11 +34,6 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
     view.hideLoading();
   }
 
-  @Override public void deleteStory(int storyID) {
-    view.swipeToDelete();
-    dataManager.deleteStory(storyID);
-  }
-
   @Override public void attachView(StoriesFragmentContract.View view) {
     this.view = view;
   }
@@ -55,6 +44,7 @@ public class StoriesFragmentPresenter implements StoriesFragmentContract.Present
 
   private void checkNumberOfStories(List<ParseObject> storyList) {
     if (storyList != null && storyList.size() > 0) {
+      view.hideErrorLayout();
       view.displayStories(storyList);
     } else {
       view.displayNoStories();

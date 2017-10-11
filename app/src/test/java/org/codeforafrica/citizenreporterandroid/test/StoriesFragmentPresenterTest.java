@@ -3,7 +3,6 @@ package org.codeforafrica.citizenreporterandroid.test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.codeforafrica.citizenreporterandroid.data.DataManager;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.ui.stories.StoriesFragmentContract;
 import org.codeforafrica.citizenreporterandroid.ui.stories.StoriesFragmentPresenter;

@@ -18,9 +18,8 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     super.onTokenRefresh();
     String token = FirebaseInstanceId.getInstance().getToken();
     Log.d("FIREBASE TOKEN: ", " " + token);
-
-    if (token != null) {
-      ParseUser user = ParseUser.getCurrentUser();
+    ParseUser user = ParseUser.getCurrentUser();
+    if (token != null && user != null) {
       user.put("fcm_token", token);
       user.saveEventually();
     }

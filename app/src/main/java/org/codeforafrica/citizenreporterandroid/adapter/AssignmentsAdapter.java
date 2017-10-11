@@ -14,7 +14,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
+import org.codeforafrica.citizenreporterandroid.GlideApp;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.main.assignments.AssignmentDetailActivity;
@@ -67,7 +69,10 @@ public class AssignmentsAdapter
     viewHolder.assignment_title.setText(assignment.getTitle());
     viewHolder.assignment_deadline.setText(TimeUtils.getShortDateFormat(assignment.getDeadline()));
     viewHolder.assignment_location.setText(assignment.getAssignmentLocation());
-    Glide.with(mContext).load(assignment.getFeaturedImage()).into(viewHolder.featured_image);
+    GlideApp.with(mContext)
+        .load(assignment.getFeaturedImage())
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+        .into(viewHolder.featured_image);
 
     viewHolder.assignment_card.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {

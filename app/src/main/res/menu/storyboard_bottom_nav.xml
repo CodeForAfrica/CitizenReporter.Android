@@ -20,5 +20,5 @@
         android:id="@+id/open_gallery"
         android:enabled="true"
         android:icon="@drawable/ic_gallery_white_32"
-        android:title="Open Gallery" />
+        android:title="Attach Photo" />
 </menu>

@@ -9,11 +9,8 @@ import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import java.util.List;
 import javax.inject.Inject;
-import org.codeforafrica.citizenreporterandroid.data.DataManager;
-import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
 import org.codeforafrica.citizenreporterandroid.di.AppComponent;
 import org.codeforafrica.citizenreporterandroid.di.AppModule;
 import org.codeforafrica.citizenreporterandroid.di.DaggerAppComponent;
@@ -25,7 +22,6 @@ import org.codeforafrica.citizenreporterandroid.di.DaggerAppComponent;
 public class CitizenReporterApplication extends Application {
   private static final String TAG = CitizenReporterApplication.class.getSimpleName();
   private AppComponent appComponent;
-  @Inject DataManager manager;
 
   public AppComponent getAppComponent() {
     return appComponent;
@@ -79,6 +75,5 @@ public class CitizenReporterApplication extends Application {
       }
     });
 
-    manager.getAssignments();
   }
 }

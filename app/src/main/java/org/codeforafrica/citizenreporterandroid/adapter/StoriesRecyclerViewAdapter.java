@@ -2,23 +2,31 @@ package org.codeforafrica.citizenreporterandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.parse.ParseObject;
 import java.util.Date;
 import java.util.List;
+
 import org.codeforafrica.citizenreporterandroid.R;
+import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Story;
 import org.codeforafrica.citizenreporterandroid.storyboard.Storyboard;
+
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.utils.TimeUtils;
+
 
 /**
  * Created by Ahereza on 7/30/17.
@@ -76,9 +84,11 @@ public class StoriesRecyclerViewAdapter
     if (updated != null) {
       holder.story_date_saved.setText(TimeUtils.getShortDateFormat(updated));
     } else {
-      holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getDate("updatedAt")));
+      holder.story_date_saved.setText(TimeUtils.getShortDateFormat(story.getDate("createdAt")));
     }
     setUploadedDisplay(story, holder.uploaded);
+
+
   }
 
   @Override public int getItemCount() {
@@ -91,15 +101,15 @@ public class StoriesRecyclerViewAdapter
       storyList.addAll(list);
     } else {
       storyList = list;
+
     }
-    notifyDataSetChanged();
   }
 
   public void setUploadedDisplay(ParseObject story, ImageView uploadedView) {
     if (story.getBoolean("uploaded")) {
-      uploadedView.setImageResource(R.drawable.ic_cloud_checked_20);
+      uploadedView.setImageResource(R.drawable.ic_ic_cloud_checked_20);
     } else {
-      uploadedView.setImageResource(R.drawable.ic_upload_to_cloud_20);
+      uploadedView.setImageResource(R.drawable.ic_ic_upload_to_cloud_20);
     }
   }
 }

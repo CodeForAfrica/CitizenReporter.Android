@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,8 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
   private ProgressBar progressBar;
 
   private LinearLayout error_layout;
+
+  private LinearLayout error_layout_no_assignments;
 
   @Inject AssignmentsFragmentPresenter presenter;
 
@@ -62,6 +65,8 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
     recyclerView = (RecyclerView) view.findViewById(R.id.assignment_recycler);
     progressBar = (ProgressBar) view.findViewById(R.id.assignmentsLoadingProgressBar);
     error_layout = (LinearLayout) view.findViewById(R.id.assignments_error_layout);
+    error_layout_no_assignments = (LinearLayout) view.findViewById(
+        R.id.assignments_error_layout_no_assignments);
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     presenter.getAndDisplayAssignments();
@@ -70,6 +75,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
 
     refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override public void onRefresh() {
+        Log.d("Assignments", "onRefresh: Swipe to refresh");
         refreshLayout.setRefreshing(false);
         refreshLayout.setEnabled(false);
         presenter.pullToRefreshAssignments();
@@ -97,5 +103,9 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
 
   @Override public void showError() {
     error_layout.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void showNoAssignments() {
+    error_layout_no_assignments.setVisibility(View.VISIBLE);
   }
 }
