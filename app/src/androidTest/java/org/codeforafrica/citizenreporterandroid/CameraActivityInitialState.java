@@ -4,8 +4,10 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.view.View;
 import java.util.ArrayList;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
+import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,15 +38,6 @@ public class CameraActivityInitialState {
 
 		onView(withId(R.id.img_overlay))
 				.check(matches(isDisplayed()));
-	}
-
-	@Test
-	public void toggleOverlayVisibility() {
-		onView(withId(R.id.img_overlay_toggle))
-				.perform(click());
-
-		onView(withId(R.id.img_overlay))
-				.check(matches(not(isDisplayed())));
 	}
 
 	@Test
