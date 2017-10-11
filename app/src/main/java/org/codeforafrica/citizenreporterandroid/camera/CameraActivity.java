@@ -73,12 +73,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import org.codeforafrica.citizenreporterandroid.GlideApp;
 import org.codeforafrica.citizenreporterandroid.R;
-
-import static org.codeforafrica.citizenreporterandroid.GlideApp.*;
 
 public class CameraActivity extends AppCompatActivity
 		implements SceneSelectorAdapter.OnClickThumbListener {
+	private static final String TAG = CameraActivity.class.getSimpleName();
 	private static final int REQUEST_CAMERA_PERMISSION = 1;
 	private static final int REQUEST_STORAGE_PERMISSION = 2;
 	private static final int REQUEST_AUDIO_PERMISSION = 4;
@@ -87,15 +87,9 @@ public class CameraActivity extends AppCompatActivity
 	private static final int PREVIEW_IMAGE_RESULT = 3;
 	private static final int PROGRESS_MIN = 50;
 
-	private static final String TAG = CameraActivity.class.getSimpleName();
-	private static final String IMAGE_FILE_LOCATION = "image_file_location";
-	private static final String IMAGE_SAVED_PATH = "imagePath";
-	private static final String VIDEO_SAVED_PATH = "videoPath";
-	private static final String PORTRAIT_SCENE = "Portrait";
-	private static final String CANDID_SCENE = "Candid";
-	private static final String INTERACTION_SCENE = "Interaction";
-	private static final String ENVIRONMENT_SCENE = "Environment";
-	private static final String SIGNATURE_SCENE = "Signature";
+	private static String IMAGE_FILE_LOCATION;
+	private static String IMAGE_SAVED_PATH;
+	private static String VIDEO_SAVED_PATH;
 
 	private CameraDevice cameraDevice;
 	private CameraCaptureSession previewCaptureSession;
@@ -155,16 +149,15 @@ public class CameraActivity extends AppCompatActivity
 	private boolean showOverlays = true;
 	private boolean manualFocusEngaged = false;
 	private boolean isMeteringAFAreaSupported;
+	private boolean initialized	= false;
 
 	private static SparseIntArray ORIENTATIONS = new SparseIntArray();
-
 	static {
 		ORIENTATIONS.append(Surface.ROTATION_0, 0);
 		ORIENTATIONS.append(Surface.ROTATION_90, 90);
 		ORIENTATIONS.append(Surface.ROTATION_180, 180);
 		ORIENTATIONS.append(Surface.ROTATION_270, 270);
 	}
-
 	private final ImageReader.OnImageAvailableListener onImageAvailableListener =
 			new ImageReader.OnImageAvailableListener() {
 				@Override
@@ -173,30 +166,13 @@ public class CameraActivity extends AppCompatActivity
 				}
 			};
 
-	private static final String[] WB_SCENES =
-			{
-					"Off",
-					"Auto",
-					"Incandescent",
-					"Fluorescent",
-					"Warm Fluorescent",
-					"Daylight",
-					"Cloudy Daylight",
-					"Twilight",
-					"Shade"
-			};
-
-	private static final String[] COLOR_EFFECTS = {
-			"Off",
-			"Mono",
-			"Negative",
-			"Solarize",
-			"Sepia",
-			"Posterize",
-			"Whiteboard",
-			"Blackboard",
-			"Aqua"
-	};
+	private static String[] colorEffects;
+	private static String[] wbScenes;
+	private static String portraitScene;
+	private static String candidScene;
+	private static String interactionScene;
+	private static String environmentScene;
+	private static String signatureScene;
 
 	@BindView(R.id.scene_recylcer_view) RecyclerView sceneRecyclerView;
 	@BindView(R.id.tv_camera) TextureView textureView;
@@ -219,11 +195,10 @@ public class CameraActivity extends AppCompatActivity
 	@BindView(R.id.txt_zoom_caption) TextView zoomCaption;
 	@BindView(R.id.seekbar_light) SeekBar lightSeekBar;
 	@BindView(R.id.chronometer2) Chronometer chronometer;
-	private boolean initialized	= false;
 
 	@Override public void OnClickScene(String sceneKey, Integer position) {
 		int imgID = overlayScenes.get(sceneKey).get(position);
-		with(this).load(null).placeholder(imgID).centerCrop().into(imgOverlay);
+		GlideApp.with(this).load(null).placeholder(imgID).centerCrop().into(imgOverlay);
 		hideSceneSwitcher();
 	}
 
@@ -376,7 +351,7 @@ public class CameraActivity extends AppCompatActivity
 								cameraCharacteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS);
 						if (colorModes != null) {
 							for (int mode : colorModes) {
-								availableEffects.put(COLOR_EFFECTS[mode], mode);
+								availableEffects.put(colorEffects[mode], mode);
 							}
 						}
 					}
@@ -386,7 +361,7 @@ public class CameraActivity extends AppCompatActivity
 								cameraCharacteristics.get(CameraCharacteristics.CONTROL_AWB_AVAILABLE_MODES);
 						if (awbModes != null) {
 							for (int mode : awbModes) {
-								awbAvailableModes.put(WB_SCENES[mode], mode);
+								awbAvailableModes.put(wbScenes[mode], mode);
 							}
 						}
 					}
@@ -455,21 +430,21 @@ public class CameraActivity extends AppCompatActivity
 
 		switch (flashStatus) {
 			case 0:
-				with(this)
+				GlideApp.with(this)
 						.load(null)
 						.placeholder(R.drawable.ic_flash_off)
 						.centerCrop()
 						.into(flashModeBtn);
 				break;
 			case 1:
-				with(this)
+				GlideApp.with(this)
 						.load(null)
 						.placeholder(R.drawable.ic_flash_on)
 						.centerCrop()
 						.into(flashModeBtn);
 				break;
 			case 2:
-				with(this)
+				GlideApp.with(this)
 						.load(null)
 						.placeholder(R.drawable.ic_flash_auto)
 						.centerCrop()
@@ -685,7 +660,6 @@ public class CameraActivity extends AppCompatActivity
 					Intent resultIntent = new Intent();
 					resultIntent.putExtra(IMAGE_SAVED_PATH, cameraPreviewResult);
 					setResult(Activity.RESULT_OK, resultIntent);
-					CameraActivity.super.finish();
 				} else if (resultCode == Activity.RESULT_CANCELED) {
 					// Set the response of the camera intent to result canceled.
 					setResult(Activity.RESULT_CANCELED);
@@ -942,16 +916,16 @@ public class CameraActivity extends AppCompatActivity
 	private void showWBList() {
 		final String[] elements = new String[awbAvailableModes.size()];
 		int i = 1;
-		elements[0] = "Auto";
+		elements[0] = getString(R.string.wb_auto);
 		for (String name : awbAvailableModes.keySet()) {
-			if (name == "Auto") continue;
+			if (Objects.equals(name,  getString(R.string.wb_auto))) continue;
 			elements[i] = name;
 			i++;
 		}
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(CameraActivity.this);
 		builder.setCancelable(true)
-				.setTitle("White Balance")
+				.setTitle(getString(R.string.wb_title))
 				.setItems(elements, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int index) {
 						wbMode = elements[index];
@@ -975,7 +949,6 @@ public class CameraActivity extends AppCompatActivity
 		setContentView(R.layout.activity_camera);
 		ButterKnife.bind(this);
 
-		currentScene = INTERACTION_SCENE;
 		gestureObject = new GestureDetectorCompat(this, new LearnGesture());
 		scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 		initializeObjects();
@@ -987,7 +960,7 @@ public class CameraActivity extends AppCompatActivity
 			@Override public void onClick(View view) {
 				if (showOverlays) {
 					showOverlays = false;
-					with(CameraActivity.this)
+					GlideApp.with(CameraActivity.this)
 							.load(null)
 							.placeholder(R.drawable.ic_not_visible)
 							.centerCrop()
@@ -999,7 +972,7 @@ public class CameraActivity extends AppCompatActivity
 					}
 				} else {
 					showOverlays = true;
-					with(CameraActivity.this)
+					GlideApp.with(CameraActivity.this)
 							.load(null)
 							.placeholder(R.drawable.ic_visible)
 							.centerCrop()
@@ -1046,7 +1019,7 @@ public class CameraActivity extends AppCompatActivity
 			@Override public void onClick(View view) {
 				prevScene = selectedScene;
 				selectedScene = 0;
-				setSceneAdapter(PORTRAIT_SCENE);
+				setSceneAdapter(portraitScene);
 				prevScene = 0;
 			}
 		});
@@ -1055,7 +1028,7 @@ public class CameraActivity extends AppCompatActivity
 			@Override public void onClick(View view) {
 				prevScene = selectedScene;
 				selectedScene = 1;
-				setSceneAdapter(SIGNATURE_SCENE);
+				setSceneAdapter(signatureScene);
 				prevScene = 1;
 			}
 		});
@@ -1064,7 +1037,7 @@ public class CameraActivity extends AppCompatActivity
 			@Override public void onClick(View view) {
 				prevScene = selectedScene;
 				selectedScene = 2;
-				setSceneAdapter(INTERACTION_SCENE);
+				setSceneAdapter(interactionScene);
 				prevScene = 2;
 			}
 		});
@@ -1073,7 +1046,7 @@ public class CameraActivity extends AppCompatActivity
 			@Override public void onClick(View view) {
 				prevScene = selectedScene;
 				selectedScene = 3;
-				setSceneAdapter(CANDID_SCENE);
+				setSceneAdapter(candidScene);
 				prevScene = 3;
 			}
 		});
@@ -1082,7 +1055,7 @@ public class CameraActivity extends AppCompatActivity
 			@Override public void onClick(View view) {
 				prevScene = selectedScene;
 				selectedScene = 4;
-				setSceneAdapter(ENVIRONMENT_SCENE);
+				setSceneAdapter(environmentScene);
 				prevScene = 4;
 			}
 		});
@@ -1109,7 +1082,7 @@ public class CameraActivity extends AppCompatActivity
 				imgOverlay.setImageDrawable(null);
 				swipeText.setText(R.string.recording_status);
 
-				with(CameraActivity.this)
+				GlideApp.with(CameraActivity.this)
 						.load(null)
 						.placeholder(R.drawable.ic_video_record)
 						.centerCrop()
@@ -1142,7 +1115,7 @@ public class CameraActivity extends AppCompatActivity
 					chronometer.setVisibility(View.INVISIBLE);
 
 					isRecording = false;
-					with(CameraActivity.this)
+					GlideApp.with(CameraActivity.this)
 							.load(null)
 							.placeholder(R.drawable.camera_capture)
 							.centerCrop()
@@ -1218,7 +1191,7 @@ public class CameraActivity extends AppCompatActivity
 
 	private void showOthers() {
 		showOverlays = false;
-		with(CameraActivity.this)
+		GlideApp.with(CameraActivity.this)
 				.load(null)
 				.placeholder(R.drawable.ic_not_visible)
 				.centerCrop()
@@ -1256,16 +1229,16 @@ public class CameraActivity extends AppCompatActivity
 	private void showColorEffectsList() {
 		final String[] elements = new String[availableEffects.size()];
 		int i = 1;
-		elements[0] = "Off";
+		elements[0] = getString(R.string.color_effects_off);
 		for (String name : availableEffects.keySet()) {
-			if (!Objects.equals(name, "Off")) {
+			if (!Objects.equals(name, getString(R.string.color_effects_off))) {
 				elements[i] = name;
 				i++;
 			}
 		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(CameraActivity.this);
 		builder.setCancelable(true)
-				.setTitle("Color Filters")
+				.setTitle(getString(R.string.color_effects_title))
 				.setItems(elements, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int index) {
 						currentCameraEffect = elements[index];
@@ -1284,6 +1257,38 @@ public class CameraActivity extends AppCompatActivity
 	}
 
 	private void initializeObjects() {
+		IMAGE_FILE_LOCATION = getString(R.string.constant_file_location);
+		IMAGE_SAVED_PATH = getString(R.string.constant_image_path);
+		VIDEO_SAVED_PATH = getString(R.string.constant_video_path);
+
+		portraitScene = getString(R.string.portrait);
+		candidScene = getString(R.string.candid);
+		interactionScene = getString(R.string.interaction);
+		environmentScene = getString(R.string.environment);
+		signatureScene = getString(R.string.signature);
+		colorEffects = new String[]{
+				getString(R.string.color_effects_off),
+				getString(R.string.color_effects_mono),
+				getString(R.string.color_effects_negative),
+				getString(R.string.color_effects_solarize),
+				getString(R.string.color_effects_sepia),
+				getString(R.string.color_effects_posterize),
+				getString(R.string.color_effects_whiteboard),
+				getString(R.string.color_effects_blackboard),
+				getString(R.string.color_effects_aqua)
+		};
+		wbScenes = new String[] {
+				getString(R.string.wb_off),
+				getString(R.string.wb_auto),
+				getString(R.string.wb_incandescent),
+				getString(R.string.wb_fluorescent),
+				getString(R.string.wb_warm_fluorescent),
+				getString(R.string.wb_day_light),
+				getString(R.string.wb_cloudy_light),
+				getString(R.string.wb_twilight),
+				getString(R.string.wb_shade)
+		};
+		currentScene = interactionScene;
 		mediaRecorder = new MediaRecorder();
 		layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 		sceneRecyclerView.setLayoutManager(layoutManager);
@@ -1324,15 +1329,14 @@ public class CameraActivity extends AppCompatActivity
 		resultIntent.putExtra(VIDEO_SAVED_PATH, videoFileName);
 		setResult(Activity.RESULT_OK, resultIntent);
 		Log.d(TAG, "Success: " + videoFileName);
-		CameraActivity.super.finish();
 	}
 
 	private void hideSceneIcons() {
-		switcher1.setVisibility(View.INVISIBLE);
-		switcher2.setVisibility(View.INVISIBLE);
-		switcher3.setVisibility(View.INVISIBLE);
-		switcher4.setVisibility(View.INVISIBLE);
-		switcher5.setVisibility(View.INVISIBLE);
+		switcher1.setVisibility(View.GONE);
+		switcher2.setVisibility(View.GONE);
+		switcher3.setVisibility(View.GONE);
+		switcher4.setVisibility(View.GONE);
+		switcher5.setVisibility(View.GONE);
 	}
 
 	private void showSceneIcons() {
@@ -1392,11 +1396,11 @@ public class CameraActivity extends AppCompatActivity
 
 		overlayScenes = new HashMap<String, ArrayList<Integer>>() {
 			{
-				put(PORTRAIT_SCENE, portrait);
-				put(SIGNATURE_SCENE, signature);
-				put(INTERACTION_SCENE, interaction);
-				put(CANDID_SCENE, candid);
-				put(ENVIRONMENT_SCENE, environment);
+				put(portraitScene, portrait);
+				put(signatureScene, signature);
+				put(interactionScene, interaction);
+				put(candidScene, candid);
+				put(environmentScene, environment);
 			}
 		};
 	}
@@ -1456,28 +1460,28 @@ public class CameraActivity extends AppCompatActivity
 		switch (nextScene) {
 			case 0:
 				switcher1.setImageResource(SELECTED);
-				loadOverlayImage(PORTRAIT_SCENE);
+				loadOverlayImage(portraitScene);
 				break;
 			case 1:
 				switcher2.setImageResource(SELECTED);
-				loadOverlayImage(SIGNATURE_SCENE);
+				loadOverlayImage(signatureScene);
 				break;
 			case 2:
 				switcher3.setImageResource(SELECTED);
-				loadOverlayImage(INTERACTION_SCENE);
+				loadOverlayImage(interactionScene);
 				break;
 			case 3:
 				switcher4.setImageResource(SELECTED);
-				loadOverlayImage(CANDID_SCENE);
+				loadOverlayImage(candidScene);
 				break;
 			case 4:
 				switcher5.setImageResource(SELECTED);
-				loadOverlayImage(ENVIRONMENT_SCENE);
+				loadOverlayImage(environmentScene);
 				break;
 			default:
 				selectedScene = 0;
 				switcher1.setImageResource(SELECTED);
-				loadOverlayImage(PORTRAIT_SCENE);
+				loadOverlayImage(portraitScene);
 				break;
 		}
 	}
@@ -1486,7 +1490,7 @@ public class CameraActivity extends AppCompatActivity
 		int imgID = overlayScenes.get(scene).get(0);
 		currentScene = scene;
 		swipeText.setText(scene);
-		with(this)
+		GlideApp.with(this)
 				.load(null)
 				.placeholder(imgID)
 				.centerCrop()
@@ -1674,6 +1678,7 @@ public class CameraActivity extends AppCompatActivity
 			return true;
 		}
 	}
+
 	public boolean checkWhiteBalanceStatus(String mode) {
 		return Objects.equals(wbMode, mode);
 	}
