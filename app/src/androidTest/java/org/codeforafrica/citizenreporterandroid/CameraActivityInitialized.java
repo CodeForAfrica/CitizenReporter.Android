@@ -1,15 +1,19 @@
 package org.codeforafrica.citizenreporterandroid;
 
+import android.os.Build;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import java.util.ArrayList;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -20,6 +24,19 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class CameraActivityInitialized {
+	@Before
+	public void grantCameraPermission() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			getInstrumentation().getUiAutomation().executeShellCommand(
+					"pm grant " + getTargetContext().getPackageName()
+							+ " android.permission.CAMERA"
+			);
+			getInstrumentation().getUiAutomation().executeShellCommand(
+					"pm grant " + getTargetContext().getPackageName()
+							+ " android.permission.WRITE_EXTERNAL_STORAGE"
+			);
+		}
+	}
 
 	@Rule
 	public ActivityTestRule<CameraActivity> mActivityTestRule =
