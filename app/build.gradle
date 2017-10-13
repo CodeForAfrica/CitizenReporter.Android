@@ -110,7 +110,14 @@ dependencies {
   // Universal video player
   compile 'com.linsea:universalvideoview:1.1.0@aar'
 
+<<<<<<< HEAD
   androidTestCompile 'com.android.support:support-annotations:26.0.2'
+=======
+  // Required for Flurry Analytics integration
+  compile 'com.flurry.android:analytics:7.0.0@aar'
+
+
+>>>>>>> Add flurry analytics configuration
 }
 
 apply plugin: 'com.google.gms.google-services'
