@@ -303,6 +303,10 @@ public class Storyboard extends AppCompatActivity
                     Log.i(TAG, "done: uploading file");
                     presenter.createAndUploadParseMediaFile(activeStory, localURL, file);
                     media.put(file);
+
+                    // Track audio upload
+                    FlurryAgent.logEvent(AnalyticsHelper.EVENT_AUDIO_UPLOAD);
+
                     Log.i(TAG, "onActivityResult URL: " + file.getUrl());
                   } else {
                     Log.d(TAG, "Error: " + e.getLocalizedMessage());
