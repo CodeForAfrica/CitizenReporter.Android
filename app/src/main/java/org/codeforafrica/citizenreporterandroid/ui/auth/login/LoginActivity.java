@@ -63,9 +63,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 if (user == null) {
                   Toast.makeText(LoginActivity.this, "You cancelled facebook login",
                       Toast.LENGTH_SHORT).show();
-                  Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                  Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
                 } else {
-                  Log.d("MyApp", "User signed up and logged in through Facebook!");
+
+                  if (user.isNew()) {
+                    // Track Facebook sign-up
+                    FlurryAgent.logEvent(AnalyticsHelper.EVENT_FACEBOOK_SIGN_UP);
+                  }
+
+                  Log.d(TAG, "User signed up and logged in through Facebook!");
                   profile = Profile.getCurrentProfile();
                   if (profile != null) {
                     String first_name = profile.getFirstName();

@@ -10,6 +10,7 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.ui.onboarding.OnboardingActivity;
+import org.codeforafrica.citizenreporterandroid.utils.AnalyticsHelper;
 
 public class SplashActivity extends AppCompatActivity implements SplashActivityView {
   private SharedPreferences preferences;
@@ -18,6 +19,7 @@ public class SplashActivity extends AppCompatActivity implements SplashActivityV
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    AnalyticsHelper.logPageViews();
     Fabric.with(this, new Crashlytics());
     presenter = new SplashActivityPresenter(this);
     presenter.startNextActivity();
