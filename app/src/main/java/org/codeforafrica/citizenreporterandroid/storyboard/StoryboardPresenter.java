@@ -143,14 +143,14 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void saveStory(ParseObject story) {
-      view.updateStoryObject(story);
-      if (story.getString("title") != null){
+    view.updateStoryObject(story);
+    if (story.getString("title") != null){
+      // Track story save
+      FlurryAgent.logEvent(AnalyticsHelper.EVENT_SAVE_STORY);
       story.pinInBackground();
     } else{
       story.unpinInBackground();
     }
-
-
   }
 
   @Override public void uploadStory(final ParseObject story) {
