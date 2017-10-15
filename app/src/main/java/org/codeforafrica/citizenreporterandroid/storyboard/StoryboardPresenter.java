@@ -168,6 +168,8 @@ public class StoryboardPresenter implements Presenter {
             Log.d(TAG, "done: finished uploading successfully");
             // go to stories activity
             view.finishUploading();
+            // Track story uploads
+            FlurryAgent.logEvent(AnalyticsHelper.EVENT_UPLOAD_STORY);
           } else {
             story.put("uploaded", false);
             view.showUploadError();
