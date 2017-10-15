@@ -22,6 +22,7 @@ public class AnalyticsHelper {
     public static final String EVENT_SAVE_STORY = "SAVE_STORY";
     public static final String EVENT_UPLOAD_STORY = "UPLOAD_STORY";
     public static final String EVENT_IMAGE_UPLOAD = "IMAGE_UPLOAD";
+    public static final String EVENT_VIDEO_UPLOAD = "VIDEO_UPLOAD";
 
     public static final String PARAM_ASSIGNMENT_TITLE = "assignment_title";
 

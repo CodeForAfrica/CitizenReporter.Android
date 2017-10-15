@@ -374,6 +374,10 @@ public class Storyboard extends AppCompatActivity
                     });
                     media.put(file);
                     Log.i(TAG, "onActivityResult video URL: " + file.getUrl());
+                    
+                    // Track video upload
+                    FlurryAgent.logEvent(AnalyticsHelper.EVENT_VIDEO_UPLOAD);
+
                   } else {
                     Log.d(TAG, "Error: video " + e.getLocalizedMessage());
                   }
