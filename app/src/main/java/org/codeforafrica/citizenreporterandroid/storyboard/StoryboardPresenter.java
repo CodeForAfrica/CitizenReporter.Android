@@ -1,6 +1,8 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.util.Log;
+
+import com.flurry.android.FlurryAgent;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -14,6 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.storyboard.StoryboardContract.Presenter;
+import org.codeforafrica.citizenreporterandroid.utils.AnalyticsHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -134,6 +137,8 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void createNewStory(String assignmentID) {
+    // Track story creation
+    FlurryAgent.logEvent(AnalyticsHelper.EVENT_CREATE_STORY);
     view.loadNewReport(assignmentID);
   }
 

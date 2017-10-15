@@ -18,6 +18,7 @@ public class AnalyticsHelper {
     public static final String EVENT_PASSWORD_SIGN_UP = "PASSWORD_SIGN_UP";
     public static final String EVENT_LOGIN = "LOGIN";
     public static final String EVENT_ASSIGNMENT_OPEN = "ASSIGNMENT_OPEN";
+    public static final String EVENT_CREATE_STORY = "CREATE_STORY";
 
     public static final String PARAM_ASSIGNMENT_TITLE = "assignment_title";
 
