@@ -16,6 +16,7 @@ public class AnalyticsHelper {
     public static final String EVENT_FACEBOOK_SIGN_UP = "FACEBOOK_SIGN_UP";
     public static final String EVENT_GOOGLE_SIGN_UP = "GOOGLE_SIGN_UP";
     public static final String EVENT_PASSWORD_SIGN_UP = "PASSWORD_SIGN_UP";
+    public static final String EVENT_LOGIN = "LOGIN";
 
 
     /**
