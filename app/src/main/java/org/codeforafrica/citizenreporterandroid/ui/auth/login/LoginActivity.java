@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.facebook.Profile;
 
+import com.flurry.android.FlurryAgent;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -28,6 +29,7 @@ import org.codeforafrica.citizenreporterandroid.data.ParseHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.ui.auth.signin.SignInActivity;
 import org.codeforafrica.citizenreporterandroid.ui.auth.signup.SignUpActivity;
+import org.codeforafrica.citizenreporterandroid.utils.AnalyticsHelper;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
 
@@ -77,6 +79,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                   ParseHelper.getParseAssignments();
                   ParseHelper.getParseStories();
                   Log.d("MyApp", "done: intent");
+                  // Track login
+                  FlurryAgent.logEvent(AnalyticsHelper.EVENT_LOGIN);
                   Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                   startActivity(intent);
                   finish();

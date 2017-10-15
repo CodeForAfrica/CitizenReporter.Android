@@ -1,10 +1,13 @@
 package org.codeforafrica.citizenreporterandroid.ui.auth.signin;
 
 import android.util.Log;
+
+import com.flurry.android.FlurryAgent;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import org.codeforafrica.citizenreporterandroid.data.ParseHelper;
+import org.codeforafrica.citizenreporterandroid.utils.AnalyticsHelper;
 
 /**
  * Created by Ahereza on 9/17/17.
@@ -20,6 +23,8 @@ public class SignInPresenter implements SignInContract.Presenter {
         if (e == null) {
           ParseHelper.getParseAssignments();
           ParseHelper.getParseStories();
+          // Track login
+          FlurryAgent.logEvent(AnalyticsHelper.EVENT_LOGIN);
           view.hideLoading();
           view.goToMainActivity();
         } else {
