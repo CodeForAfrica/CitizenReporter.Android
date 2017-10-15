@@ -46,6 +46,7 @@ import cafe.adriel.androidaudiorecorder.model.AudioSource;
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -86,6 +87,7 @@ import org.codeforafrica.citizenreporterandroid.data.models.Attachment;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.ui.stories.AudioProgressUpdateThread;
 import org.codeforafrica.citizenreporterandroid.ui.video.VideoViewActivity;
+import org.codeforafrica.citizenreporterandroid.utils.AnalyticsHelper;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
@@ -331,6 +333,10 @@ public class Storyboard extends AppCompatActivity
                     presenter.createAndUploadParseMediaFile(activeStory, localURL, imageParseFile);
                     presenter.attachImage(imageParseFile.getName(), imageParseFile.getUrl());
                     media.put(imageParseFile);
+
+                    // Track image upload
+                    FlurryAgent.logEvent(AnalyticsHelper.EVENT_IMAGE_UPLOAD);
+
                     Log.i(TAG, "onActivityResult URL: image " + imageParseFile.getUrl());
                   }
                 }
