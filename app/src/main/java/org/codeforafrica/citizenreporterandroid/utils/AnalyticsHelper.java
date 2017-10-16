@@ -39,47 +39,6 @@ public class AnalyticsHelper {
     }
 
     /**
-     * Ends a timed event that was previously started.
-     *
-     * @param eventName     name of the event
-     * @param eventParams   event parameters (can be null)
-     */
-    public static void endTimedEvent(String eventName, Map<String, String> eventParams) {
-        FlurryAgent.endTimedEvent(eventName, eventParams);
-    }
-
-
-    /**
-     * Ends a timed event without event parameters.
-     *
-     * @param eventName     name of the event
-     */
-    public static void endTimedEvent(String eventName) {
-        FlurryAgent.endTimedEvent(eventName);
-    }
-
-    /**
-     * Logs an error.
-     *
-     * @param errorId           error ID
-     * @param errorDescription  error description
-     * @param throwable         a {@link Throwable} that describes the error
-     */
-    public static void logError(String errorId, String errorDescription, Throwable throwable) {
-        FlurryAgent.onError(errorId, errorDescription, throwable);
-    }
-
-    /**
-     * Logs location.
-     *
-     * @param latitude           latitude of location
-     * @param longitude        longitude of location
-     */
-    public static void logLocation(double latitude, double longitude) {
-        FlurryAgent.setLocation((float) latitude, (float) longitude);
-    }
-
-    /**
      * Logs page view counts.
      *
      */
