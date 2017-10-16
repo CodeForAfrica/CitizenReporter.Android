@@ -4,11 +4,10 @@
     android:id="@+id/root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.code4africa.customcamera.customcameraapp.CameraActivity"
+    tools:context="org.codeforafrica.citizenreporterandroid.camera.CameraActivity"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="81dp">
-
+    tools:layout_editor_absoluteY="81dp"
+    >
     <TextureView
         android:id="@+id/tv_camera"
         android:layout_width="wrap_content"
@@ -20,25 +19,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
-
+        tools:layout_editor_absoluteY="0dp"
+        />
     <ImageView
         android:id="@+id/img_btn_bg"
         android:layout_width="0dp"
-        android:layout_height="97dp"
-        android:alpha="1"
-        android:background="@color/black_overlay"
+        android:layout_height="104dp"
+        android:alpha="0.5"
+        android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="407dp"
+        />
+    <ImageView
+        android:id="@+id/img_top_bg"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:alpha="0.5"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
     <ImageView
         android:id="@+id/img_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/img_capture"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="100dp"
         android:adjustViewBounds="false"
         android:baselineAlignBottom="false"
         android:cropToPadding="false"
@@ -48,8 +57,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        />
     <ImageSwitcher
         android:id="@+id/sw_swipe_5"
         android:layout_width="15dp"
@@ -59,8 +68,9 @@
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/txt_swipe_caption"
         app:layout_constraintEnd_toEndOf="@+id/txt_swipe_caption"
-        app:layout_constraintStart_toEndOf="@+id/sw_swipe_4"></ImageSwitcher>
-
+        app:layout_constraintStart_toEndOf="@+id/sw_swipe_4"
+        >
+    </ImageSwitcher>
     <ImageSwitcher
         android:id="@+id/sw_swipe_4"
         android:layout_width="15dp"
@@ -70,8 +80,9 @@
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/txt_swipe_caption"
         app:layout_constraintEnd_toStartOf="@+id/sw_swipe_5"
-        app:layout_constraintStart_toEndOf="@+id/sw_swipe_3"></ImageSwitcher>
-
+        app:layout_constraintStart_toEndOf="@+id/sw_swipe_3"
+        >
+    </ImageSwitcher>
     <ImageSwitcher
         android:id="@+id/sw_swipe_3"
         android:layout_width="15dp"
@@ -81,8 +92,9 @@
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/txt_swipe_caption"
         app:layout_constraintEnd_toStartOf="@+id/sw_swipe_4"
-        app:layout_constraintStart_toEndOf="@+id/sw_swipe_2"></ImageSwitcher>
-
+        app:layout_constraintStart_toEndOf="@+id/sw_swipe_2"
+        >
+    </ImageSwitcher>
     <ImageSwitcher
         android:id="@+id/sw_swipe_2"
         android:layout_width="15dp"
@@ -91,8 +103,9 @@
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/txt_swipe_caption"
         app:layout_constraintEnd_toStartOf="@+id/sw_swipe_3"
-        app:layout_constraintStart_toEndOf="@+id/sw_swipe_1"></ImageSwitcher>
-
+        app:layout_constraintStart_toEndOf="@+id/sw_swipe_1"
+        >
+    </ImageSwitcher>
     <ImageSwitcher
         android:id="@+id/sw_swipe_1"
         android:layout_width="15dp"
@@ -103,8 +116,9 @@
         app:layout_constraintBottom_toTopOf="@+id/txt_swipe_caption"
         app:layout_constraintEnd_toStartOf="@+id/sw_swipe_2"
         app:layout_constraintHorizontal_bias="0.241"
-        app:layout_constraintStart_toStartOf="@+id/txt_swipe_caption"></ImageSwitcher>
-
+        app:layout_constraintStart_toStartOf="@+id/txt_swipe_caption"
+        >
+    </ImageSwitcher>
     <TextView
         android:id="@+id/txt_swipe_caption"
         android:layout_width="176dp"
@@ -116,47 +130,51 @@
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/img_capture"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/img_capture"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:clickable="true"
-        android:contentDescription="@string/desc_take_picture"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/camera_capture" />
+        />
 
-    <ImageView
-        android:id="@+id/img_switch_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:rotation="90"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/switch_camera" />
-
-    <ImageView
-        android:id="@+id/img_gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:rotation="90"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_gallery_thumb" />
-
+  <ImageView
+      android:id="@+id/img_capture"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true"
+      android:layout_marginBottom="16dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:background="?attr/selectableItemBackground"
+      android:clickable="true"
+      android:contentDescription="@string/desc_take_picture"
+      android:focusable="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:srcCompat="@drawable/camera_capture"
+      />
+  <ImageView
+      android:id="@+id/img_switch_camera"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginBottom="16dp"
+      android:layout_marginEnd="16dp"
+      android:clickable="true"
+      android:focusable="true"
+      android:rotation="90"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:srcCompat="@drawable/switch_camera"
+      />
+  <ImageView
+      android:id="@+id/img_gallery"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginBottom="16dp"
+      android:layout_marginStart="16dp"
+      android:rotation="90"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:srcCompat="@drawable/ic_gallery_thumb"
+      />
     <Chronometer
         android:id="@+id/chronometer2"
         android:layout_width="wrap_content"
@@ -168,17 +186,119 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/img_overlay" />
-
-    <ImageView
-        android:id="@+id/img_flash_btn"
+        app:layout_constraintTop_toTopOf="@+id/img_overlay"
+        />
+  <ImageView
+      android:id="@+id/img_flash_btn"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="16dp"
+      android:clickable="true"
+      android:focusable="true"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.077"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_flash_off"
+      />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/scene_recylcer_view"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/layout_bg"
+        app:layout_constraintBottom_toTopOf="@+id/sw_swipe_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+    </android.support.v7.widget.RecyclerView>
+    <SeekBar
+        android:id="@+id/seekbar_light"
+        android:layout_width="0dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:max="@integer/maxProgress"
+        android:progress="@integer/startAt"
+        app:layout_constraintBottom_toTopOf="@+id/scene_recylcer_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="294dp"
+        style="@android:style/Widget.Material.SeekBar"
+        />
+    <TextView
+        android:id="@+id/txt_seekbar_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:background="@drawable/layout_bg"
+        android:padding="5dp"
+        android:textColor="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toTopOf="@+id/seekbar_light"
+        app:layout_constraintEnd_toEndOf="@+id/seekbar_light"
+        app:layout_constraintStart_toStartOf="@+id/seekbar_light"
+        />
+    <TextView
+        android:id="@+id/txt_zoom_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/layout_bg"
+        android:textColor="@color/colorPrimaryLight"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/chronometer2"
-        app:srcCompat="@drawable/ic_flash_off" />
+        app:layout_constraintTop_toBottomOf="@+id/img_flash_btn"
+        />
+  <ImageView
+      android:id="@+id/img_wb_btn"
+      android:layout_width="35dp"
+      android:layout_height="35dp"
+      android:layout_marginBottom="16dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:clickable="true"
+      android:focusable="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/img_capture"
+      app:layout_constraintHorizontal_bias="0.6"
+      app:layout_constraintStart_toEndOf="@+id/img_gallery"
+      app:srcCompat="@drawable/ic_white_balance"
+      />
+  <ImageView
+      android:id="@+id/img_effects_btn"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginBottom="16dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginStart="8dp"
+      android:clickable="true"
+      android:focusable="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/img_switch_camera"
+      app:layout_constraintStart_toEndOf="@+id/img_capture"
+      app:srcCompat="@drawable/ic_enhance_effect"
+      />
+  <ImageView
+      android:id="@+id/img_overlay_toggle"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginEnd="24dp"
+      android:layout_marginTop="12dp"
+      android:clickable="true"
+      android:focusable="true"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_visible"
+      />
 </android.support.constraint.ConstraintLayout>
