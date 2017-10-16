@@ -108,8 +108,6 @@ dependencies {
 
   // Required for Flurry Analytics integration
   compile 'com.flurry.android:analytics:7.0.0@aar'
-
-
 }
 
 apply plugin: 'com.google.gms.google-services'
