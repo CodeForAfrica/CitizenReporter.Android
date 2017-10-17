@@ -186,6 +186,7 @@ public class CameraActivity extends AppCompatActivity
 	private static final String FLASH_MODE_KEY = "FLASH_MODE_KEY";
 	private static final String CURRENT_ORIENTATION_KEY = "DEVICE_ORIENTATION";
 	private static final String PROGRESS_VALUE_KEY = "PROGRESS_VALUE";
+	private static final String SHOW_OVERLAYS_KEY = "SHOW_OVERLAYS";
 
 	@BindView(R.id.scene_recylcer_view) RecyclerView sceneRecyclerView;
 	@BindView(R.id.tv_camera) TextureView textureView;
@@ -844,7 +845,7 @@ public class CameraActivity extends AppCompatActivity
 
 		switcher1.setImageResource(R.drawable.ic_circular);
 		switcher2.setImageResource(R.drawable.ic_circular);
-		switcher3.setImageResource(R.drawable.ic_selected_circular);
+		switcher3.setImageResource(R.drawable.ic_circular);
 		switcher4.setImageResource(R.drawable.ic_circular);
 		switcher5.setImageResource(R.drawable.ic_circular);
 		swipeScenes(selectedScene, prevScene);
@@ -963,12 +964,14 @@ public class CameraActivity extends AppCompatActivity
 		super.onSaveInstanceState(outState);
 		outState.putString(CURRENT_CAMERA_EFFECT_KEY, currentCameraEffect);
 		outState.putString(CURRENT_CAMERA_SCENE_KEY, currentScene);
+		outState.putInt(SELECTED_SCENE_KEY, selectedScene);
 		outState.putString(CURRENT_WB_MODE_KEY, wbMode);
 		outState.putInt(PREV_SCENE_KEY, prevScene);
 		outState.putBoolean(INITIALIZED_KEY, initialized);
 		outState.putInt(FLASH_MODE_KEY, flashStatus);
 		outState.putDouble(PROGRESS_VALUE_KEY, progressValue);
 		outState.putInt(CURRENT_ORIENTATION_KEY, getResources().getConfiguration().orientation);
+		outState.putBoolean(SHOW_OVERLAYS_KEY, showOverlays);
 	}
 
 	@Override protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -997,7 +1000,7 @@ public class CameraActivity extends AppCompatActivity
 		scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 		initializeObjects();
 		initializeScenes();
-		initializeCameraInterface(); // Creates the swipe buttons
+		currentScene = interactionScene;
 
 		if (savedInstanceState != null) {
 			currentCameraEffect = savedInstanceState.getString(CURRENT_CAMERA_EFFECT_KEY);
@@ -1008,6 +1011,7 @@ public class CameraActivity extends AppCompatActivity
 			initialized = savedInstanceState.getBoolean(INITIALIZED_KEY);
 			flashStatus = savedInstanceState.getInt(FLASH_MODE_KEY);
 			progressValue = savedInstanceState.getDouble(PROGRESS_VALUE_KEY);
+			showOverlays = savedInstanceState.getBoolean(SHOW_OVERLAYS_KEY);
 			zoomCaption.setVisibility(View.GONE);
 			seekBarProgressText.setVisibility(View.GONE);
 			changeFlashIcons();
@@ -1021,13 +1025,20 @@ public class CameraActivity extends AppCompatActivity
 						rotateIcons(90, 0);
 						break;
 				}
+				showOthers();
+				hideSceneSwitcher();
+			}
+			if (!showOverlays) {
+				hideOverlayDetails();
 			}
 		}
 
-		if (initialized) {
-			showOthers();
-			//increaseBrightness(progressValue);
-		} else {
+		initializeCameraInterface(); // Creates the swipe buttons
+		mediaRecorder = new MediaRecorder();
+		layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+		sceneRecyclerView.setLayoutManager(layoutManager);
+
+		if (!initialized) {
 			hideOthers();
 		}
 
@@ -1266,13 +1277,6 @@ public class CameraActivity extends AppCompatActivity
 	}
 
 	private void showOthers() {
-		showOverlays = false;
-		GlideApp.with(CameraActivity.this)
-				.load(null)
-				.placeholder(R.drawable.ic_not_visible)
-				.centerCrop()
-				.into(overlayToggle);
-
 		flashModeBtn.setVisibility(View.VISIBLE);
 		openGalleryBtn.setVisibility(View.VISIBLE);
 		swapCameraBtn.setVisibility(View.VISIBLE);
@@ -1280,9 +1284,6 @@ public class CameraActivity extends AppCompatActivity
 		icon_black_background.setVisibility(View.VISIBLE);
 		swipeText.setVisibility(View.VISIBLE);
 		lightSeekBar.setVisibility(View.VISIBLE);
-
-		imgOverlay.setVisibility(View.GONE);
-		hideOverlayDetails();
 		showSpecialEffects();
 	}
 
@@ -1342,6 +1343,7 @@ public class CameraActivity extends AppCompatActivity
 		interactionScene = getString(R.string.interaction);
 		environmentScene = getString(R.string.environment);
 		signatureScene = getString(R.string.signature);
+
 		colorEffects = new String[]{
 				getString(R.string.color_effects_off),
 				getString(R.string.color_effects_mono),
@@ -1364,10 +1366,6 @@ public class CameraActivity extends AppCompatActivity
 				getString(R.string.wb_twilight),
 				getString(R.string.wb_shade)
 		};
-		currentScene = interactionScene;
-		mediaRecorder = new MediaRecorder();
-		layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-		sceneRecyclerView.setLayoutManager(layoutManager);
 	}
 
 	private void increaseBrightness(double progressValue) {
@@ -1736,6 +1734,14 @@ public class CameraActivity extends AppCompatActivity
 			if (!initialized) {
 				initialized = true;
 				showOthers();
+				showOverlays = false;
+				GlideApp.with(CameraActivity.this)
+						.load(null)
+						.placeholder(R.drawable.ic_not_visible)
+						.centerCrop()
+						.into(overlayToggle);
+				imgOverlay.setVisibility(View.GONE);
+				hideOverlayDetails();
 			}
 
 			final int y =
