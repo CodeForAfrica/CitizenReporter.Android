@@ -110,6 +110,9 @@ dependencies {
   // Universal video player
   compile 'com.linsea:universalvideoview:1.1.0@aar'
 
+  // Required for Flurry Analytics integration
+  compile 'com.flurry.android:analytics:7.0.0@aar'
+  
   androidTestCompile 'com.android.support:support-annotations:26.0.2'
 }
 

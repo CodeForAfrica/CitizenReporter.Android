@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.facebook.Profile;
 
+import com.flurry.android.FlurryAgent;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -28,6 +29,7 @@ import org.codeforafrica.citizenreporterandroid.data.ParseHelper;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
 import org.codeforafrica.citizenreporterandroid.ui.auth.signin.SignInActivity;
 import org.codeforafrica.citizenreporterandroid.ui.auth.signup.SignUpActivity;
+import org.codeforafrica.citizenreporterandroid.utils.AnalyticsHelper;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
 
@@ -61,9 +63,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 if (user == null) {
                   Toast.makeText(LoginActivity.this, "You cancelled facebook login",
                       Toast.LENGTH_SHORT).show();
-                  Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                  Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
                 } else {
-                  Log.d("MyApp", "User signed up and logged in through Facebook!");
+
+                  if (user.isNew()) {
+                    // Track Facebook sign-up
+                    FlurryAgent.logEvent(AnalyticsHelper.EVENT_FACEBOOK_SIGN_UP);
+                  }
+                  
+                  Log.d(TAG, "User signed up and logged in through Facebook!");
                   profile = Profile.getCurrentProfile();
                   if (profile != null) {
                     String first_name = profile.getFirstName();
@@ -77,6 +85,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                   ParseHelper.getParseAssignments();
                   ParseHelper.getParseStories();
                   Log.d("MyApp", "done: intent");
+                  // Track login
+                  FlurryAgent.logEvent(AnalyticsHelper.EVENT_LOGIN);
                   Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                   startActivity(intent);
                   finish();
