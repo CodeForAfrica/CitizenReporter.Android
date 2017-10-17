@@ -1,6 +1,7 @@
 package org.codeforafrica.citizenreporterandroid.camera;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import org.codeforafrica.citizenreporterandroid.R;
 import static org.codeforafrica.citizenreporterandroid.GlideApp.*;
 
 public class SceneSelectorAdapter extends RecyclerView.Adapter<SceneSelectorAdapter.ViewHolder> {
+	private static int rotationAngle;
 	private String sceneKey;
 	private ArrayList<Integer> scenesList;
 	private OnClickThumbListener onClickThumbListener;
@@ -26,6 +28,9 @@ public class SceneSelectorAdapter extends RecyclerView.Adapter<SceneSelectorAdap
 		this.sceneKey = sceneKey;
 		this.scenesList = sceneList;
 		this.onClickThumbListener = (OnClickThumbListener) activity;
+		if (activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			rotationAngle = -90;
+		}
 	}
 
 	@Override
@@ -55,6 +60,7 @@ public class SceneSelectorAdapter extends RecyclerView.Adapter<SceneSelectorAdap
 		}
 
 		private void bindScene(Integer sceneID) {
+			if(rotationAngle == -90) itemView.setRotation(rotationAngle);
 			with(itemView)
 					.load(null)
 					.placeholder(sceneID)
