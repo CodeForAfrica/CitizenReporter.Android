@@ -1026,7 +1026,7 @@ public class CameraActivity extends AppCompatActivity
 
 		if (initialized) {
 			showOthers();
-			increaseBrightness(progressValue);
+			//increaseBrightness(progressValue);
 		} else {
 			hideOthers();
 		}
@@ -1424,52 +1424,91 @@ public class CameraActivity extends AppCompatActivity
 	}
 
 	private void initializeScenes() {
-		portrait = new ArrayList<Integer>() {
-			{
-				add(R.drawable.portrait_001);
-				add(R.drawable.portrait_002);
-				add(R.drawable.portrait_003);
-				add(R.drawable.portrait_004);
-				add(R.drawable.portrait_005);
-				add(R.drawable.portrait_006);
-				add(R.drawable.portrait_007);
-			}
-		};
-
-		signature = new ArrayList<Integer>() {
-			{
-				add(R.drawable.signature_001);
-				add(R.drawable.signature_002);
-				add(R.drawable.signature_003);
-				add(R.drawable.signature_004);
-				add(R.drawable.signature_005);
-			}
-		};
-
-		interaction = new ArrayList<Integer>() {
-			{
-				add(R.drawable.interaction_001);
-				add(R.drawable.interaction_002);
-				add(R.drawable.interaction_003);
-			}
-		};
-
-		candid = new ArrayList<Integer>() {
-			{
-				add(R.drawable.candid_001);
-				add(R.drawable.candid_002);
-				add(R.drawable.candid_003);
-			}
-		};
-
-		environment = new ArrayList<Integer>() {
-			{
-				add(R.drawable.environment_001);
-				add(R.drawable.environment_002);
-				add(R.drawable.environment_003);
-			}
-		};
-
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			portrait = new ArrayList<Integer>() {
+				{
+					add(R.drawable.portrait_land_001);
+					add(R.drawable.portrait_land_002);
+					add(R.drawable.portrait_land_003);
+					add(R.drawable.portrait_land_004);
+					add(R.drawable.portrait_land_005);
+					add(R.drawable.portrait_land_006);
+					add(R.drawable.portrait_land_007);
+				}
+			};
+			signature = new ArrayList<Integer>() {
+				{
+					add(R.drawable.signature_land_001);
+					add(R.drawable.signature_land_002);
+					add(R.drawable.signature_land_003);
+					add(R.drawable.signature_land_004);
+					add(R.drawable.signature_land_005);
+				}
+			};
+			interaction = new ArrayList<Integer>() {
+				{
+					add(R.drawable.interaction_land_001);
+					add(R.drawable.interaction_land_002);
+					add(R.drawable.interaction_land_003);
+				}
+			};
+			candid = new ArrayList<Integer>() {
+				{
+					add(R.drawable.candid_land_001);
+					add(R.drawable.candid_land_002);
+					add(R.drawable.candid_land_003);
+				}
+			};
+			environment = new ArrayList<Integer>() {
+				{
+					add(R.drawable.environment_land_001);
+					add(R.drawable.environment_land_002);
+					add(R.drawable.environment_land_003);
+				}
+			};
+		} else {
+			portrait = new ArrayList<Integer>() {
+				{
+					add(R.drawable.portrait_001);
+					add(R.drawable.portrait_002);
+					add(R.drawable.portrait_003);
+					add(R.drawable.portrait_004);
+					add(R.drawable.portrait_005);
+					add(R.drawable.portrait_006);
+					add(R.drawable.portrait_007);
+				}
+			};
+			signature = new ArrayList<Integer>() {
+				{
+					add(R.drawable.signature_001);
+					add(R.drawable.signature_002);
+					add(R.drawable.signature_003);
+					add(R.drawable.signature_004);
+					add(R.drawable.signature_005);
+				}
+			};
+			interaction = new ArrayList<Integer>() {
+				{
+					add(R.drawable.interaction_001);
+					add(R.drawable.interaction_002);
+					add(R.drawable.interaction_003);
+				}
+			};
+			candid = new ArrayList<Integer>() {
+				{
+					add(R.drawable.candid_001);
+					add(R.drawable.candid_002);
+					add(R.drawable.candid_003);
+				}
+			};
+			environment = new ArrayList<Integer>() {
+				{
+					add(R.drawable.environment_001);
+					add(R.drawable.environment_002);
+					add(R.drawable.environment_003);
+				}
+			};
+		}
 		overlayScenes = new HashMap<String, ArrayList<Integer>>() {
 			{
 				put(portraitScene, portrait);
