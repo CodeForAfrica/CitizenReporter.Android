@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context="org.codeforafrica.citizenreporterandroid.camera.ViewImageActivity"
     android:background="@color/black"
+    android:fitsSystemWindows="true"
     >
 
   <ImageView
