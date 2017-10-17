@@ -62,6 +62,9 @@ public class ViewImageActivity extends AppCompatActivity {
 				getIntent().getStringExtra(IMAGE_FILE_LOCATION)
 		);
 
+		int w = imageView.getWidth();
+		int h = imageView.getHeight();
+
 		GlideApp.with(this)
 				.load(imageFile)
 				.override(width, height)
