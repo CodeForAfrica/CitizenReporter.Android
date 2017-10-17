@@ -157,7 +157,7 @@ public class CameraActivity extends AppCompatActivity
 	private static SparseIntArray ORIENTATIONS = new SparseIntArray();
 	static {
 		ORIENTATIONS.append(Surface.ROTATION_0, 0);
-		ORIENTATIONS.append(Surface.ROTATION_90, 90);
+		ORIENTATIONS.append(Surface.ROTATION_90, 270);
 		ORIENTATIONS.append(Surface.ROTATION_180, 180);
 		ORIENTATIONS.append(Surface.ROTATION_270, 270);
 	}
@@ -324,13 +324,7 @@ public class CameraActivity extends AppCompatActivity
 				CameraCharacteristics cameraCharacteristics = cameraManager.getCameraCharacteristics(camID);
 				if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
 						camLensFacing) {
-					//int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
-					int deviceOrientation;
-					if (camLensFacing == CameraCharacteristics.LENS_FACING_FRONT) {
-						deviceOrientation = 1;
-					} else {
-						deviceOrientation = 3;
-					}
+					int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
 					totalRotation = sensorToDeviceOrientation(cameraCharacteristics, deviceOrientation);
 					int rotatedWidth = height;
 					int rotatedHeight = width;
