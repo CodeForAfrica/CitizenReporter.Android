@@ -185,6 +185,7 @@ public class CameraActivity extends AppCompatActivity
 	private static final String INITIALIZED_KEY = "INITIALIZED";
 	private static final String FLASH_MODE_KEY = "FLASH_MODE_KEY";
 	private static final String CURRENT_ORIENTATION_KEY = "DEVICE_ORIENTATION";
+	private static final String PROGRESS_VALUE_KEY = "PROGRESS_VALUE";
 
 	@BindView(R.id.scene_recylcer_view) RecyclerView sceneRecyclerView;
 	@BindView(R.id.tv_camera) TextureView textureView;
@@ -966,6 +967,7 @@ public class CameraActivity extends AppCompatActivity
 		outState.putInt(PREV_SCENE_KEY, prevScene);
 		outState.putBoolean(INITIALIZED_KEY, initialized);
 		outState.putInt(FLASH_MODE_KEY, flashStatus);
+		outState.putDouble(PROGRESS_VALUE_KEY, progressValue);
 		outState.putInt(CURRENT_ORIENTATION_KEY, getResources().getConfiguration().orientation);
 	}
 
@@ -981,6 +983,8 @@ public class CameraActivity extends AppCompatActivity
 		openGalleryBtn.setAnimation(rotateAnimation);
 		imgToggleWB.setAnimation(rotateAnimation);
 		effectsBtn.setAnimation(rotateAnimation);
+		flashModeBtn.setAnimation(rotateAnimation);
+		overlayToggle.setAnimation(rotateAnimation);
 	}
 
 	@Override
@@ -1003,9 +1007,11 @@ public class CameraActivity extends AppCompatActivity
 			prevScene = savedInstanceState.getInt(PREV_SCENE_KEY);
 			initialized = savedInstanceState.getBoolean(INITIALIZED_KEY);
 			flashStatus = savedInstanceState.getInt(FLASH_MODE_KEY);
+			progressValue = savedInstanceState.getDouble(PROGRESS_VALUE_KEY);
 			zoomCaption.setVisibility(View.GONE);
 			seekBarProgressText.setVisibility(View.GONE);
 			changeFlashIcons();
+			increaseBrightness(progressValue);
 
 			if (initialized) {
 				switch (savedInstanceState.getInt(CURRENT_ORIENTATION_KEY)) {
