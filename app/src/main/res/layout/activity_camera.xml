@@ -51,7 +51,7 @@
         android:adjustViewBounds="false"
         android:baselineAlignBottom="false"
         android:cropToPadding="false"
-        android:rotation="90"
+        android:rotation="180"
         android:scaleType="fitXY"
         android:tint="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
