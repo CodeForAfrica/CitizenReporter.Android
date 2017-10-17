@@ -51,6 +51,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.hardware.camera2.CameraDevice;
+import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.Chronometer;
 import android.widget.ImageSwitcher;
@@ -973,12 +974,13 @@ public class CameraActivity extends AppCompatActivity
 	}
 
 	private void rotateIcons(float fromAngle, float toAngle) {
-		float pivotX = swapCameraBtn.getPivotX();
-		float pivotY = swapCameraBtn.getPivotY();
-		RotateAnimation rotateAnimation = new RotateAnimation(fromAngle, toAngle, pivotX, pivotY);
+		RotateAnimation rotateAnimation = new RotateAnimation(fromAngle, toAngle,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 		rotateAnimation.setDuration(2000);
 		swapCameraBtn.setAnimation(rotateAnimation);
 		openGalleryBtn.setAnimation(rotateAnimation);
+		imgToggleWB.setAnimation(rotateAnimation);
+		effectsBtn.setAnimation(rotateAnimation);
 	}
 
 	@Override
@@ -1005,13 +1007,15 @@ public class CameraActivity extends AppCompatActivity
 			seekBarProgressText.setVisibility(View.GONE);
 			changeFlashIcons();
 
-			switch (savedInstanceState.getInt(CURRENT_ORIENTATION_KEY)) {
-				case Configuration.ORIENTATION_PORTRAIT:
-					rotateIcons(0, 90);
-					break;
-				case Configuration.ORIENTATION_LANDSCAPE:
-					rotateIcons(90, 0);
-					break;
+			if (initialized) {
+				switch (savedInstanceState.getInt(CURRENT_ORIENTATION_KEY)) {
+					case Configuration.ORIENTATION_PORTRAIT:
+						rotateIcons(-90, 0);
+						break;
+					case Configuration.ORIENTATION_LANDSCAPE:
+						rotateIcons(90, 0);
+						break;
+				}
 			}
 		}
 
