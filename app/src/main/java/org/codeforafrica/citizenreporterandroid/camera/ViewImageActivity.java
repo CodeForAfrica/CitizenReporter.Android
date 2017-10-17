@@ -66,7 +66,7 @@ public class ViewImageActivity extends AppCompatActivity {
 				.load(imageFile)
 				.override(width, height)
 				.skipMemoryCache(true)
-				.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+				.diskCacheStrategy(DiskCacheStrategy.NONE)
 				.into(imageView);
 
 		closeBtn.setOnClickListener(new View.OnClickListener() {

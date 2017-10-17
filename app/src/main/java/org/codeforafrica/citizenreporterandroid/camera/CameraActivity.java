@@ -328,6 +328,10 @@ public class CameraActivity extends AppCompatActivity
 					totalRotation = sensorToDeviceOrientation(cameraCharacteristics, deviceOrientation);
 					int rotatedWidth = height;
 					int rotatedHeight = width;
+					if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+						rotatedWidth = width;
+						rotatedHeight = height;
+					}
 
 					StreamConfigurationMap map =
 							cameraCharacteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -722,9 +726,7 @@ public class CameraActivity extends AppCompatActivity
 			captureRequestBuilder =
 					cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
 			captureRequestBuilder.addTarget(imageReader.getSurface());
-			captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION,
-					totalRotation); // Fix orientation skews
-			captureRequestBuilder.set(CaptureRequest.JPEG_QUALITY, (byte) 100);
+			captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, totalRotation);
 			applyCaptureSettings();
 
 			CameraCaptureSession.CaptureCallback stillCaptureCallback =
@@ -877,7 +879,9 @@ public class CameraActivity extends AppCompatActivity
 			decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 					| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 					| View.SYSTEM_UI_FLAG_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 			);
 		}
 	}
