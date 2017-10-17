@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
@@ -50,6 +51,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.hardware.camera2.CameraDevice;
+import android.view.animation.RotateAnimation;
 import android.widget.Chronometer;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
@@ -173,6 +175,15 @@ public class CameraActivity extends AppCompatActivity
 	private static String interactionScene;
 	private static String environmentScene;
 	private static String signatureScene;
+
+	private static final String CURRENT_CAMERA_EFFECT_KEY = "CURRENT_CAMERA_EFFECT";
+	private static final String CURRENT_CAMERA_SCENE_KEY = "CURRENT_CAMERA_EFFECT";
+	private static final String CURRENT_WB_MODE_KEY = "CURRENT_WB_MODE";
+	private static final String SELECTED_SCENE_KEY = "SELECTED_SCENE";
+	private static final String PREV_SCENE_KEY = "PREV_SCENE_KEY";
+	private static final String INITIALIZED_KEY = "INITIALIZED";
+	private static final String FLASH_MODE_KEY = "FLASH_MODE_KEY";
+	private static final String CURRENT_ORIENTATION_KEY = "DEVICE_ORIENTATION";
 
 	@BindView(R.id.scene_recylcer_view) RecyclerView sceneRecyclerView;
 	@BindView(R.id.tv_camera) TextureView textureView;
@@ -423,11 +434,13 @@ public class CameraActivity extends AppCompatActivity
 
 	private void swapFlashMode() {
 		flashStatus += 1;
-
 		if (flashStatus > 2) {
 			flashStatus = 0;
 		}
+		changeFlashIcons();
+	}
 
+	private void changeFlashIcons() {
 		switch (flashStatus) {
 			case 0:
 				GlideApp.with(this)
@@ -756,9 +769,9 @@ public class CameraActivity extends AppCompatActivity
 	}
 
 	@Override protected void onPause() {
+		super.onPause();
 		closeCamera();
 		stopBackgroundThread();
-		super.onPause();
 	}
 
 	private void setUpMediaRecorder() throws IOException {
@@ -944,6 +957,30 @@ public class CameraActivity extends AppCompatActivity
 		}
 	}
 
+	@Override protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(CURRENT_CAMERA_EFFECT_KEY, currentCameraEffect);
+		outState.putString(CURRENT_CAMERA_SCENE_KEY, currentScene);
+		outState.putString(CURRENT_WB_MODE_KEY, wbMode);
+		outState.putInt(PREV_SCENE_KEY, prevScene);
+		outState.putBoolean(INITIALIZED_KEY, initialized);
+		outState.putInt(FLASH_MODE_KEY, flashStatus);
+		outState.putInt(CURRENT_ORIENTATION_KEY, getResources().getConfiguration().orientation);
+	}
+
+	@Override protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	private void rotateIcons(float fromAngle, float toAngle) {
+		float pivotX = swapCameraBtn.getPivotX();
+		float pivotY = swapCameraBtn.getPivotY();
+		RotateAnimation rotateAnimation = new RotateAnimation(fromAngle, toAngle, pivotX, pivotY);
+		rotateAnimation.setDuration(2000);
+		swapCameraBtn.setAnimation(rotateAnimation);
+		openGalleryBtn.setAnimation(rotateAnimation);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -955,7 +992,34 @@ public class CameraActivity extends AppCompatActivity
 		initializeObjects();
 		initializeScenes();
 		initializeCameraInterface(); // Creates the swipe buttons
-		hideOthers();
+
+		if (savedInstanceState != null) {
+			currentCameraEffect = savedInstanceState.getString(CURRENT_CAMERA_EFFECT_KEY);
+			currentScene = savedInstanceState.getString(CURRENT_CAMERA_SCENE_KEY);
+			wbMode = savedInstanceState.getString(CURRENT_WB_MODE_KEY);
+			selectedScene = savedInstanceState.getInt(SELECTED_SCENE_KEY);
+			prevScene = savedInstanceState.getInt(PREV_SCENE_KEY);
+			initialized = savedInstanceState.getBoolean(INITIALIZED_KEY);
+			flashStatus = savedInstanceState.getInt(FLASH_MODE_KEY);
+			zoomCaption.setVisibility(View.GONE);
+			seekBarProgressText.setVisibility(View.GONE);
+			changeFlashIcons();
+
+			switch (savedInstanceState.getInt(CURRENT_ORIENTATION_KEY)) {
+				case Configuration.ORIENTATION_PORTRAIT:
+					rotateIcons(0, 90);
+					break;
+				case Configuration.ORIENTATION_LANDSCAPE:
+					rotateIcons(90, 0);
+					break;
+			}
+		}
+
+		if (initialized) {
+			showOthers();
+		} else {
+			hideOthers();
+		}
 
 		overlayToggle.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View view) {
