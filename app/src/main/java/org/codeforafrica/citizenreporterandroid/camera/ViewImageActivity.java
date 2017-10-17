@@ -66,7 +66,7 @@ public class ViewImageActivity extends AppCompatActivity {
 				.load(imageFile)
 				.override(width, height)
 				.skipMemoryCache(true)
-				.diskCacheStrategy(DiskCacheStrategy.NONE)
+				.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
 				.into(imageView);
 
 		closeBtn.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +146,7 @@ public class ViewImageActivity extends AppCompatActivity {
 			long longDate = System.currentTimeMillis();
 			GlideApp.with(getApplicationContext())
 					.load(imageFile)
+					.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
 					.signature(new MediaStoreSignature("image/jpeg", longDate, (int) rotationAngle))
 					.into(imageView);
 			dialog.dismiss();
