@@ -724,6 +724,7 @@ public class CameraActivity extends AppCompatActivity
 			captureRequestBuilder.addTarget(imageReader.getSurface());
 			captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION,
 					totalRotation); // Fix orientation skews
+			captureRequestBuilder.set(CaptureRequest.JPEG_QUALITY, (byte) 100);
 			applyCaptureSettings();
 
 			CameraCaptureSession.CaptureCallback stillCaptureCallback =
