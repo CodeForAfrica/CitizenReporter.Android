@@ -1011,7 +1011,6 @@ public class CameraActivity extends AppCompatActivity
 			zoomCaption.setVisibility(View.GONE);
 			seekBarProgressText.setVisibility(View.GONE);
 			changeFlashIcons();
-			increaseBrightness(progressValue);
 
 			if (initialized) {
 				switch (savedInstanceState.getInt(CURRENT_ORIENTATION_KEY)) {
@@ -1027,6 +1026,7 @@ public class CameraActivity extends AppCompatActivity
 
 		if (initialized) {
 			showOthers();
+			increaseBrightness(progressValue);
 		} else {
 			hideOthers();
 		}
