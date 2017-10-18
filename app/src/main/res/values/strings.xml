@@ -1,97 +1,89 @@
 <resources>
-    <string name="app_name">Citizen Reporter</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+  <string name="app_name">Citizen Reporter</string>
+  <string name="action_settings">Settings</string>
+  <string name="section_format">Hello World from section: %1$d</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="title_activity_login">Sign in</string>
+  <string name="title_activity_login">Sign in</string>
 
-    <!--Facebook related strings-->
-    <string name="facebook_app_id">797443090436971</string>
-    <string name="fb_login_protocol_scheme">fb797443090436971</string>
+  <!--Facebook related strings-->
+  <string name="facebook_app_id">797443090436971</string>
+  <string name="fb_login_protocol_scheme">fb797443090436971</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+  <!-- Strings related to login -->
+  <string name="prompt_email">Email</string>
+  <string name="prompt_password">Password</string>
+  <string name="action_sign_in">Sign in or register</string>
+  <string name="action_sign_in_short">Sign in</string>
+  <string name="error_invalid_email">This email address is invalid</string>
+  <string name="error_invalid_password">This password is too short</string>
+  <string name="error_incorrect_password">This password is incorrect</string>
+  <string name="error_field_required">This field is required</string>
+  <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="about_test">Citizen Reporter is a CodeforAfrica project that provides a simple easy-to-use experience for users, minimising barriers to securely submitting media rich strories to newsrooms.</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_about">About</string>
-    <string name="title_activity_support_channel">Support Channel</string>
-    <string name="title_activity_feedback">Feedback</string>
-    <string name="provide_summary">Provide a brief summary of what happened?</string>
-    <string name="what_caused_this">What caused this?</string>
-    <string name="who_is_involved">Who is involved?</string>
-    <string name="when_did_this_happen">When did this happen?</string>
-    <string name="title_activity_storyboard">Storyboard</string>
-    <string name="where_did_this_happen">Where did this happen?</string>
+  <string name="about_test">Citizen Reporter is a CodeforAfrica project that provides a simple easy-to-use experience for users, minimising barriers to securely submitting media rich strories to newsrooms.</string>
+  <string name="title_activity_settings">Settings</string>
+  <string name="title_activity_about">About</string>
+  <string name="title_activity_support_channel">Support Channel</string>
+  <string name="title_activity_feedback">Feedback</string>
+  <string name="provide_summary">Provide a brief summary of what happened?</string>
+  <string name="what_caused_this">What caused this?</string>
+  <string name="who_is_involved">Who is involved?</string>
+  <string name="when_did_this_happen">When did this happen?</string>
+  <string name="title_activity_storyboard">Storyboard</string>
+  <string name="where_did_this_happen">Where did this happen?</string>
 
-    <!--Pick Scene-->
-    <string name="pick_scene">Pick Scene</string>
-    <string name="pick_scene_description">What kind of scene are you trying to capture?</string>
-    <string name="view_assignment_detail">View Detail</string>
+  <!--Pick Scene-->
+  <string name="pick_scene">Pick Scene</string>
+  <string name="pick_scene_description">What kind of scene are you trying to capture?</string>
+  <string name="view_assignment_detail">View Detail</string>
 
-    <!--feedback-->
-    <string name="device_model">Device model</string>
-    <string name="os_version">OS Version</string>
-    <string name="feedbacktitle">Talk to our developers:</string>
-    <string name="feedbackname">Type your name here…</string>
-    <string name="feedbackemail">Type your email here…</string>
-    <string name="feedbacktype1">Praise</string>
-    <string name="feedbacktype2">Gripe</string>
-    <string name="feedbacktype3">Suggestion</string>
-    <string name="feedbacktype4">Bug</string>
-    <string name="feedbackbody">Type your message here</string>
-    <string name="feedbackresponse">Would you like an email respose sent back?</string>
-    <string name="feedbackbutton">Send Feedback</string>
-    <string name="deadline">Deadline:</string>
-    <string name="add_from_gallery">Add from Gallery</string>
-    <string name="add_photo">Capture Photo</string>
-    <string name="add_video">Add video</string>
-    <string name="record_audio">Record Audio</string>
-    <string name="sdcard_title">SD Card Required</string>
-    <string name="sdcard_message">A mounted SD card is required to upload media</string>
-    <string name="ok">Ok</string>
-    <string name="failed_to_get_assignments_error">Whoops!</string>
-    <string name="assignments_error_detail">Something went wrong</string>
-    <string name="stories_error_detail">You have not submitted any reports</string>
+  <!--feedback-->
+  <string name="device_model">Device model</string>
+  <string name="os_version">OS Version</string>
+  <string name="feedbacktitle">Talk to our developers:</string>
+  <string name="feedbackname">Type your name here…</string>
+  <string name="feedbackemail">Type your email here…</string>
+  <string name="feedbacktype1">Praise</string>
+  <string name="feedbacktype2">Gripe</string>
+  <string name="feedbacktype3">Suggestion</string>
+  <string name="feedbacktype4">Bug</string>
+  <string name="feedbackbody">Type your message here</string>
+  <string name="feedbackresponse">Would you like an email respose sent back?</string>
+  <string name="feedbackbutton">Send Feedback</string>
+  <string name="deadline">Deadline:</string>
+  <string name="add_from_gallery">Add from Gallery</string>
+  <string name="add_photo">Capture Photo</string>
+  <string name="add_video">Add video</string>
+  <string name="record_audio">Record Audio</string>
+  <string name="sdcard_title">SD Card Required</string>
+  <string name="sdcard_message">A mounted SD card is required to upload media</string>
+  <string name="ok">Ok</string>
+  <string name="failed_to_get_assignments_error">Whoops!</string>
+  <string name="assignments_error_detail">Something went wrong</string>
+  <string name="stories_error_detail">You have not submitted any reports</string>
 
-    <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
-    <string name="assignments_description">Once signed in, you\'ll be presented with a customised list of active assignments appropriate to your location of specialisation</string>
-    <string name="capture_media_desc">You can add media by clicking on any of the media capture buttons at the bottom of the screen</string>
+  <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
+  <string name="assignments_description">Once signed in, you\'ll be presented with a customised list of active assignments appropriate to your location of specialisation</string>
+  <string name="capture_media_desc">You can add media by clicking on any of the media capture buttons at the bottom of the screen</string>
+  <string name="desc_take_picture">Button to take a picture</string>
+  <string name="overlay_img_desc">This is the overlay image</string>
+  <string name="swipe_text">Swipe to change scenes</string>
 
-    <string name="title_activity_view_image">View Image</string>
-    <string name="already_have_an_account_sign_in">Already have an account? Sign in</string>
-    <string name="signin_facebook">SIGN IN WITH FACEBOOK</string>
-    <string name="signin_google">SIGN IN WITH GOOGLE</string>
-    <string name="join_with_email">JOIN WITH EMAIL</string>
-    <string name="sigin_in_error">Invalid Email or Password Combination</string>
-    <string name="password_reset_success">The password reset link has been sent to your email</string>
-    <string name="no_active_internet">You have no active internet connection</string>
+  <string name="title_activity_view_image">View Image</string>
+  <string name="already_have_an_account_sign_in">Already have an account? Sign in</string>
+  <string name="signin_facebook">SIGN IN WITH FACEBOOK</string>
+  <string name="signin_google">SIGN IN WITH GOOGLE</string>
+  <string name="join_with_email">JOIN WITH EMAIL</string>
+  <string name="sigin_in_error">Invalid Email or Password Combination</string>
+  <string name="password_reset_success">The password reset link has been sent to your email</string>
+  <string name="no_active_internet">You have no active internet connection</string>
 
     <!-- Push Notification-->
     <string name="notification_title">New Assignments</string>
     <string name="notification_message">A new Assignment has been added</string>
-
-    <string name="title_activity_video_view">VideoViewActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="desc_take_picture">Button to take a picture</string>
-    <string name="overlay_img_desc">This is the overlay image</string>
-    <string name="swipe_text">Swipe to change scenes</string>
-    <string name="portrait_scene">Portrait</string>
-    <string name="interaction_scene">Interaction Scene</string>
-    <string name="scene_changer_text">Swipe to change scenes</string>
-    <string name="recording_status">Recording video</string>
 
 </resources>
