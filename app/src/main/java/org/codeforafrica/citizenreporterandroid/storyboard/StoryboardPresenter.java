@@ -1,6 +1,8 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.util.Log;
+
+import com.flurry.android.FlurryAgent;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -10,6 +12,7 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import java.util.List;
 import org.codeforafrica.citizenreporterandroid.storyboard.StoryboardContract.Presenter;
+import org.codeforafrica.citizenreporterandroid.utils.AnalyticsHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,18 +58,20 @@ public class StoryboardPresenter implements Presenter {
   }
 
   @Override public void createNewStory(String assignmentID) {
+    // Track story creation
+    FlurryAgent.logEvent(AnalyticsHelper.EVENT_CREATE_STORY);
     view.loadNewReport(assignmentID);
   }
 
   @Override public void saveStory(ParseObject story) {
-      view.updateStoryObject(story);
-      if (story.getString("title") != null){
+    view.updateStoryObject(story);
+    if (story.getString("title") != null){
+      // Track story save
+      FlurryAgent.logEvent(AnalyticsHelper.EVENT_SAVE_STORY);
       story.pinInBackground();
     } else{
       story.unpinInBackground();
     }
-
-
   }
 
   @Override public void uploadStory(final ParseObject story) {
@@ -84,6 +89,8 @@ public class StoryboardPresenter implements Presenter {
             Log.d(TAG, "done: finished uploading successfully");
             // go to stories activity
             view.finishUploading();
+            // Track story uploads
+            FlurryAgent.logEvent(AnalyticsHelper.EVENT_UPLOAD_STORY);
           } else {
             story.put("uploaded", false);
             view.showUploadError();

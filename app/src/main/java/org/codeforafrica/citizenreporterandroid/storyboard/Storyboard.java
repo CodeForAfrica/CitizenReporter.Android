@@ -34,6 +34,7 @@ import cafe.adriel.androidaudiorecorder.model.AudioSource;
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -63,6 +64,11 @@ import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
+
+import org.codeforafrica.citizenreporterandroid.ui.stories.AudioProgressUpdateThread;
+import org.codeforafrica.citizenreporterandroid.ui.video.VideoViewActivity;
+import org.codeforafrica.citizenreporterandroid.utils.AnalyticsHelper;
+
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
@@ -230,6 +236,14 @@ public class Storyboard extends AppCompatActivity
                 @Override public void done(ParseException e) {
                   if (e == null) {
                     Log.i(TAG, "done: uploading file");
+
+                    presenter.createAndUploadParseMediaFile(activeStory, localURL, file);
+                    media.put(file);
+
+                    // Track audio upload
+                    FlurryAgent.logEvent(AnalyticsHelper.EVENT_AUDIO_UPLOAD);
+
+
                     Log.i(TAG, "onActivityResult URL: " + file.getUrl());
                   } else {
                     Log.d(TAG, "Error: " + e.getLocalizedMessage());
@@ -259,6 +273,10 @@ public class Storyboard extends AppCompatActivity
                   if (e == null) {
                     presenter.attachImage(imageParseFile.getName(), imageParseFile.getUrl());
                     media.put(imageParseFile);
+
+                    // Track image upload
+                    FlurryAgent.logEvent(AnalyticsHelper.EVENT_IMAGE_UPLOAD);
+
                     Log.i(TAG, "onActivityResult URL: image " + imageParseFile.getUrl());
                   }
                 }
@@ -279,6 +297,10 @@ public class Storyboard extends AppCompatActivity
                     Log.i(TAG, "done: uploading video file");
                     media.put(file);
                     Log.i(TAG, "onActivityResult video URL: " + file.getUrl());
+
+                    // Track video upload
+                    FlurryAgent.logEvent(AnalyticsHelper.EVENT_VIDEO_UPLOAD);
+
                   } else {
                     Log.d(TAG, "Error: video " + e.getLocalizedMessage());
                   }

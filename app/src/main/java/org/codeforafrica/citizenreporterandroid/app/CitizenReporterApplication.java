@@ -2,6 +2,8 @@ package org.codeforafrica.citizenreporterandroid.app;
 
 import android.app.Application;
 import android.util.Log;
+
+import com.flurry.android.FlurryAgent;
 import com.google.firebase.FirebaseApp;
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -14,6 +16,8 @@ import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.di.AppComponent;
 import org.codeforafrica.citizenreporterandroid.di.AppModule;
 import org.codeforafrica.citizenreporterandroid.di.DaggerAppComponent;
+
+import static android.util.Log.VERBOSE;
 
 /**
  * Created by Ahereza on 9/1/17.
@@ -39,6 +43,16 @@ public class CitizenReporterApplication extends Application {
         .build()
     );
     ParseFacebookUtils.initialize(this);
+
+    // Initialise flurry analytics
+    new FlurryAgent.Builder()
+            .withLogEnabled(true)
+            .withCaptureUncaughtExceptions(true)
+            .withContinueSessionMillis(10)
+            .withLogEnabled(true)
+            .withLogLevel(VERBOSE)
+//            .withListener(flurryAgentListener)
+            .build(this, "PX22SWFVTX46HZRT433F");
 
     appComponent = DaggerAppComponent.builder()
         .appModule(new AppModule(this))
