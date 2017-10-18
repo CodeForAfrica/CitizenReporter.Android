@@ -1,9 +1,7 @@
 package org.codeforafrica.citizenreporterandroid.main.assignments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -12,9 +10,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.flurry.android.FlurryAgent;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;

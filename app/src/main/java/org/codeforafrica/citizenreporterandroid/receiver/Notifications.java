@@ -2,14 +2,12 @@ package org.codeforafrica.citizenreporterandroid.receiver;
 
 import android.util.Log;
 
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
