@@ -76,7 +76,7 @@ public class AssignmentDetailActivity extends Activity {
                     TimeUtils.getShortDateFormat(object.getDate("deadline")));
             assignment_detail_text.setText(object.getString("description"));
             assignment_detail_author.setText(object.getString("author"));
-            Glide.with(AssignmentDetailActivity.this)
+            GlideApp.with(AssignmentDetailActivity.this)
                     .load(object.getParseFile("featured_image").getUrl())
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(featured_image);
@@ -105,9 +105,9 @@ public class AssignmentDetailActivity extends Activity {
                     TimeUtils.getShortDateFormat(assignmentObject.getDate("deadline")));
             assignment_detail_text.setText(assignmentObject.getString("description"));
             assignment_detail_author.setText(assignmentObject.getString("author"));
-            Glide.with(AssignmentDetailActivity.this)
+            GlideApp.with(AssignmentDetailActivity.this)
                     .load(assignmentObject.getParseFile("featured_image").getUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(featured_image);
             trackAssignmentOpen(assignmentTitle);
           } else {
