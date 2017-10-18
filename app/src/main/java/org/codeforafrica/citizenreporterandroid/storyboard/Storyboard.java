@@ -1,39 +1,27 @@
 package org.codeforafrica.citizenreporterandroid.storyboard;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -51,15 +39,12 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
+import com.squareup.picasso.Picasso;
 import gun0912.tedbottompicker.TedBottomPicker;
 import java.io.File;
 import java.io.IOException;
@@ -69,42 +54,28 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.apache.commons.io.FileUtils;
 
 import org.codeforafrica.citizenreporterandroid.BuildConfig;
-import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.codeforafrica.citizenreporterandroid.GlideApp;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
-import org.codeforafrica.citizenreporterandroid.data.models.Attachment;
 import org.codeforafrica.citizenreporterandroid.main.MainActivity;
-import org.codeforafrica.citizenreporterandroid.ui.stories.AudioProgressUpdateThread;
-import org.codeforafrica.citizenreporterandroid.ui.video.VideoViewActivity;
 import org.codeforafrica.citizenreporterandroid.utils.MediaUtils;
 import org.codeforafrica.citizenreporterandroid.utils.NetworkUtils;
 import org.codeforafrica.citizenreporterandroid.utils.StoryBoardUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import static org.codeforafrica.citizenreporterandroid.utils.TimeUtils.formatDate;
 import static org.codeforafrica.citizenreporterandroid.utils.TimeUtils.getShortDateFormat;
 
 public class Storyboard extends AppCompatActivity
     implements StoryboardContract.View, DatePickerDialog.OnDateSetListener {
 
   private static final String TAG = Storyboard.class.getSimpleName();
-  private static final String LOCATION_KEY = "LOCATION_KEY";
-  private static final String DATE_KEY = "DATE_KEY";
-  private static final String IMAGE_ATTACHMENTS_KEY = "IMAGE_ATTACHMENTS_KEY";
-  private static final String VIDEO_ATTACHMENTS_KEY = "VIDEO_ATTACHMENTS_KEY";
-  private static final String AUDIO_ATTACHMENTS_KEY = "AUDIO_ATTACHMENTS_KEY";
-
   StoryboardContract.Presenter presenter;
   ParseObject activeStory;
   LayoutInflater inflater;
@@ -114,14 +85,6 @@ public class Storyboard extends AppCompatActivity
   private final DatePickerDialog datePickerDialog =
       DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
           calendar.get(Calendar.DAY_OF_MONTH));
-
-  private String selectedImage;
-
-  private String cachedLocation;
-  private String cachedDate;
-  private CopyOnWriteArrayList<Attachment> imageAttachments = new CopyOnWriteArrayList<>();
-  private CopyOnWriteArrayList<Attachment> audioAttachments = new CopyOnWriteArrayList<>();
-  private CopyOnWriteArrayList<Attachment> videoAttachments = new CopyOnWriteArrayList<>();
 
   @BindView(R.id.attachmentsLayout) LinearLayout attachmentsLayout;
 
@@ -148,36 +111,6 @@ public class Storyboard extends AppCompatActivity
     presenter = new StoryboardPresenter(this);
 
     inflater = LayoutInflater.from(Storyboard.this);
-
-    // If we have a saved state then we can restore it now
-    if (savedInstanceState != null) {
-      cachedLocation = savedInstanceState.getString(LOCATION_KEY);
-      cachedDate = savedInstanceState.getString(DATE_KEY);
-      location_btn.setText(cachedLocation);
-      date.setText(cachedDate);
-
-      imageAttachments = (CopyOnWriteArrayList<Attachment>) savedInstanceState.getSerializable(IMAGE_ATTACHMENTS_KEY);
-      Iterator<Attachment> imageIterator = imageAttachments.iterator();
-      while (imageIterator.hasNext()) {
-        Attachment imageAttachment = imageIterator.next();
-        showImageAttachment(imageAttachment.getName(), imageAttachment.getUrl());
-      }
-
-      audioAttachments = (CopyOnWriteArrayList<Attachment>) savedInstanceState.getSerializable(AUDIO_ATTACHMENTS_KEY);
-      Iterator<Attachment> audioIterator = audioAttachments.iterator();
-      while (audioIterator.hasNext()) {
-        Attachment audioAttachment = audioIterator.next();
-        showAudioAttachment(audioAttachment.getName(), audioAttachment.getUrl());
-      }
-
-      videoAttachments = (CopyOnWriteArrayList<Attachment>) savedInstanceState.getSerializable(VIDEO_ATTACHMENTS_KEY);
-      Iterator<Attachment> videoIterator = videoAttachments.iterator();
-      while (videoIterator.hasNext()) {
-        Attachment videoAttachment = videoIterator.next();
-        showVideoAttachment(videoAttachment.getName(), videoAttachment.getUrl());
-      }
-    }
-
     String action = getIntent().getAction();
     if (action.equals(Constants.ACTION_EDIT_VIEW_STORY)) {
       String storyID = getIntent().getStringExtra("STORY_ID");
@@ -269,11 +202,10 @@ public class Storyboard extends AppCompatActivity
         if (resultCode == RESULT_OK) {
           Place place = PlaceAutocomplete.getPlace(this, data);
           // TODO check out LatLong Object
-          cachedLocation = place.getName().toString();
           location_btn.setText(place.getName());
 
-          // add cachedLocation to current story
-          activeStory.put("cachedLocation", place.getName());
+          // add location to current story
+          activeStory.put("location", place.getName());
         } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
           Status status = PlaceAutocomplete.getStatus(this, data);
           Toast.makeText(this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
@@ -288,19 +220,16 @@ public class Storyboard extends AppCompatActivity
         if (resultCode == RESULT_OK) {
           if (audio_path != null) {
             File f = new File(audio_path);
-            final String localURL = audio_path;
+
             try {
 
               byte[] audio_data = FileUtils.readFileToByteArray(f);
               final ParseFile file = new ParseFile(f.getName(), audio_data);
-
               presenter.attachAudio(file.getName(), f.getAbsolutePath());
               file.saveInBackground(new SaveCallback() {
                 @Override public void done(ParseException e) {
                   if (e == null) {
                     Log.i(TAG, "done: uploading file");
-                    presenter.createAndUploadParseMediaFile(activeStory, localURL, file);
-                    media.put(file);
                     Log.i(TAG, "onActivityResult URL: " + file.getUrl());
                   } else {
                     Log.d(TAG, "Error: " + e.getLocalizedMessage());
@@ -321,15 +250,13 @@ public class Storyboard extends AppCompatActivity
       case Constants.CUSTOM_CAMERA_REQUEST_CODE:
         if (resultCode == RESULT_OK) {
           if (data.getStringExtra("imagePath") != null) {
-            final String localURL = data.getStringExtra("imagePath");
-            File imageFile = new File(localURL);
+            File imageFile = new File(data.getStringExtra("imagePath"));
             try {
               byte[] imageData = FileUtils.readFileToByteArray(imageFile);
               final ParseFile imageParseFile = new ParseFile(imageFile.getName(), imageData);
               imageParseFile.saveInBackground(new SaveCallback() {
                 @Override public void done(ParseException e) {
                   if (e == null) {
-                    presenter.createAndUploadParseMediaFile(activeStory, localURL, imageParseFile);
                     presenter.attachImage(imageParseFile.getName(), imageParseFile.getUrl());
                     media.put(imageParseFile);
                     Log.i(TAG, "onActivityResult URL: image " + imageParseFile.getUrl());
@@ -341,7 +268,6 @@ public class Storyboard extends AppCompatActivity
             }
 
           } else if (data.getStringExtra("videoPath") != null) {
-            final String localURL = data.getStringExtra("videoPath");
             File videoFile = new File(data.getStringExtra("videoPath"));
             try {
               byte[] video_data = FileUtils.readFileToByteArray(videoFile);
@@ -351,22 +277,6 @@ public class Storyboard extends AppCompatActivity
                 @Override public void done(ParseException e) {
                   if (e == null) {
                     Log.i(TAG, "done: uploading video file");
-
-                    Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(localURL, MediaStore.Images.Thumbnails.MINI_KIND);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte[] bitmapBytes = stream.toByteArray();
-                    final ParseFile thumbnailFile = new ParseFile("thumbnail", bitmapBytes);
-                    thumbnailFile.saveInBackground(new SaveCallback() {
-                      @Override
-                      public void done(ParseException e) {
-                        if (e == null) {
-                          presenter.createAndUploadParseMediaFile(activeStory, localURL, file, thumbnailFile);
-                        } else {
-                          Log.d(TAG, "Error: video thumbnail " + e.getLocalizedMessage());
-                        }
-                      }
-                    });
                     media.put(file);
                     Log.i(TAG, "onActivityResult video URL: " + file.getUrl());
                   } else {
@@ -405,7 +315,7 @@ public class Storyboard extends AppCompatActivity
     String whoIsInvolved = story.getString("who") != null ? story.getString("who") : "";
     boolean uploaded = story.getBoolean("uploaded");
     Date whenItOccurred = story.getDate("when");
-    String loc = story.getString("cachedLocation") != null ? story.getString("cachedLocation") : "";
+    String loc = story.getString("location") != null ? story.getString("location") : "";
     activeStory.put("source_app", getString(R.string.app_name));
     media = story.getJSONArray("media") != null ? story.getJSONArray("media") : new JSONArray();
     Log.d(TAG, "loadSavedReport: media" + media.length());
@@ -434,6 +344,11 @@ public class Storyboard extends AppCompatActivity
     date.setText(whenItOccurred == null ? "Date" : getShortDateFormat(whenItOccurred));
     location_btn.setText(loc);
 
+    try {
+      presenter.loadAllAttachments(media);
+    } catch (JSONException e) {
+      Log.e(TAG, "loadSavedReport: JSON Array media", e.fillInStackTrace());
+    }
   }
 
   @Override public void loadNewReport(String assignmentID) {
@@ -480,84 +395,26 @@ public class Storyboard extends AppCompatActivity
 
   }
 
-  @Override public void addToImageAttachments(String name, String url) {
-    // Add to cached image attachments
-    imageAttachments.add(new Attachment(name, url));
-  }
-
-  @Override public void addToAudioAttachments(String name, String url) {
-    // Add to cached audio attachments
-    audioAttachments.add(new Attachment(name, url));
-  }
-
-  @Override public void addToVideoAttachments(String name, String url) {
-    // Add to cached video attachments
-    videoAttachments.add(new Attachment(name, url));
-  }
-
   @Override public void showImageAttachment(String name, String url) {
     View view = inflater.inflate(R.layout.item_image, null);
     TextView filename = (TextView) view.findViewById(R.id.image_filename_tv);
-    final String imageUrl = url;
-
-    // Hook up clicks on the thumbnail views.
-    final ImageView image = (ImageView) view.findViewById(R.id.attached_image);
-    image.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        selectedImage = imageUrl;
-        showDialog();
-      }
-    });
+    ImageView image = (ImageView) view.findViewById(R.id.attached_image);
 
     filename.setText(name);
-    GlideApp.with(Storyboard.this)
+    Glide.with(Storyboard.this)
         .load(url)
-        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
         .into(image);
     attachmentsLayout.addView(view);
   }
 
-
-  @Override public void showVideoAttachment(String name, String... paths) {
+  @Override public void showVideoAttachment(String name, String uri) {
     View view = inflater.inflate(R.layout.item_video, null);
     TextView fileName = (TextView) view.findViewById(R.id.video_filename_tv);
-    TextView fileSize = (TextView) view.findViewById(R.id.video_filesize_tv);
-    ImageView play_video_icon = (ImageView) view.findViewById(R.id.play_video_icon);
-    ImageView videoThumbnail = (ImageView) view.findViewById(R.id.video_thumbnail);
-    final String path = paths[0];
-    final String videoFilename = name;
-    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
+    TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
 
-    final int videoHeight;
-    final int videoWidth;
 
-    if (path.startsWith("http")) {
-      GlideApp.with(Storyboard.this)
-              .load(paths[1])
-              .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-              .into(videoThumbnail);
-
-      videoHeight = videoWidth = 300;
-    } else {
-      videoHeight = thumb.getHeight();
-      videoWidth = thumb.getWidth();
-    }
-
-    videoThumbnail.setImageBitmap(thumb);
-    play_video_icon.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Intent intent = new Intent(Storyboard.this, VideoViewActivity.class);
-        intent.putExtra("videoUrl", path);
-        intent.putExtra("videoHeight", videoHeight);
-        intent.putExtra("videoWidth", videoWidth);
-        intent.putExtra("videoFilename", videoFilename);
-        startActivity(intent);
-      }
-    });
-
-    File file = new File(path);
+    File file = new File(uri);
     long size  = file.length();
     fileName.setText(name);
     fileSize.setText(size/1024 + " KB");
@@ -565,17 +422,15 @@ public class Storyboard extends AppCompatActivity
     attachmentsLayout.addView(view);
   }
 
-  @Override public void showAudioAttachment(String name, String url) {
+  @Override public void showAudioAttachment(String name, String uri) {
     Log.i(TAG, "showAudioAttachment: ");
     View view = inflater.inflate(R.layout.item_audio, null);
     TextView filename = (TextView) view.findViewById(R.id.audio_filename_tv);
     TextView fileSize = (TextView) view.findViewById(R.id.audio_filesize_tv);
-    final TextView audioTime = (TextView) view.findViewById(R.id.audio_time);
 
-    File file = new File(url);
+    File file = new File(uri);
     long size  = (file.length())/1024;
     String size_label = size + " KB";
-
 
     if (size>1000){
       double sizeMb = (size * (.001));
@@ -586,65 +441,7 @@ public class Storyboard extends AppCompatActivity
     filename.setText(name);
     fileSize.setText(size_label);
 
-    final MediaPlayer mediaPlayer = MediaPlayer.create(this, Uri.parse(url));
-    final SeekBar seekbar = (SeekBar)view.findViewById(R.id.audio_progress_bar);
-    int audioDuration = mediaPlayer.getDuration();
-    seekbar.setMax(audioDuration);
-    final Handler myHandler = new Handler();
-    final AudioProgressUpdateThread runnable = new AudioProgressUpdateThread(mediaPlayer, myHandler, audioTime, seekbar);
-    myHandler.postDelayed(runnable, 100);
 
-    final ImageView playPause = (ImageView)view.findViewById(R.id.audio_play_pause);
-    playPause.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        if(mediaPlayer.isPlaying()){
-          mediaPlayer.pause();
-          playPause.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
-                  R.drawable.ic_icons8_play_filled_100, null));
-        }
-        else {
-          mediaPlayer.start();
-          playPause.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
-                  R.drawable.ic_icons8_pause_104, null));
-        }
-      }
-    });
-
-    seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-      @Override
-      public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if(fromUser){
-
-        }
-
-      }
-
-      @Override
-      public void onStartTrackingTouch(SeekBar seekBar) {
-        myHandler.removeCallbacks(runnable);
-
-      }
-
-      @Override
-      public void onStopTrackingTouch(SeekBar seekBar) {
-        myHandler.removeCallbacks(runnable);
-        int seekBarPosition = seekBar.getProgress();
-
-        // forward or backward to certain seconds
-        mediaPlayer.seekTo(seekBarPosition);
-        myHandler.postDelayed(runnable, 100);
-
-      }
-    });
-
-    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-      @Override
-      public void onCompletion(MediaPlayer mediaPlayer) {
-        playPause.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
-                R.drawable.ic_icons8_play_filled_100, null));
-      }
-    });
     attachmentsLayout.addView(view);
   }
 
@@ -733,15 +530,13 @@ public class Storyboard extends AppCompatActivity
                 for (Uri uri : uriList) {
                   Log.d("IMAGE SELECTOR",
                       "onImagesSelected: " + MediaUtils.getPathFromUri(Storyboard.this, uri));
-                  final String localURL = uri.getPath();
-                  File imageFile = new File(localURL);
+                  File imageFile = new File(uri.getPath());
                   try {
                     byte[] imageData = FileUtils.readFileToByteArray(imageFile);
                     final ParseFile imageParseFile = new ParseFile(imageFile.getName(), imageData);
                     imageParseFile.saveInBackground(new SaveCallback() {
                       @Override public void done(ParseException e) {
                         if (e == null) {
-                          presenter.createAndUploadParseMediaFile(activeStory, localURL, imageParseFile);
                           presenter.attachImage(imageParseFile.getName(), imageParseFile.getUrl());
                           media.put(imageParseFile);
                           Log.i(TAG, "onActivityResult URL: " + imageParseFile.getUrl());
@@ -766,7 +561,7 @@ public class Storyboard extends AppCompatActivity
 
   @Override public void finishUploading() {
     onBackPressed();
-    //Intent intent = new Intent(Storyboard.this, VideoViewActivity.class);
+    //Intent intent = new Intent(Storyboard.this, MainActivity.class);
     //intent.putExtra("Source", "uploaded");
     //startActivity(intent);
     //finish();
@@ -800,7 +595,6 @@ public class Storyboard extends AppCompatActivity
     newCalendar.set(year, monthOfYear, dayOfMonth);
     activeStory.put("when", newCalendar.getTime());
     date.setText(getShortDateFormat(newCalendar.getTime()));
-    cachedDate = getShortDateFormat(newCalendar.getTime());
   }
 
   public static void disableShiftMode(BottomNavigationView view) {
@@ -824,37 +618,6 @@ public class Storyboard extends AppCompatActivity
       Log.e("BNVHelper", "Unable to change value of shift mode", e);
     }
   }
-
-  public void showDialog(){
-    final Dialog dialog = new Dialog(Storyboard.this);
-    //create dialog without title
-    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-    //set the custom dialog's layout to the dialog
-    dialog.setContentView(R.layout.image_preview_dialog);
-    //display the dialog box
-    ImageView expandedImageView = (ImageView)dialog.findViewById(R.id.expanded_image);
-    GlideApp.with(Storyboard.this)
-            .load(selectedImage)
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-            .into(expandedImageView);
-    dialog.show();
-  }
-
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    outState.putString(LOCATION_KEY, cachedLocation);
-    outState.putString(DATE_KEY, cachedDate);
-    outState.putSerializable(IMAGE_ATTACHMENTS_KEY, imageAttachments);
-    outState.putSerializable(VIDEO_ATTACHMENTS_KEY, videoAttachments);
-    outState.putSerializable(AUDIO_ATTACHMENTS_KEY, audioAttachments);
-  }
-
-  @Override
-  protected void onRestoreInstanceState(Bundle savedState) {
-    super.onRestoreInstanceState(savedState);
-  }
-
 }
 
 

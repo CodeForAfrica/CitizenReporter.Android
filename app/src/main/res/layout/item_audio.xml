@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
     android:layout_marginTop="16dp"
@@ -19,6 +20,7 @@
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+
       android:orientation="horizontal"
       android:paddingBottom="8dp"
       android:paddingEnd="4dp"
@@ -63,38 +65,6 @@
     </LinearLayout>
 
   </LinearLayout>
-
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical"
-      android:layout_weight="0.8"
-      android:orientation="horizontal"
-      android:paddingEnd="4dp"
-      android:paddingStart="16dp"
-      >
-    <ImageView
-        android:id="@+id/audio_play_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/btn_play"/>
-
-    <SeekBar
-        android:id="@+id/audio_progress_bar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:paddingTop="7dp"
-        android:paddingRight="6dp"/>
-
-  </LinearLayout>
-  <TextView
-      android:id="@+id/audio_time"
-      android:layout_marginStart="30dp"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content" />
   <View
       android:layout_width="match_parent"
       android:layout_height="10dp"

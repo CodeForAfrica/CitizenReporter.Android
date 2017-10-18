@@ -30,8 +30,6 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
 
   private LinearLayout error_layout;
 
-  private LinearLayout error_layout_no_assignments;
-
   @Inject AssignmentsFragmentPresenter presenter;
 
   private AssignmentsAdapter adapter;
@@ -65,8 +63,6 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
     recyclerView = (RecyclerView) view.findViewById(R.id.assignment_recycler);
     progressBar = (ProgressBar) view.findViewById(R.id.assignmentsLoadingProgressBar);
     error_layout = (LinearLayout) view.findViewById(R.id.assignments_error_layout);
-    error_layout_no_assignments = (LinearLayout) view.findViewById(
-        R.id.assignments_error_layout_no_assignments);
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     presenter.getAndDisplayAssignments();
@@ -103,9 +99,5 @@ public class AssignmentsFragment extends Fragment implements AssignmentFragmentC
 
   @Override public void showError() {
     error_layout.setVisibility(View.VISIBLE);
-  }
-
-  @Override public void showNoAssignments() {
-    error_layout_no_assignments.setVisibility(View.VISIBLE);
   }
 }
