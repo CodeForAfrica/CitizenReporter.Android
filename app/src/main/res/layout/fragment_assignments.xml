@@ -41,7 +41,7 @@
   </LinearLayout>
   <LinearLayout
       android:id="@+id/assignments_error_layout_no_assignments"
-      android:visibility="visible"
+      android:visibility="gone"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="vertical"
