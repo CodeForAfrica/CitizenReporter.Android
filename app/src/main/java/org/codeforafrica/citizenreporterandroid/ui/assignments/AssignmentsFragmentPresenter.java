@@ -62,7 +62,7 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
     if (assignmentsList.size() > 0) {
       view.displayAssignments(assignmentsList);
     } else {
-      view.displayNoAssignments();
+      view.showNoAssignments();
     }
   }
 

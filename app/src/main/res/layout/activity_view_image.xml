@@ -3,17 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.code4africa.customcamera.customcameraapp.ViewImageActivity"
-    >
+    tools:context="org.codeforafrica.citizenreporterandroid.camera.ViewImageActivity"
+    android:background="@color/transparent_black">
 
   <ImageView
       android:id="@+id/img_view"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
+      />
+  <ImageView
+      android:id="@+id/img_btn_bg_2"
+      android:layout_width="0dp"
+      android:layout_height="76dp"
+      android:background="@color/colorPrimaryDark"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      android:alpha="0.5"
+      tools:layout_editor_absoluteY="435dp"
       />
   <ImageView
       android:id="@+id/img_save_btn"
@@ -26,6 +37,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:srcCompat="@drawable/ic_circular_check"
       android:focusable="true"
+      android:background="?attr/selectableItemBackground"
       />
   <ImageView
       android:id="@+id/img_close_btn"
@@ -34,9 +46,38 @@
       android:layout_marginBottom="8dp"
       android:layout_marginStart="16dp"
       android:clickable="true"
+      android:focusable="true"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:srcCompat="@drawable/ic_close"
+      android:background="?attr/selectableItemBackground"
+      />
+  <ImageView
+      android:id="@+id/btn_rotate_clockwise"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginBottom="8dp"
+      android:layout_marginEnd="8dp"
+      android:background="?attr/selectableItemBackground"
+      android:clickable="true"
       android:focusable="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/img_save_btn"
+      app:layout_constraintStart_toEndOf="@+id/btn_rotate_anti_clockwise"
+      app:srcCompat="@drawable/ic_clockwise_circular_arrow"
+      />
+  <ImageView
+      android:id="@+id/btn_rotate_anti_clockwise"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_marginBottom="8dp"
+      android:layout_marginStart="8dp"
+      android:background="?attr/selectableItemBackground"
+      android:clickable="true"
+      android:focusable="true"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/btn_rotate_clockwise"
+      app:layout_constraintStart_toEndOf="@+id/img_close_btn"
+      app:srcCompat="@drawable/ic_counterclockwise_circular_arrow"
       />
 </android.support.constraint.ConstraintLayout>
