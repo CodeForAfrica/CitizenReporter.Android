@@ -71,6 +71,7 @@
         android:layout_gravity="center_horizontal"
         />
   </LinearLayout>
+
   <ProgressBar
       android:id="@+id/assignmentsLoadingProgressBar"
       android:visibility="gone"
