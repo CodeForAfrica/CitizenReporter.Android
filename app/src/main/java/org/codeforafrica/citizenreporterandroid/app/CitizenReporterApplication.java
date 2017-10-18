@@ -52,7 +52,7 @@ public class CitizenReporterApplication extends Application {
             .withLogEnabled(true)
             .withLogLevel(VERBOSE)
 //            .withListener(flurryAgentListener)
-            .build(this, "PX22SWFVTX46HZRT433F");
+            .build(this, "JH2WNJX9DQQTHPZGJYY8");
 
     appComponent = DaggerAppComponent.builder()
         .appModule(new AppModule(this))
