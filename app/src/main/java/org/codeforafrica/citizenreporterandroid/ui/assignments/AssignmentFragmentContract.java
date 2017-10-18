@@ -14,7 +14,6 @@ public interface AssignmentFragmentContract {
     void displayAssignments(List<Assignment> assignmentList);
     void displayNoAssignments();
     void showError();
-    void showNoAssignments();
   }
 
   interface Presenter {

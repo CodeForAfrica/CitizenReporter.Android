@@ -44,7 +44,7 @@ import android.view.View;
 public class MainActivity extends BaseActivity {
 
   private static final int REQUEST_FINE_LOCATION = 12;
-  private static final String TAG = "VideoViewActivity";
+  private static final String TAG = "MainActivity";
   private CReporterAPI apiClient;
   private String fb_id;
   private String profile_url;

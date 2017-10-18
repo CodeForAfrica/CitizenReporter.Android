@@ -16,7 +16,6 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import org.codeforafrica.citizenreporterandroid.GlideApp;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
@@ -63,9 +62,9 @@ public class AssignmentDetailActivity extends Activity {
               TimeUtils.getShortDateFormat(assignmentObject.getDate("deadline")));
           assignment_detail_text.setText(assignmentObject.getString("description"));
           assignment_detail_author.setText(assignmentObject.getString("author"));
-          GlideApp.with(AssignmentDetailActivity.this)
+          Glide.with(AssignmentDetailActivity.this)
               .load(assignmentObject.getParseFile("featured_image").getUrl())
-              .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+              .diskCacheStrategy(DiskCacheStrategy.SOURCE)
               .into(featured_image);
 
           // Track Assignment open

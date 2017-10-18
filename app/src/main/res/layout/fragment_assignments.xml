@@ -39,38 +39,6 @@
         android:layout_gravity="center_horizontal"
         />
   </LinearLayout>
-  <LinearLayout
-      android:id="@+id/assignments_error_layout_no_assignments"
-      android:visibility="visible"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:layout_centerInParent="true">
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@mipmap/ic_cloud_error"
-        android:layout_gravity="center_horizontal"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sorry"
-        android:textColor="@color/colorLightGray"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        />
-    <TextView
-        android:textColor="@color/colorLightGray"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="There are currently no active assignments"
-        android:textSize="18sp"
-        android:layout_gravity="center_horizontal"
-        />
-  </LinearLayout>
   <ProgressBar
       android:id="@+id/assignmentsLoadingProgressBar"
       android:visibility="gone"
