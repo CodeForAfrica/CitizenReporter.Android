@@ -106,8 +106,7 @@ dependencies {
 
   // Required for Flurry Analytics integration
   compile 'com.flurry.android:analytics:7.0.0@aar'
-  
-  androidTestCompile 'com.android.support:support-annotations:26.0.2'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
