@@ -1,11 +1,8 @@
 package org.codeforafrica.citizenreporterandroid.ui.auth;
 
-import android.graphics.drawable.Drawable;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v4.content.ContextCompat;
-import android.widget.ProgressBar;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.ui.auth.login.LoginActivity;
 import org.junit.Rule;
