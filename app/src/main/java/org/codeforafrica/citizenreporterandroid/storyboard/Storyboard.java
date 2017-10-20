@@ -548,9 +548,9 @@ public class Storyboard extends AppCompatActivity
 
     if (path.startsWith("http")) {
       GlideApp.with(Storyboard.this)
-          .load(paths[1])
-          .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-          .into(videoThumbnail);
+              .load(paths[1])
+              .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+              .into(videoThumbnail);
 
       videoHeight = videoWidth = 300;
     } else {
@@ -615,12 +615,12 @@ public class Storyboard extends AppCompatActivity
         if(mediaPlayer.isPlaying()){
           mediaPlayer.pause();
           playPause.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
-              R.drawable.ic_icons8_play_filled_100, null));
+                  R.drawable.ic_icons8_play_filled_100, null));
         }
         else {
           mediaPlayer.start();
           playPause.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
-              R.drawable.ic_icons8_pause_104, null));
+                  R.drawable.ic_icons8_pause_104, null));
         }
       }
     });
@@ -656,7 +656,7 @@ public class Storyboard extends AppCompatActivity
       @Override
       public void onCompletion(MediaPlayer mediaPlayer) {
         playPause.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
-            R.drawable.ic_icons8_play_filled_100, null));
+                R.drawable.ic_icons8_play_filled_100, null));
       }
     });
     attachmentsLayout.addView(view);
@@ -848,9 +848,9 @@ public class Storyboard extends AppCompatActivity
     //display the dialog box
     ImageView expandedImageView = (ImageView)dialog.findViewById(R.id.expanded_image);
     GlideApp.with(Storyboard.this)
-        .load(selectedImage)
-        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-        .into(expandedImageView);
+            .load(selectedImage)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .into(expandedImageView);
     dialog.show();
   }
 
@@ -870,3 +870,5 @@ public class Storyboard extends AppCompatActivity
   }
 
 }
+
+
