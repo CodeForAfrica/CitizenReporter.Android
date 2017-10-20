@@ -10,9 +10,8 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.util.ArrayList;
+import org.codeforafrica.citizenreporterandroid.GlideApp;
 import org.codeforafrica.citizenreporterandroid.R;
-
-import static org.codeforafrica.citizenreporterandroid.GlideApp.*;
 
 public class SceneSelectorAdapter extends RecyclerView.Adapter<SceneSelectorAdapter.ViewHolder> {
 	private static int rotationAngle;
@@ -61,7 +60,7 @@ public class SceneSelectorAdapter extends RecyclerView.Adapter<SceneSelectorAdap
 
 		private void bindScene(Integer sceneID) {
 			if(rotationAngle == -90) itemView.setRotation(rotationAngle);
-			with(itemView)
+			GlideApp.with(itemView)
 					.load(null)
 					.placeholder(sceneID)
 					.into(imageView);

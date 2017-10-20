@@ -60,6 +60,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import org.codeforafrica.citizenreporterandroid.BuildConfig;
+import org.codeforafrica.citizenreporterandroid.GlideApp;
 import org.codeforafrica.citizenreporterandroid.R;
 import org.codeforafrica.citizenreporterandroid.app.Constants;
 import org.codeforafrica.citizenreporterandroid.camera.CameraActivity;
@@ -423,9 +424,9 @@ public class Storyboard extends AppCompatActivity
     ImageView image = (ImageView) view.findViewById(R.id.attached_image);
 
     filename.setText(name);
-    Glide.with(Storyboard.this)
+    GlideApp.with(Storyboard.this)
         .load(url)
-        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .into(image);
     attachmentsLayout.addView(view);
   }
