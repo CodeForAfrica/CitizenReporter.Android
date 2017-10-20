@@ -95,9 +95,8 @@
         android:label="AssignmentDetail"/>
     <activity
         android:name=".camera.CameraActivity"
-        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:configChanges="orientation|screenSize"
         android:label="@string/app_name"
-        android:screenOrientation="portrait"
         android:theme="@style/FullscreenTheme">
     </activity>
     <activity
