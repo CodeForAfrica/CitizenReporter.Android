@@ -27,7 +27,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
@@ -62,21 +65,8 @@ public class TestLoginActivityInterface {
 		onView(withId(R.id.facebook_login_button))
 				.check(matches(isDisplayed()))
 				.perform(click());
-		UiObject facebookApp = mDevice.findObject(new UiSelector().text("Facebook"));
-		try {
-			facebookApp.clickAndWaitForNewWindow();
-			UiObject fbUserName = mDevice.findObject(new UiSelector().text("username"));
-			assertTrue(fbUserName.exists());
-		} catch (UiObjectNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void testLoginWithGoogle() {
-		onView(withId(R.id.google_login_button))
-				.check(matches(isDisplayed()))
-				.perform(click());
+		UiObject facebookApp = mDevice.findObject(new UiSelector().textContains("Login"));
+		assertTrue(facebookApp.exists());
 	}
 
 	@Test
@@ -94,11 +84,6 @@ public class TestLoginActivityInterface {
 		onView(withId(R.id.sign_up_password))
 				.check(matches(isDisplayed()))
 				.perform(typeText("12345678"), closeSoftKeyboard());
-	}
-
-	@Test
-	public void testLoginWithEmail() {
-
 	}
 
 }
