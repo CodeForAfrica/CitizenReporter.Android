@@ -5,11 +5,15 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import org.codeforafrica.citizenreporterandroid.data.models.Assignment;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Ahereza on 7/28/17.
@@ -62,22 +66,22 @@ public class AssignmentsFragmentPresenter implements AssignmentFragmentContract.
     if (assignmentsList.size() > 0) {
       view.displayAssignments(assignmentsList);
     } else {
-      view.displayNoAssignments();
+      view.showNoAssignments();
     }
   }
 
   private Assignment parseObjectToAssignment(ParseObject assignmentObject) {
     Assignment assignment = new Assignment();
-    assignment.setAuthor(assignmentObject.getString("author"));
-    assignment.setTitle(assignmentObject.getString("title"));
-    assignment.setDescription(assignmentObject.getString("description"));
-    assignment.setAssignmentLocation(assignmentObject.getString("location"));
-    assignment.setFeaturedImage(assignmentObject.getParseFile
-        ("featured_image").getUrl());
-    Log.d("Parse", "parseObjectToAssignment featuredImage: " + assignmentObject.getParseFile
-        ("featured_image").getUrl());
-    assignment.setDeadline(assignmentObject.getDate("deadline"));
-    assignment.setId(assignmentObject.getObjectId());
+		assignment.setAuthor(assignmentObject.getString("author"));
+		assignment.setTitle(assignmentObject.getString("title"));
+		assignment.setDescription(assignmentObject.getString("description"));
+		assignment.setAssignmentLocation(assignmentObject.getString("location"));
+		assignment.setFeaturedImage(assignmentObject.getParseFile
+				("featured_image").getUrl());
+		Log.d("Parse", "parseObjectToAssignment featuredImage: " + assignmentObject.getParseFile
+				("featured_image").getUrl());
+		assignment.setDeadline(assignmentObject.getDate("deadline"));
+		assignment.setId(assignmentObject.getObjectId());
 
     return assignment;
   }
