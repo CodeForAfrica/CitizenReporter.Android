@@ -9,6 +9,7 @@ import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import java.util.List;
@@ -44,15 +45,14 @@ public class CitizenReporterApplication extends Application {
     );
     ParseFacebookUtils.initialize(this);
 
-    // Initialise flurry analytics
     new FlurryAgent.Builder()
             .withLogEnabled(true)
             .withCaptureUncaughtExceptions(true)
             .withContinueSessionMillis(10)
             .withLogEnabled(true)
             .withLogLevel(VERBOSE)
-//            .withListener(flurryAgentListener)
-            .build(this, "JH2WNJX9DQQTHPZGJYY8");
+            .build(this, "PX22SWFVTX46HZRT433F");
+    ParseInstallation.getCurrentInstallation().saveInBackground();
 
     appComponent = DaggerAppComponent.builder()
         .appModule(new AppModule(this))
