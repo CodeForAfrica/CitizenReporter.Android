@@ -50,6 +50,8 @@ public class MainActivity extends BaseActivity {
   private SharedPreferences preferences;
   private RelativeLayout relativeLayout;
 
+  public static final String STORIES_FRAGMENT = "STORIES_FRAGMENT";
+
   @BindView(R.id.navigation) BottomNavigationView bottomNavigationView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +108,12 @@ public class MainActivity extends BaseActivity {
 
     //Manually displaying the first fragment - one time only
     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.frame_layout, AssignmentsFragment.newInstance());
+    if(getIntent().getIntExtra(MainActivity.STORIES_FRAGMENT, 0) == 2){
+      transaction.replace(R.id.frame_layout, StoriesFragment.newInstance());
+    }
+    else {
+      transaction.replace(R.id.frame_layout, AssignmentsFragment.newInstance());
+    }
     transaction.commit();
 
     //Used to select an item programmatically

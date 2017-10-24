@@ -780,10 +780,6 @@ public class Storyboard extends AppCompatActivity
 
   @Override public void finishUploading() {
     onBackPressed();
-    //Intent intent = new Intent(Storyboard.this, VideoViewActivity.class);
-    //intent.putExtra("Source", "uploaded");
-    //startActivity(intent);
-    //finish();
   }
 
   @Override public void sendCameraIntent() {
@@ -867,6 +863,17 @@ public class Storyboard extends AppCompatActivity
   @Override
   protected void onRestoreInstanceState(Bundle savedState) {
     super.onRestoreInstanceState(savedState);
+  }
+
+  @Override
+  public void onBackPressed()
+  {
+    super.onBackPressed();
+    Intent intent = new Intent(Storyboard.this, MainActivity.class);
+    intent.putExtra(MainActivity.STORIES_FRAGMENT, 2);
+    startActivity(intent);
+    finish();
+
   }
 
 }
