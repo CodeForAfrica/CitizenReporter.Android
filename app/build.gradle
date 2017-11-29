@@ -20,7 +20,7 @@ repositories {
 
 android {
   compileSdkVersion 25
-  buildToolsVersion "25.0.0"
+  buildToolsVersion '26.0.2'
   defaultConfig {
     applicationId "org.codeforafrica.citizenreporterandroid"
     minSdkVersion 21
@@ -115,6 +115,7 @@ dependencies {
   androidTestCompile 'com.android.support:support-annotations:26.0.2'
   // Required for Flurry Analytics integration
   compile 'com.flurry.android:analytics:7.0.0@aar'
+  // compile 'com.flurry.android:ads:8.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
