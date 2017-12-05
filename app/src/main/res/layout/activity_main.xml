@@ -42,7 +42,7 @@
               android:layout_height="32dp"
               android:layout_gravity="center_vertical"
               android:layout_marginRight="8dp"
-              android:src="@mipmap/ic_creporter_launcher"
+              android:src="@mipmap/ic_media_factory_launcher"
               />
 
           <TextView
