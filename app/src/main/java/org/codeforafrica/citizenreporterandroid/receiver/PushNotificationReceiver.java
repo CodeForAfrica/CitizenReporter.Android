@@ -68,7 +68,7 @@ public class PushNotificationReceiver extends ParsePushBroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, assignmentDetailIntent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.mipmap.ic_creporter_launcher);
+        builder.setSmallIcon(R.mipmap.ic_media_factory_launcher);
         builder.setAutoCancel(true);
 
         int Unique_Integer_Number = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);

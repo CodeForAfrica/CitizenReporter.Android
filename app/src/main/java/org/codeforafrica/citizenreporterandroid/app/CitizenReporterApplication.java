@@ -51,7 +51,7 @@ public class CitizenReporterApplication extends Application {
             .withContinueSessionMillis(10)
             .withLogEnabled(true)
             .withLogLevel(VERBOSE)
-            .build(this, "PX22SWFVTX46HZRT433F");
+            .build(this, "XQRHMYWBFS7QTPN2S9ZS");
     ParseInstallation.getCurrentInstallation().saveInBackground();
 
     appComponent = DaggerAppComponent.builder()
